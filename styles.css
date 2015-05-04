@@ -1,0 +1,6 @@
+#main { display: block; width: 80%; font-size: 22px; background: #333; color: white; padding: 10px }
+#speak { position: absolute; right: 20px; height: 45px; width: 60px; font-size: 30px; top: 10px }
+textarea { float: left; width: 350px; font-size: 20px; height: 80vh; margin-right: 40px; display: inline-block; padding-left: 10px }
+li { font-size: 19px }
+label { margin-left: 10px; width: 100px; display: inline-block; cursor: pointer }
+label:hover { background: #eef }
