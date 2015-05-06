@@ -1,5 +1,120 @@
 
-:root
-  font-size 16px
+$serif = 'Biaodian Pro Serif', Georgia, 'Han Songti', serif
+$sans  = 'Biaodian Pro Sans', 'Helvetica Neue', Helvetica, Arial, 'Han Heiti', sans-serif
 
+:root
+  // box
+  box-sizing border-box
+  // typo
+  font-size 10px
+
+*,
+*:before,
+*:after
+  box-sizing inherit
+
+body
+  // typo
+  font-size 16px
+  // style
+  background-color rgb( 93%, 90%, 85% )
+
+#body
+  // box
+  width 100%
+  padding-top 6rem
+
+nav,
+main,
+#option,
+footer
+  // box
+  width 100%
+  padding 0 calc( (100% - 96rem)/2 )
+
+nav
+  // posi
+  position fixed
+  top 0
+  // box
+  height 4rem
+  line-height 4rem
+  // style
+  background-color #333
+  box-shadow #ccc 0 2px 3px
+  color #eee
+
+  a,
+  button
+    // box
+    display inline-block
+    padding 0 .5em
+    // style
+    background none
+    border 0
+    color #eee
+  :hover
+    background-color rgba( 0, 10%, 20%, .8 ) 
+    color: #fff
+
+  .gh-repo
+    // posi
+    float right
+
+main#io
+  textarea
+    $border = rgb( 75%, 70%, 55% ) 
+    // posi
+    position relative
+    margin 1rem auto
+    // box
+    display block
+    height 6em 
+    max-height 40vh
+    width 96%
+    padding .25em .5em
+    resize vertical
+    // typo
+    font-size 20px
+    // style
+    background-color #f0f0f0
+    border 1px solid lighten( $border, 30% )
+    border-radius .5rem
+    color #666
+    outline 0
+
+    &:hover,
+    &:focus
+      background-color #f5f5f5
+      border-color $border
+      color #333
+
+main blockquote
+  // posi
+  margin 3rem auto
+  // box
+  width 96%
+  padding 0
+  // typo
+  font-family $serif
+  font-size 1.5em
+  
+  button
+    // posi
+    float left 
+    margin .1em .5em 0 -.15em
+    // box
+    height 1.8em
+    width 1.8em
+    overflow hidden
+    // typo
+    font-family $sans
+    // style
+    background-color rgb(  80%, 55%, 45% )
+    border 0
+    border-radius 50%
+    color transparent
+
+#option
+  display: none
 
