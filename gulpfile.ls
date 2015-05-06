@@ -8,7 +8,7 @@ require! {
   \gulp-watch
   \gulp-live-server
   \gulp-concat-util : concat
-  #\gulp-livescript
+  \gulp-livescript
   \gulp-react : react
   \gulp-sass
   \gulp-stylus
@@ -28,6 +28,7 @@ gulp.task \app <[ lib html jsx css ]>
 gulp.task \dev <[ app server ]> ->
   gulp.watch './app/*.html' <[ html ]>
   gulp.watch './app/*.jsx' <[ jsx ]>
+  gulp.watch './app/*.ls' <[ lsc jsx ]>
   gulp.watch './app/css/*.styl' <[ css ]>
 
 gulp.task \lib ->
@@ -43,6 +44,11 @@ gulp.task \jsx ->
   .bundle!
   .pipe source \./view.js
   .pipe dest WWW
+
+gulp.task \lsc ->
+  src \./app/*.ls
+    .pipe gulp-livescript!
+    .pipe dest \./app/
 
 gulp.task \css ->
   src \./app/css/index.styl
