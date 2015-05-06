@@ -7,4 +7,4 @@ lib-cov
 coverage
 .lock-wscript
 node_modules
-app
+_www
