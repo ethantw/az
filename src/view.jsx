@@ -19,7 +19,7 @@ let Header = React.createClass({
 
 let IO = React.createClass({
   getInitialState() {
-    let text = '認得幾個字？'
+    let text = '認得幾個字的部分？'
 
     return {
       input: text,
@@ -28,7 +28,7 @@ let IO = React.createClass({
   },
   render() {
     return <main>
-      <textarea>{ this.state.input }</textarea> 
+      <textarea defaultValue={ this.state.input } /> 
       <button id='play'>播放讀音</button>
       <h-ruby>{ this.state.output }</h-ruby>
     </main>
