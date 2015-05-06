@@ -7,13 +7,13 @@ function convert2Ruby( text ) {
   return text
 }
 
-let Header = React.createClass({
+let Nav = React.createClass({
   render() {
-    return <header>
+    return <nav>
       <button>設定</button>
       <a href='./about.html'>說明</a>
       <a href='//github.com/ethantw/autoruby'>GitHub</a>
-    </header>
+    </nav>
   }
 })
 
@@ -38,7 +38,7 @@ let IO = React.createClass({
 let Page = React.createClass({
   render() {
     return <div id='body'>
-      <Header />
+      <Nav />
       <IO />
       <Option />
     </div>
