@@ -8,25 +8,7 @@ Util.XHR( '/data/reverse.min.json', ( reverse ) => {
 const Sound = JSON.parse( sound )
 const Reverse = JSON.parse( reverse )
 
-let annotateYin =( input ) => input.split('').map(( zi ) => [ zi, Sound[ zi ]])
-
-function autoz( input ) {
-  let html = '<ruby class="zhuyin">' + annotateYin( input )
-    .map(( ru ) => {
-      if ( ru[1] instanceof Array ) {
-        return Util.addARB( ru[0], ru[1][0] )
-      }
-      return '</ruby>' + ru[0] + '<ruby class="zhuyin">'
-    }).join('') + '</ruby>'
-
-  let div = document.createElement( 'div' )
-  div.innerHTML = html
-  Han( div ).renderRuby()
-
-  return {
-    __html: div.innerHTML
-  }
-}
+let annotate = ( input ) => input.split('').map(( zi ) => [ zi, Sound[ zi ]] )
 
 let Nav = React.createClass({
   render() {
@@ -44,7 +26,7 @@ let IO = React.createClass({
 
     return {
       input: text,
-      output: autoz( text )
+      output: Util.complex(annotate( text ))
     }
   },
 
@@ -53,7 +35,7 @@ let IO = React.createClass({
 
     this.setState({
       input: text,
-      output: autoz( text )
+      output: Util.complex(annotate( text ))
     })
   },
 
@@ -62,9 +44,8 @@ let IO = React.createClass({
 
   render() {
     return <main id='io'>
-      <textarea defaultValue={ this.state.input } rows='7' onChange={this.handleInput} /> 
-      <blockquote dangerouslySetInnerHTML={ this.state.output }>
-      </blockquote>
+      <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} /> 
+      <blockquote dangerouslySetInnerHTML={this.state.output} />
       <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
     </main>
   }
