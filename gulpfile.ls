@@ -14,7 +14,8 @@ require! {
   \gulp-stylus
 }
 
-const WWW = \./_www
+const WWW = \./_www/
+const COMPILED = WWW + \tmp/
 
 src = gulp.src
 dest = gulp.dest
@@ -24,16 +25,23 @@ gulp.task \server !->
   server.start!
 
 gulp.task \app <[ lib html jsx css ]>
+gulp.task \www <[ data app ]>
 
-gulp.task \dev <[ app server ]> ->
+gulp.task \dev <[ www server ]> ->
   gulp.watch './app/*.html' <[ html ]>
-  gulp.watch './app/*.jsx' <[ jsx ]>
-  gulp.watch './app/*.ls' <[ lsc jsx ]>
+  gulp.watch './app/*.{js,jsx}' <[ jsx ]>
   gulp.watch './app/css/*.styl' <[ css ]>
 
 gulp.task \lib ->
   src \./app/lib/*
     .pipe dest WWW
+
+gulp.task \es6 ->
+  src \./app/*.js
+    .pipe babel!
+    .pipe dest COMPILED
+  src \./app/*.jsx
+    .pipe dest COMPILED
 
 gulp.task \jsx ->
   browserify {
@@ -45,16 +53,15 @@ gulp.task \jsx ->
   .pipe source \./view.js
   .pipe dest WWW
 
-gulp.task \lsc ->
-  src \./app/*.ls
-    .pipe gulp-livescript!
-    .pipe dest \./app/
-
 gulp.task \css ->
   src \./app/css/index.styl
     .pipe gulp-stylus!
     .pipe concat \style.css
     .pipe dest WWW
+
+gulp.task \data ->
+  src \./data/*
+    .pipe dest WWW + \data
 
 gulp.task \html ->
   src \./app/*.html

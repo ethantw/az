@@ -1,10 +1,32 @@
 
-
+import Util from './util.js'
 import Option from './option.jsx'
 
-{
+Util.XHR( '/data/sound.min.json', ( sound ) => {
+Util.XHR( '/data/reverse.min.json', ( reverse ) => {
 
-let autoz = require( './convert' )
+const Sound = JSON.parse( sound )
+const Reverse = JSON.parse( reverse )
+
+let annotateYin =( input ) => input.split('').map(( zi ) => [ zi, Sound[ zi ]])
+
+function autoz( input ) {
+  let html = '<ruby class="zhuyin">' + annotateYin( input )
+    .map(( ru ) => {
+      if ( ru[1] instanceof Array ) {
+        return Util.addARB( ru[0], ru[1][0] )
+      }
+      return '</ruby>' + ru[0] + '<ruby class="zhuyin">'
+    }).join('') + '</ruby>'
+
+  let div = document.createElement( 'div' )
+  div.innerHTML = html
+  Han( div ).renderRuby()
+
+  return {
+    __html: div.innerHTML
+  }
+}
 
 let Nav = React.createClass({
   render() {
@@ -41,10 +63,9 @@ let IO = React.createClass({
   render() {
     return <main id='io'>
       <textarea defaultValue={ this.state.input } rows='7' onChange={this.handleInput} /> 
-      <blockquote>
-        <h-ruby>{ this.state.output }</h-ruby>
-        <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
+      <blockquote dangerouslySetInnerHTML={ this.state.output }>
       </blockquote>
+      <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
     </main>
   }
 })
@@ -59,10 +80,11 @@ let Page = React.createClass({
   }
 })
 
-document.addEventListener(
-  'DOMContentLoaded',
-  () => React.render( <Page />, document.body )
-)
+let target = document.getElementById( 'page' )
+let JSX = () => React.render( <Page />, target )
+document.addEventListener( 'DOMContentLoaded', () => JSX )
+JSX()
 
-}
+})
+})
 
