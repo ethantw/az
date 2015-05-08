@@ -1,6 +1,7 @@
 
-const rcjk = Han.TYPESET.char.cjk
-const ranno = /`([^`:~]*):([^`:~]*)~/gi
+const rcjk   = Han.TYPESET.char.cjk
+const ranno  = /`([^`:~]*):([^`:~]*)~/gi
+const rheter = /^\*/
 
 let Util = {
   XHR( url, done ) {
@@ -16,8 +17,10 @@ let Util = {
   hanify( html ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html
+    Array.from( div.querySelectorAll( 'a-z' )).map(( az, i ) => az.setAttribute( 'i', i ))
     Han( div ).renderRuby()
-    return { __html: div.innerHTML }
+    html = div.innerHTML.replace( /<\/h\-ruby><h\-ruby class=\"zhuyin\">/g, '' )
+    return { __html: html }
   },
 
   jinzify( html ) {
@@ -28,28 +31,28 @@ let Util = {
   },
 
   wrap: {
-    simp( html ) {
+    simple( html ) {
       html = html.replace(
         ranno, ( match, zi, yin ) => {
-          let all = yin.split( '|' )
-          let az  = ( all.length > 1 ) ? `data-yin='${ yin }'` : ''
-
-          return `<ruby class='zhuyin'><a-z ${ az }>${ zi }<rt>${ all[0] }</rt></a-z></ruby>`
+          let isHeter = rheter.test( yin )
+          let arb = `${ zi }<rt>${ yin.replace( rheter, '' ) }</rt>`
+          return ( isHeter ) ?
+            `<ruby class='zhuyin'><a-z>${ arb }</a-z></ruby>` :
+            `<ruby class='zhuyin'>${ arb }</ruby>`
         }
-      ).replace( /<\/ruby><ruby class=\'zhuyin\'>/g, '' )
+      )
       return Util.hanify( html )
     },
 
     complex( html ) {
       let rtc = ''
       let rbc = html.replace( ranno, ( match, zi, yin ) => {
-        let all = yin.split( '|' )
-        let az  = ( all.length > 1 ) ? ` data-yin='${ yin }'` : ''
-
-        rtc += `<rt>${ all[0] }</rt>`
-        return `<rb ${ az }>${ zi }</rb>`
+        let isHeter = rheter.test( yin )
+        let rb  = `<rb>${ zi }</rb>`
+        rtc += `<rt>${ yin.replace( rheter, '' ) }</rt>`
+        return ( isHeter ) ? `<a-z>${ rb }</a-z>` : rb
       })
-      rtc = `<rtc class='zhuyin'>${rtc}</rtc>`
+      rtc = `<rtc class='zhuyin'>${ rtc }</rtc>`
       html = `<ruby class='complex'>${ rbc + rtc }</ruby>`
       return Util.hanify( html )
     },
