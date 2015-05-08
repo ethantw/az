@@ -2,13 +2,18 @@
 import Util from './util.js'
 import Option from './option.jsx'
 
+const rcjk = Han.TYPESET.char.cjk
+
 Util.XHR( '/data/sound.min.json', ( sound ) => {
 Util.XHR( '/data/reverse.min.json', ( reverse ) => {
 
 const Sound = JSON.parse( sound )
 const Reverse = JSON.parse( reverse )
 
-let annotate = ( input ) => input.split('').map(( zi ) => [ zi, Sound[ zi ]] )
+Util.annotate = ( input ) => Util.jinzify( input ).replace( rcjk, ( zi ) => {
+  let yin = ( Sound[zi] ) ? Sound[zi].join('|') : null
+  return yin ? `\`${ zi }:${ yin }~` : zi
+})
 
 let Nav = React.createClass({
   render() {
@@ -26,7 +31,7 @@ let IO = React.createClass({
 
     return {
       input: text,
-      output: Util.wrap.complex(annotate( text ))
+      output: Util.wrap.complex(Util.annotate( text ))
     }
   },
 
@@ -35,7 +40,7 @@ let IO = React.createClass({
 
     this.setState({
       input: text,
-      output: Util.wrap.complex(annotate( text ))
+      output: Util.wrap.complex(Util.annotate( text ))
     })
   },
 

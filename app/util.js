@@ -1,5 +1,6 @@
 
-const cjk = Han.TYPESET.char.cjk
+const rcjk = Han.TYPESET.char.cjk
+const ranno = /`([^`:~]*):([^`:~]*)~/gi
 
 let Util = {
   XHR( url, done ) {
@@ -12,9 +13,6 @@ let Util = {
     xhr.send( '' )
   },
 
-  addRT: ( yin ) => `<rt>${yin}</rt>`,
-  addArb: ( zi, yin ) => zi + ( yin ? Util.addRt( yin ) : '' ),
-
   hanify( html ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html
@@ -22,41 +20,37 @@ let Util = {
     return { __html: div.innerHTML }
   },
 
-  wrap: {
-    simp( annotated ) {
-      let html = `<ruby class="zhuyin">${ annotated
-        .map(( ru ) => {
-          let yin = ru[1] ? ru[1][0] : null
-          
-          return ( yin ) ?
-            Util.addArb( ru[0], yin )
-          :
-            `</ruby>${ ru[0] }<ruby class="zhuyin">`
-        }).join('') }</ruby>`
+  jinzify( html ) {
+    let div = document.createElement( 'div' )
+    div.innerHTML = html
+    Han( div ).jinzify()
+    return div.innerHTML
+  },
 
-      return Util.hanify( html.replace( /<ruby class\=\"zhuyin\"><\/ruby>/gi, '' ))
+  wrap: {
+    simp( html ) {
+      html = html.replace(
+        ranno, ( match, zi, yin ) => {
+          let all = yin.split( '|' )
+          let az  = ( all.length > 1 ) ? `data-yin='${ yin }'` : ''
+
+          return `<ruby class='zhuyin'><a-z ${ az }>${ zi }<rt>${ all[0] }</rt></a-z></ruby>`
+        }
+      ).replace( /<\/ruby><ruby class=\'zhuyin\'>/g, '' )
+      return Util.hanify( html )
     },
 
-    complex( annotated ) {
-      let rbc = ''
-      let rtc = `
-      <rtc class="zhuyin">${
-        annotated
-        .map(( ru ) => {
-          let zi  = ru[0]
-          let yin = ru[1] ? ru[1][0] : null
+    complex( html ) {
+      let rtc = ''
+      let rbc = html.replace( ranno, ( match, zi, yin ) => {
+        let all = yin.split( '|' )
+        let az  = ( all.length > 1 ) ? ` data-yin='${ yin }'` : ''
 
-          if ( !yin ) {
-            rbc += zi
-            return null
-          }
-
-          rbc += `<rb>${ zi  }</rb>`
-          return `<rt>${ yin }</rt>`
-        })
-      }</rtc>
-      `
-      let html = `<ruby class="complex">${ rbc + rtc }</ruby>`
+        rtc += `<rt>${ all[0] }</rt>`
+        return `<rb ${ az }>${ zi }</rb>`
+      })
+      rtc = `<rtc class='zhuyin'>${rtc}</rtc>`
+      html = `<ruby class='complex'>${ rbc + rtc }</ruby>`
       return Util.hanify( html )
     },
   },
