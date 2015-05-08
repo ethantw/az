@@ -48,9 +48,10 @@ gulp.task \jsx ->
     entries: \./app/view.jsx
     debug: yes
   }
+  .add require.resolve \babelify/polyfill
   .transform babelify
   .bundle!
-  .pipe source \./view.js
+  .pipe source \./main.js
   .pipe dest WWW
 
 gulp.task \css ->
