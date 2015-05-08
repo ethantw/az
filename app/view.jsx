@@ -61,10 +61,8 @@ let Page = React.createClass({
   }
 })
 
-let target = document.getElementById( 'page' )
-let JSX = () => React.render( <Page />, target )
-document.addEventListener( 'DOMContentLoaded', () => JSX )
-JSX()
+let target = document.getElementById( 'page' ) || document.body
+React.render( <Page />, target )
 
 })
 })
