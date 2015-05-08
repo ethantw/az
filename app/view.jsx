@@ -26,7 +26,7 @@ let IO = React.createClass({
 
     return {
       input: text,
-      output: Util.complex(annotate( text ))
+      output: Util.wrap.complex(annotate( text ))
     }
   },
 
@@ -35,7 +35,7 @@ let IO = React.createClass({
 
     this.setState({
       input: text,
-      output: Util.complex(annotate( text ))
+      output: Util.wrap.complex(annotate( text ))
     })
   },
 
