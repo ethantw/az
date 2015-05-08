@@ -1,6 +1,7 @@
 
-$serif = 'Biaodian Pro Serif', Georgia, 'Zhuyin Kaiti', 'Han Songti', serif
-$sans  = 'Biaodian Pro Sans', 'Helvetica Neue', Helvetica, Arial, 'Zhuyin Kaiti', 'Han Heiti', sans-serif
+$zhuyin = 'Zhuyin Kaiti'
+$serif  = 'Biaodian Pro Serif', Georgia, $zhuyin, 'Han Songti', serif
+$sans   = 'Biaodian Pro Sans', 'Helvetica Neue', Arial, $zhuyin, 'Han Heiti', sans-serif
 
 :root
   // box
@@ -99,21 +100,61 @@ main blockquote
   font-family $serif
   font-size 1.5em
   
-  button
+#out
+  // posi
+  position: relative
+
+  a-z
+    background-color: rgba( #eee, .5 )
+    border: 1px solid rgb( 85%, 83%, 75% )
+    border-radius: .125em
+    padding: .15em
+  button#play
     // posi
     float left 
-    margin .1em .5em 0 -.15em
+    margin -1em .5em 0 .5em
     // box
     height 1.8em
     width 1.8em
     overflow hidden
     // typo
     font-family $sans
+    font-size 1.5em
     // style
     background-color rgb(  80%, 55%, 45% )
     border 0
     border-radius 50%
     color transparent
+  button#play:before
+    content: '唸'
+    color: rgba( #fff, .7 )
+    font-weight: bold
+    line-height: 1.75
+
+#pickr
+  // posi
+  position: absolute
+  margin: 3em 0 0 -.75em
+  // box
+  padding: .5em
+  // typo
+  list-style: none
+  // style
+  background-color: #f3f3f3
+  border-bottom: 1px solid #ccc
+  border-radius: .5em
+
+  [data-picking='true'] &
+    display: block
+  [data-picking='false'] &
+    display: none
+
+  li
+    // box
+    display: inline-block
+    padding: .1em .5em
+    // typo
+    font-family: $zhuyin, 'Han Kaiti CNS', cursive, serif
 
 #option
   display: none
