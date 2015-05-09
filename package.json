@@ -29,6 +29,7 @@
     "gulp": "^3.8.11",
     "gulp-babel": "^5.1.0",
     "gulp-concat-util": "^0.5.2",
+    "gulp-gh-pages": "^0.5.1",
     "gulp-live-server": "0.0.14",
     "gulp-livescript": "^2.3.0",
     "gulp-react": "^3.0.1",

@@ -12,6 +12,7 @@ require! {
   \gulp-react : react
   \gulp-sass
   \gulp-stylus
+  \gulp-gh-pages
 }
 
 const WWW = \./_www/
@@ -19,6 +20,10 @@ const COMPILED = WWW + \tmp/
 
 src = gulp.src
 dest = gulp.dest
+
+gulp.task \deploy <[ data app ]> ->
+  src \./_www/**/*
+    .pipe gulp-gh-pages!
 
 gulp.task \server !->
   server = gulp-live-server.static WWW, 7654
