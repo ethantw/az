@@ -8,3 +8,4 @@ coverage
 .lock-wscript
 node_modules
 _www
+.publish

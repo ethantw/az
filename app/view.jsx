@@ -5,8 +5,8 @@ import Option from './option.jsx'
 
 const rcjk = Han.TYPESET.char.cjk
 
-Util.XHR( '/data/sound.min.json',   ( sound ) => {
-Util.XHR( '/data/reverse.min.json', ( reverse ) => {
+Util.XHR( './data/sound.min.json',   ( sound ) => {
+Util.XHR( './data/reverse.min.json', ( reverse ) => {
 
 const Sound   = JSON.parse( sound )
 const Reverse = JSON.parse( reverse )
