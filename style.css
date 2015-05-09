@@ -1,0 +1,134 @@
+:root {
+  box-sizing: border-box;
+  font-size: 10px;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+body {
+  font-size: 16px;
+  background-color: #ede5d9;
+}
+#body {
+  width: 100%;
+  padding-top: 6rem;
+}
+nav,
+main,
+#option,
+footer {
+  width: 100%;
+  padding: 0 calc((100% - 96rem) / 2);
+}
+nav {
+  position: fixed;
+  top: 0;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: #333;
+  box-shadow: #ccc 0 2px 3px;
+  color: #eee;
+}
+nav a,
+nav button {
+  display: inline-block;
+  padding: 0 0.5em;
+  background: none;
+  border: 0;
+  color: #eee;
+}
+nav :hover {
+  background-color: rgba(0,26,51,0.8);
+  color: #fff;
+}
+nav .gh-repo {
+  float: right;
+}
+main#io textarea {
+  position: relative;
+  margin: 1rem auto;
+  display: block;
+  height: 6em;
+  max-height: 40vh;
+  width: 96%;
+  padding: 0.25em 0.5em;
+  resize: vertical;
+  font-size: 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #d2caaf;
+  border-radius: 0.5rem;
+  color: #666;
+  outline: 0;
+}
+main#io textarea:hover,
+main#io textarea:focus {
+  background-color: #f5f5f5;
+  border-color: #bfb38c;
+  color: #333;
+}
+main blockquote {
+  margin: 3rem auto;
+  width: 96%;
+  padding: 0;
+  font-family: 'Biaodian Pro Serif', Georgia, 'Zhuyin Kaiti', 'Han Songti', serif;
+  font-size: 1.5em;
+}
+#out {
+  position: relative;
+}
+#out a-z {
+  background-color: rgba(238,238,238,0.5);
+  border: 1px solid #d9d4bf;
+  border-radius: 0.125em;
+  padding: 0.15em;
+}
+#out button#play {
+  float: left;
+  margin: -1em 0.5em 0 0.5em;
+  display: none;
+  height: 1.8em;
+  width: 1.8em;
+  overflow: hidden;
+  font-family: 'Biaodian Pro Sans', 'Helvetica Neue', Arial, 'Zhuyin Kaiti', 'Han Heiti', sans-serif;
+  font-size: 1.5em;
+  background-color: #cc8c73;
+  border: 0;
+  border-radius: 50%;
+  color: transparent;
+}
+#out button#play:before {
+  content: '唸';
+  color: rgba(255,255,255,0.7);
+  font-weight: bold;
+  line-height: 1.75;
+}
+#pickr {
+  position: absolute;
+  margin: 3em 0 0 -0.75em;
+  padding: 0.5em;
+  list-style: none;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0.5em;
+}
+[data-picking='true'] #pickr {
+  display: block;
+}
+[data-picking='false'] #pickr {
+  display: none;
+}
+#pickr li {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  font-family: 'Zhuyin Kaiti', 'Han Kaiti CNS', cursive, serif;
+}
+#pickr li button {
+  padding: 0;
+  background: none;
+  border: 0;
+}
+#option {
+  display: none;
+}
