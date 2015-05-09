@@ -17,8 +17,8 @@ let Util = {
   hanify( html ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html
-    Array.from( div.querySelectorAll( 'a-z' )).map(( az, i ) => az.setAttribute( 'i', i ))
     Han( div ).renderRuby()
+    Array.from( div.querySelectorAll( 'a-z' )).map(( az, i ) => az.setAttribute( 'i', i ))
     html = div.innerHTML.replace( /<\/h\-ruby><h\-ruby class=\"zhuyin\">/g, '' )
     return { __html: html }
   },

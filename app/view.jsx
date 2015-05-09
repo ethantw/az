@@ -11,20 +11,22 @@ Util.XHR( '/data/reverse.min.json', ( reverse ) => {
 const Sound   = JSON.parse( sound )
 const Reverse = JSON.parse( reverse )
 
-Util.annotate = ( input ) => {
+Util.annotate = ( input, pickee=[] ) => {
   let az   = []
   let html = Util.jinzify( input ).replace( rcjk, ( zi ) => {
     let yin = Sound[zi]
 
     if ( !yin )  return zi
-    if ( yin.length > 1 )  {
+    if ( yin.length > 1 ) {
+      let i = az.length
       az.push( yin )
-      yin = `*${ yin[0] }`
+      yin = ( pickee[i] ) ? `*${ pickee[i] }` : `*${ yin[0] }`
     }
     return `\`${ zi }:${ yin }~`
   })
   return { az, html }
 }
+
 
 let Nav = React.createClass({
   render() {
@@ -38,9 +40,10 @@ let Nav = React.createClass({
 
 let IO = React.createClass({
   getInitialState() {
-    let input     = '認得幾個字的部分？'
+    let input     = '漢字標音的部分嗎？'
     let annotated = Util.annotate( input )
     let az        = annotated.az
+    let pickee    = new Array( az.length )
     let output    = Util.wrap.complex( annotated.html )
     let current   = 0
     let picking   = false
@@ -50,10 +53,11 @@ let IO = React.createClass({
 
   handleInput( e ) {
     let input     = e.target.value
-    let annotated = Util.annotate( input )
+    let annotated = Util.annotate( input, this.state.pickee )
     let az        = annotated.az
     let output    = Util.wrap.complex( annotated.html )
-    this.setState({ input, output, az })
+    let picking   = false
+    this.setState({ input, output, az, picking })
   },
 
   pickZi( e ) {
@@ -67,23 +71,29 @@ let IO = React.createClass({
   },
 
   pickYin( e, i ) {
-    Pickr.yin( e.target )
+    let output  = React.findDOMNode( this.refs.output )
     let current = this.state.current
-    let pickee  = this.state.az[current][i]
-    alert(pickee)
+    let pickee  = Object.assign( [], this.state.pickee ) 
+    pickee[current] = this.state.az[current][i]
+    output = Pickr.yin( output, current, pickee[current] )
+    this.setState({ output, pickee })
   },
 
   handlePlay() {},
 
   render() {
+    let current = this.state.az[this.state.current] || []
     return <main id='io'>
       <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} /> 
       <div id='out' data-picking={this.state.picking}>
-        <blockquote onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
+        <blockquote ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
+
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
-          this.state.az[this.state.current].map(( yin, i ) => {
-            return <li key={i} onClick={( e ) => this.pickYin( e, i )}>{yin}</li>
+          current.map(( yin, i ) => {
+            return <li key={i}>
+              <button onClick={( e ) => this.pickYin( e, i )}>{yin}</button>
+            </li>
           })
         }</ul>
       </div>
