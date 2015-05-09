@@ -21,7 +21,11 @@ Util.annotate = ( input, pickee=[] ) => {
       let i = az.length
       let picked = pickee[i]
       az.push( yin )
-      yin = ( picked && picked.zi === zi ) ? `*${ picked.yin }` : `*${ yin[0] }`
+      yin = picked && picked.zi === zi ?
+        ( typeof picked.yin === 'number' ?
+          `*${ yin[picked.yin] }` : `*${ picked.yin }` )
+        :
+        `*${ yin[0] }`
     }
     return `\`${ zi }:${ yin }~`
   })
@@ -42,15 +46,19 @@ let Nav = React.createClass({
 let IO = React.createClass({
   getInitialState() {
     let input     = '漢字標音的部分嗎？'
-    let annotated = Util.annotate( input )
-    let az        = annotated.az
-    let pickee    = new Array( az.length )
+    let pickee = {
+      2: {  zi: '的', yin: 2 },
+      3: {  zi: '分', yin: 1 },
+    }
+    let annotated = Util.annotate( input, pickee )
     let output    = Util.wrap.complex( annotated.html )
+    let az        = annotated.az
     let current   = 0
     let zi        = null
     let picking   = false
     let pickrXY   = {}
-    return { input, output, az, current, zi, picking, pickrXY }
+
+    return { input, output, az, current, zi, pickee, picking, pickrXY }
   },
 
   handleInput( e ) {
