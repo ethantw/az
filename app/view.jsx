@@ -19,8 +19,9 @@ Util.annotate = ( input, pickee=[] ) => {
     if ( !yin )  return zi
     if ( yin.length > 1 ) {
       let i = az.length
+      let picked = pickee[i]
       az.push( yin )
-      yin = ( pickee[i] ) ? `*${ pickee[i] }` : `*${ yin[0] }`
+      yin = ( picked && picked.zi === zi ) ? `*${ picked.yin }` : `*${ yin[0] }`
     }
     return `\`${ zi }:${ yin }~`
   })
@@ -46,9 +47,10 @@ let IO = React.createClass({
     let pickee    = new Array( az.length )
     let output    = Util.wrap.complex( annotated.html )
     let current   = 0
+    let zi        = null
     let picking   = false
     let pickrXY   = {}
-    return { input, output, az, current, picking, pickrXY }
+    return { input, output, az, current, zi, picking, pickrXY }
   },
 
   handleInput( e ) {
@@ -65,17 +67,21 @@ let IO = React.createClass({
     if ( !az )  return this.setState({ picking: false })
 
     let current = az.i
+    let zi      = az.zi
     let pickrXY = az.style || null
     let picking = true
-    this.setState({ current, pickrXY, picking })
+    this.setState({ current, zi, pickrXY, picking })
   },
 
   pickYin( e, i ) {
     let output  = React.findDOMNode( this.refs.output )
     let current = this.state.current
-    let pickee  = Object.assign( [], this.state.pickee ) 
-    pickee[current] = this.state.az[current][i]
-    output = Pickr.yin( output, current, pickee[current] )
+    let pickee  = Object.assign( [], this.state.pickee )
+    pickee[current] = {
+      zi: this.state.zi,
+      yin: this.state.az[current][i]
+    }
+    output = Pickr.yin( output, current, pickee[current].yin )
     this.setState({ output, pickee })
   },
 

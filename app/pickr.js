@@ -2,20 +2,21 @@
 export default {
   zi( target ) {
     if ( !target.matches( 'h-ruby a-z, h-ruby a-z *' ))  return
-    let zi, style, i
+    let ru, zi, style, i
 
     while ( target.nodeName !== 'A-Z' ) {
       target = target.parentNode
     }
 
-    i = target.getAttribute( 'i' )
-    zi = target.querySelector( 'h-ru' )
+    i  = target.getAttribute( 'i' )
+    ru = target.querySelector( 'h-ru' )
+    zi = target.querySelector( 'rb' ).textContent
 
     style = {
-      left: `${zi.offsetLeft}px`,
-      top:  `${zi.offsetTop}px`,
+      left: `${ru.offsetLeft}px`,
+      top:  `${ru.offsetTop}px`,
     }
-    return { i, style }
+    return { i, style, zi }
   },
 
   yin( node, i, zhuyin ) {
@@ -38,9 +39,7 @@ export default {
       `
       .replace( /\n\s*/g, '' )
     }
-
-    let html = node.innerHTML
-    return { __html: html }
+    return { __html: node.innerHTML }
   },
 }
 
