@@ -34,9 +34,13 @@ Util.annotate = ( input, pickee=[] ) => {
 
 
 let Nav = React.createClass({
+  toggleOption() {
+    this.props.parent.toggleUI('option')
+  },
+
   render() {
     return <nav className='layout'>
-      <button className='option'>設定</button>
+      <button className='option' onClick={this.toggleOption}>設定</button>
       <a className='about' href='./about.html'>說明</a>
       <a className='gh-repo' href='//github.com/ethantw/az'>GitHub</a>
     </nav>
@@ -70,6 +74,10 @@ let IO = React.createClass({
     this.setState({ input, output, az, picking })
   },
 
+  togglePicking() {
+    this.props.parent.toggleUI('picking')
+  },
+
   pickZi( e ) {
     let az = Pickr.zi( e.target )
     if ( !az )  return this.setState({ picking: false })
@@ -97,9 +105,9 @@ let IO = React.createClass({
 
   render() {
     let current = this.state.az[this.state.current] || []
-    return <main id='io' className='layout'>
+    return <main id='io' className='layout' data-picking={this.state.picking}>
       <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} /> 
-      <div id='out' data-picking={this.state.picking}>
+      <div id='out'>
         <blockquote ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
 
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
@@ -116,11 +124,32 @@ let IO = React.createClass({
 })
 
 let Page = React.createClass({
+  getInitialState() {
+    return {
+      init:    true,
+      option:  false,
+      about:   false
+    }
+  },
+
+  toggleUI( component ) {
+    let after = !this.state[component]
+    this.setState({
+      init:        false,
+      [component]: after
+    })
+  },
+
   render() {
-    return <div id='body' className='layout'>
-      <Nav />
-      <IO />
-      <Option />
+    return <div
+        id='body'
+        className='layout'
+        data-init={this.state.init}
+        data-option={this.state.option}
+        data-about={this.state.about}>
+      <Nav parent={this} />
+      <IO parent={this} />
+      <Option parent={this} />
     </div>
   }
 })

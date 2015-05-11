@@ -28,8 +28,12 @@ class Select extends React.Component {
 }
 
 let Close = React.createClass({
+  closeOption() {
+    this.props.parent.toggleUI( 'option' )
+  },
+
   render() {
-    return <button>關閉</button>
+    return <button className='close' onClick={this.closeOption}>關閉</button>
   }
 })
 
@@ -37,7 +41,7 @@ export default class Option extends React.Component {
   render() {
     const { syntax, system, display } = this.props
     return <div id='option' className='layout'>
-    <Close/>
+    <Close parent={this.props.parent} />
     <ul>
       <li>
         <Select name='代碼格式' option={{ syntax }} item={{
@@ -63,7 +67,7 @@ export default class Option extends React.Component {
         }} />
       </li>
     </ul>
-    <Close/>
+    <Close parent={this.props.parent} />
     </div>
   }
 }
