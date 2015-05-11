@@ -19,6 +19,7 @@
   "author": "Chen Yijun (@ethantw)",
   "license": "MIT License",
   "dependencies": {
+    "font-handsome": "^0.3.0",
     "han-css": "^3.2.1"
   },
   "devDependencies": {

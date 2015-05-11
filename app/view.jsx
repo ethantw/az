@@ -35,9 +35,9 @@ Util.annotate = ( input, pickee=[] ) => {
 
 let Nav = React.createClass({
   render() {
-    return <nav>
-      <button>設定</button>
-      <a href='./about.html'>說明</a>
+    return <nav className='layout'>
+      <button className='option'>設定</button>
+      <a className='about' href='./about.html'>說明</a>
       <a className='gh-repo' href='//github.com/ethantw/az'>GitHub</a>
     </nav>
   }
@@ -97,7 +97,7 @@ let IO = React.createClass({
 
   render() {
     let current = this.state.az[this.state.current] || []
-    return <main id='io'>
+    return <main id='io' className='layout'>
       <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} /> 
       <div id='out' data-picking={this.state.picking}>
         <blockquote ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
@@ -117,7 +117,7 @@ let IO = React.createClass({
 
 let Page = React.createClass({
   render() {
-    return <div id='body'>
+    return <div id='body' className='layout'>
       <Nav />
       <IO />
       <Option />

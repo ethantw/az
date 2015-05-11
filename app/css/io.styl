@@ -1,0 +1,104 @@
+
+main.layout
+  textarea
+    $border = rgb( 75%, 70%, 55% ) 
+    // posi
+    position relative
+    margin 1rem auto
+    // box
+    display block
+    height 6em 
+    max-height 40vh
+    width 96%
+    padding .25em .5em
+    resize vertical
+    // typo
+    font-size 20px
+    // style
+    background-color #f0f0f0
+    border 1px solid lighten( $border, 30% )
+    border-radius .5rem
+    color #666
+    outline 0
+
+    &:hover,
+    &:focus
+      background-color #f5f5f5
+      border-color $border
+      color #333
+
+main blockquote
+  // posi
+  margin 3rem auto
+  // box
+  width 96%
+  padding 0
+  // typo
+  font-family $serif
+  font-size 1.5em
+  //line-height 2.5
+  
+#out
+  // posi
+  position: relative
+
+  a-z
+    background-color: rgba( #eee, .5 )
+    border: 1px solid rgb( 85%, 83%, 75% )
+    border-radius: .125em
+    padding: .15em
+  button#play
+    // posi
+    float left 
+    margin -1em .5em 0 .5em
+    // box
+    display: none
+    height 1.8em
+    width 1.8em
+    overflow hidden
+    // typo
+    font-family $sans
+    font-size 1.5em
+    // style
+    background-color rgb(  80%, 55%, 45% )
+    border 0
+    border-radius 50%
+    color transparent
+  button#play:before
+    content: '唸'
+    color: rgba( #fff, .7 )
+    font-weight: bold
+    line-height: 1.75
+
+#pickr
+  // posi
+  position: absolute
+  margin: 3em 0 0 -.75em
+  // box
+  padding: .5em
+  // typo
+  list-style: none
+  // style
+  background-color: #f3f3f3
+  border-bottom: 1px solid #ccc
+  border-radius: .5em
+
+  [data-picking='true'] &
+    display: block
+  [data-picking='false'] &
+    display: none
+
+  li
+    // box
+    display: inline-block
+    padding: .1em .5em
+    // typo
+    font-family: $zhuyin, 'Han Kaiti CNS', cursive, serif
+
+  li button
+    // box
+    padding: 0
+    // style
+    background: none
+    border: 0
+

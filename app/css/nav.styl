@@ -1,0 +1,51 @@
+
+nav.layout
+  // posi
+  position fixed
+  top 0
+  // box
+  height 4rem
+  line-height 4rem
+  // style
+  background-color #333
+  box-shadow #ccc 0 2px 3px
+  color #eee
+
+  a,
+  button
+    // box
+    display inline-block
+    padding 0 .5em
+    // style
+    background none
+    border 0
+    color #eee
+  :hover
+    background-color rgba( 0, 10%, 20%, .8 ) 
+    color: #fff
+
+  $icon
+    &:before
+      // posi
+      margin-right .1em
+      // box
+      vertical-align -.05em
+      // typo
+      font-size 1.2em
+      color #ccc
+  .option
+    +fh( cog )
+      @extend nav.layout $icon
+    &:hover
+      @extend $fh-spin
+  .about
+    +fh( info-circle )
+      @extend nav.layout $icon
+  .gh-repo
+    // posi
+    float right
+    +fh( github )
+      @extend nav.layout $icon
+      font-size 1.8em
+      vertical-align -.1em
+

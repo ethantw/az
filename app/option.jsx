@@ -36,7 +36,7 @@ let Close = React.createClass({
 export default class Option extends React.Component {
   render() {
     const { syntax, system, display } = this.props
-    return <div id='option'>
+    return <div id='option' className='layout'>
     <Close/>
     <ul>
       <li>
