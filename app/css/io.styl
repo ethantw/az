@@ -43,10 +43,25 @@ main blockquote
   position: relative
 
   a-z
-    background-color: rgba( #eee, .5 )
-    border: 1px solid rgb( 85%, 83%, 75% )
-    border-radius: .125em
-    padding: .15em
+    // posi
+    cursor pointer
+    // box
+    display inline-block
+  a-z:before
+    // posi
+    position absolute
+    margin-left .35em
+    margin-top .1em
+    // box
+    content ''
+    display inline-block
+    // style
+    background-color $k-primary
+    border-radius .5em
+    padding .15em
+  a-z:not(:hover):before
+    opacity .7
+    
   button#play
     // posi
     float left 
@@ -72,16 +87,25 @@ main blockquote
 
 #pickr
   // posi
-  position: absolute
-  margin: 3em 0 0 -.75em
+  position absolute
+  margin 3em 0 0 -1.25em
   // box
-  padding: .5em
+  padding .5em
   // typo
-  list-style: none
+  list-style none
   // style
-  background-color: #f3f3f3
-  border-bottom: 1px solid #ccc
-  border-radius: .5em
+  background-color #fff
+  border-bottom 2px solid rgba( $k-success, .7 )
+  border-radius .5em
+  +fh( caret-up )
+    // posi
+    position absolute
+    top -.65em
+    left 1em
+    // typo
+    font-size 1.5em
+    // style
+    color @background-color
 
   [data-picking='true'] &
     display: block

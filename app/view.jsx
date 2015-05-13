@@ -49,10 +49,11 @@ let Nav = React.createClass({
 
 let IO = React.createClass({
   getInitialState() {
-    let input     = '漢字標音的部分嗎？'
+    let input     = '用萌典半自動為漢字標音的部分嗎？'
     let pickee = {
-      2: {  zi: '的', yin: 2 },
-      3: {  zi: '分', yin: 1 },
+      0: {  zi: '為', yin: 1 },
+      3: {  zi: '的', yin: 2 },
+      4: {  zi: '分', yin: 1 },
     }
     let annotated = Util.annotate( input, pickee )
     let output    = Util.wrap.complex( annotated.html )
