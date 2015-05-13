@@ -8,6 +8,8 @@ export default {
       target = target.parentNode
     }
 
+    target.classList.remove( 'picked' )
+    target.classList.add( 'picking' )
     i  = target.getAttribute( 'i' )
     ru = target.querySelector( 'h-ru' )
     zi = target.querySelector( 'rb' ).textContent
@@ -26,6 +28,9 @@ export default {
     let len  = yin.length
     let az   = node.querySelector( `a-z[i='${i}']` )
     let zi   = az.querySelector( 'rb' ).outerHTML
+
+    az.classList.remove( 'picking' )
+    az.classList.add( 'picked' )
 
     if ( az ) {
       az.innerHTML = `

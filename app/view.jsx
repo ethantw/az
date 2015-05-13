@@ -49,7 +49,7 @@ let Nav = React.createClass({
 
 let IO = React.createClass({
   getInitialState() {
-    let input     = '用萌典半自動為漢字標音的部分嗎？'
+    let input     = '用《萌典》半自動為漢字標音的部分嗎？'
     let pickee = {
       0: {  zi: '為', yin: 1 },
       3: {  zi: '的', yin: 2 },
@@ -80,7 +80,10 @@ let IO = React.createClass({
   },
 
   pickZi( e ) {
-    let az = Pickr.zi( e.target )
+    let output  = React.findDOMNode( this.refs.output )
+    let old     = output.querySelector( 'a-z.picking' )
+    let az      = Pickr.zi( e.target )
+    if ( old )  old.classList.remove( 'picking' )
     if ( !az )  return this.setState({ picking: false })
 
     let current = az.i
