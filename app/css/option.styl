@@ -17,6 +17,7 @@
   // posi
   position fixed
   // box
+  min-height 19em
   height 50vh
   // style
   background-color darken( $k-bg, 7% )
@@ -103,7 +104,7 @@
     border-bottom 1px solid darken( $k-bg, 12% )
   li:last-child
     border 0
-  label span
+  label > span
     display inline-block
     min-width 10em
   li button
@@ -112,7 +113,7 @@
     // box
     padding .3em .5em
     // style
-    background-color rgba( #fff, .1 )
+    background-color rgba( #fff, .5 )
     border 1px solid rgba( #985, .7 )
     border-radius .25em
 
@@ -128,4 +129,33 @@
       background-color rgba( #eee, .3 )
       border-color #985 
       fha-color( #111 )
+  .open ul.select
+    display block
+  ul.select
+    // posi
+    position absolute
+    left 11em
+    margin-top .25em
+    // box
+    display none
+    min-width 5em
+    overflow hidden
+    padding 0
+    // style
+    background-color #f3f3f3
+    border 1px solid darken( $k-bg, 20% )
+    border-radius .25em
+  ul.select li
+    // posi
+    margin 0
+    // box
+    padding .35em 1em .35em .5em
+    // style
+    border 0
+    cursor pointer
+  ul.select li:hover
+    background-color #e6e6e6
+  ul.select li.selected
+    background-color $k-primary
+    color #f3f3f3
 
