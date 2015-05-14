@@ -23,7 +23,6 @@
     "han-css": "^3.2.1"
   },
   "devDependencies": {
-    "LiveScript": "^1.3.1",
     "babelify": "^6.0.2",
     "browserify": "^10.1.0",
     "cheerio": "^0.19.0",
@@ -37,6 +36,7 @@
     "gulp-sass": "^1.3.3",
     "gulp-stylus": "^2.0.1",
     "gulp-watch": "^4.2.4",
+    "livescript": "^1.4.0",
     "react": "^0.13.2",
     "vinyl-source-stream": "^1.1.0",
     "vinyl-transform": "^1.0.0"
