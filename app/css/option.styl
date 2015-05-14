@@ -69,7 +69,7 @@
       font-size 1.2em
       text-shadow 0 1px 0 #a85
     &:hover:before
-      text-shadow 0 1px 2px #a85
+      text-shadow 0 1px 3px #855
   button.close:last-of-type
     // posi
     margin -.8em 1em 0
@@ -106,7 +106,8 @@
     border 0
   label > span
     display inline-block
-    min-width 10em
+    min-width 11em
+    padding-right 1em
   li button
     // posi
     margin-top .25em
@@ -125,16 +126,17 @@
       font-size 1.1em
       // style
       color #63541f
-    &:hover
-      background-color rgba( #eee, .3 )
-      border-color #985 
-      fha-color( #111 )
+  .open button,
+  li button:hover
+    background-color rgba( #eee, .3 )
+    border-color #985 
+    fha-color( #111 )
   .open ul.select
     display block
   ul.select
     // posi
     position absolute
-    left 11em
+    left 12em
     margin-top .25em
     // box
     display none
@@ -153,9 +155,10 @@
     // style
     border 0
     cursor pointer
-  ul.select li:hover
-    background-color #e6e6e6
-  ul.select li.selected
-    background-color $k-primary
-    color #f3f3f3
+
+    &:hover
+      background-color #e6e6e6
+    &.selected
+      background-color $k-primary
+      color #f3f3f3
 

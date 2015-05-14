@@ -1,5 +1,7 @@
 
 let LS = window.localStorage
+let getLS = ( id )      => LS.getItem( id )
+let setLS = ( id, val ) => LS.setItem( id, val )
 
 class Select extends React.Component {
   constructor( props ) {
@@ -7,7 +9,8 @@ class Select extends React.Component {
 
     const item   = props.item
     const option = props.option
-    this.state   = { option, item }
+    let selected = props.val
+    this.state   = { option, item, selected }
 
     this.node  = this.node.bind( this )
     this.open  = this.open.bind( this )
@@ -55,6 +58,7 @@ class Select extends React.Component {
   }
 
   render() {
+    const id   = this.props.id
     const name = this.props.name
     const item = this.props.item
     const key  = Object.keys( item )
@@ -67,6 +71,7 @@ class Select extends React.Component {
         key.map(( key ) => <li
           className={ selected === key ? 'selected' : '' }
           onClick={ () => {
+            setLS( id, key )
             this.setState({
               selected: key
             })
@@ -88,20 +93,32 @@ let Close = React.createClass({
 })
 
 export default class Option extends React.Component {
+  constructor( props ) {
+    super( props ) 
+    this.state = {
+      pref: {
+        syntax:  getLS( 'syntax' )  || 'han',
+        system:  getLS( 'system' )  || 'zhuyin',
+        display: getLS( 'display' ) || 'zhuyin',
+        jinze:   getLS( 'jinze' )   || 'yes',
+      },
+    }
+  }
+
   render() {
-    const { syntax, system, display } = this.props
+    const { syntax, system, display, jinze } = this.state.pref
     return <div id='option' className='layout'>
     <Close parent={this.props.parent} />
     <ul>
       <li>
-        <Select name='代碼格式' option={{ syntax }} item={{
+        <Select name='代碼生成格式' id='syntax' val={syntax} item={{
           simp: 'HTML5（簡易）',
           rtc:  'HTML5（複合式）',
           han:  '漢字標準格式（已渲染）'
         }} />
       </li>
       <li>
-        <Select name='標音系統' option={{ system }} item={{
+        <Select name='標音系統' id='system' val={system} item={{
           both:   '注音－拼音共同標注',
           zhuyin: '注音符號',
           pinyin: '漢語拼音',
@@ -109,20 +126,20 @@ export default class Option extends React.Component {
         }} />
       </li>
       <li>
-        <Select name='多音字顯示標音' option={{ display }} item={{
+        <Select name='選擇發音時的標音系統' id='display' val={display} item={{
           zhuyin: '注音',
           pinyin: '拼音'
+        }} />
+      </li>
+      <li>
+        <Select name='標點禁則渲染' id='jinze' val={jinze} item={{
+          yes: '啓用',
+          no:  '關閉'
         }} />
       </li>
     </ul>
     <Close parent={this.props.parent} />
     </div>
   }
-}
-
-Option.defaultProps = {
-  syntax:  LS.getItem( 'syntax' )  || 'rtc',
-  system:  LS.getItem( 'system' )  || 'zhuyin',
-  display: LS.getItem( 'display' ) || 'zhuyin'
 }
 
