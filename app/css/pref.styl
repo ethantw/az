@@ -24,9 +24,9 @@
   box-shadow inset 0 .5rem 2rem darken( @background-color, 7% ), inset 0 1px 0 rgba( #eee, .3 )
   color #333
 
-  [data-pref=false][data-init=true] &
+  .init &
     display none
-  [data-pref=false][data-init=false] &
+  .not-init &
     -moz-animation    slide-down .5s
     -ms-animation     slide-down .5s
     -webkit-animation slide-down .5s
@@ -35,7 +35,7 @@
     -ms-animation-fill-mode:     forwards
     -webkit-animation-fill-mode: forwards
     animation-fill-mode:         forwards
-  [data-pref=true] &
+  .pref &
     -moz-animation    slide-up .5s
     -ms-animation     slide-up .5s
     -webkit-animation slide-up .5s

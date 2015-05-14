@@ -39,11 +39,13 @@ let Nav = React.createClass({
   },
 
   render() {
-    return <nav className='layout'>
+    return (
+    <nav className='layout'>
       <button className='pref' onClick={this.togglePref}>設定</button>
       <a className='about' href='./about.html'>說明</a>
       <a className='gh-repo' href='//github.com/ethantw/az'>GitHub</a>
     </nav>
+    )
   }
 })
 
@@ -71,12 +73,15 @@ let IO = React.createClass({
     let annotated = Util.annotate( input, this.state.pickee )
     let az        = annotated.az
     let output    = Util.wrap.complex( annotated.html )
-    let picking   = false
-    this.setState({ input, output, az, picking })
+    this.setPicking()
+    this.setState({ input, output, az })
   },
 
-  togglePicking() {
-    this.props.parent.toggleUI('picking')
+  setPicking( sw = true ) {
+    let clazz = React.findDOMNode( this.refs.io ).classList
+    let method = sw ? 'add' : 'remove'
+    clazz[method]( 'picking' )
+    this.setState({ picking: sw })
   },
 
   pickZi( e ) {
@@ -84,13 +89,13 @@ let IO = React.createClass({
     let old     = output.querySelector( 'a-z.picking' )
     let az      = Pickr.zi( e.target )
     if ( old )  old.classList.remove( 'picking' )
-    if ( !az )  return this.setState({ picking: false })
+    if ( !az )  return this.setPicking( false )
 
     let current = az.i
     let zi      = az.zi
     let pickrXY = az.style || null
-    let picking = true
-    this.setState({ current, zi, pickrXY, picking })
+    this.setPicking()
+    this.setState({ current, zi, pickrXY })
   },
 
   pickYin( e, i ) {
@@ -109,7 +114,8 @@ let IO = React.createClass({
 
   render() {
     let current = this.state.az[this.state.current] || []
-    return <main id='io' className='layout' data-picking={this.state.picking}>
+    return (
+    <main id='io' ref='io' className='layout'>
       <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} /> 
       <div id='out'>
         <blockquote ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
@@ -124,6 +130,7 @@ let IO = React.createClass({
         }</ul>
       </div>
     </main>
+    )
   }
 })
 
@@ -137,7 +144,13 @@ let Page = React.createClass({
   },
 
   toggleUI( component ) {
-    let after = !this.state[component]
+    let clazz  = React.findDOMNode( this.refs.body ).classList
+    let after  = !this.state[component]
+    let method = after ? 'add' : 'remove'
+    clazz[method]( component )
+    clazz.add( 'not-init' )
+    clazz.remove( 'init' )
+
     this.setState({
       init:        false,
       [component]: after
@@ -145,16 +158,13 @@ let Page = React.createClass({
   },
 
   render() {
-    return <div
-        id='body'
-        className='layout'
-        data-init={this.state.init}
-        data-pref={this.state.pref}
-        data-about={this.state.about}>
+    return (
+    <div id='body' ref='body' className='layout init'>
       <Nav parent={this} />
       <IO parent={this} />
       <Pref parent={this} />
     </div>
+    )
   }
 })
 
