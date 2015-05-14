@@ -1,7 +1,7 @@
 
-import Util   from './util.js'
-import Pickr  from './pickr.js'
-import Option from './option.jsx'
+import Util  from './util.js'
+import Pickr from './pickr.js'
+import Pref  from './pref.jsx'
 
 const rcjk = Han.TYPESET.char.cjk
 
@@ -34,13 +34,13 @@ Util.annotate = ( input, pickee=[] ) => {
 
 
 let Nav = React.createClass({
-  toggleOption() {
-    this.props.parent.toggleUI('option')
+  togglePref() {
+    this.props.parent.toggleUI( 'pref' )
   },
 
   render() {
     return <nav className='layout'>
-      <button className='option' onClick={this.toggleOption}>設定</button>
+      <button className='pref' onClick={this.togglePref}>設定</button>
       <a className='about' href='./about.html'>說明</a>
       <a className='gh-repo' href='//github.com/ethantw/az'>GitHub</a>
     </nav>
@@ -130,9 +130,9 @@ let IO = React.createClass({
 let Page = React.createClass({
   getInitialState() {
     return {
-      init:    true,
-      option:  false,
-      about:   false
+      init:  true,
+      pref:  false,
+      about: false
     }
   },
 
@@ -149,11 +149,11 @@ let Page = React.createClass({
         id='body'
         className='layout'
         data-init={this.state.init}
-        data-option={this.state.option}
+        data-pref={this.state.pref}
         data-about={this.state.about}>
       <Nav parent={this} />
       <IO parent={this} />
-      <Option parent={this} />
+      <Pref parent={this} />
     </div>
   }
 })

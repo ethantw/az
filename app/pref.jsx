@@ -8,9 +8,9 @@ class Select extends React.Component {
     super( props )
 
     const item   = props.item
-    const option = props.option
+    const pref   = props.pref
     let selected = props.val
-    this.state   = { option, item, selected }
+    this.state   = { pref, item, selected }
 
     this.node  = this.node.bind( this )
     this.open  = this.open.bind( this )
@@ -83,16 +83,16 @@ class Select extends React.Component {
 }
 
 let Close = React.createClass({
-  closeOption() {
-    this.props.parent.toggleUI( 'option' )
+  closePref() {
+    this.props.parent.toggleUI( 'pref' )
   },
 
   render() {
-    return <button className='close' onClick={this.closeOption}>關閉</button>
+    return <button className='close' onClick={this.closePref}>關閉</button>
   }
 })
 
-export default class Option extends React.Component {
+export default class Pref extends React.Component {
   constructor( props ) {
     super( props ) 
     this.state = {
@@ -107,7 +107,7 @@ export default class Option extends React.Component {
 
   render() {
     const { syntax, system, display, jinze } = this.state.pref
-    return <div id='option' className='layout'>
+    return <div id='pref' className='layout'>
     <Close parent={this.props.parent} />
     <ul>
       <li>
