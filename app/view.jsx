@@ -96,6 +96,8 @@ let IO = React.createClass({
     let pickrXY = az.style || null
     this.setPicking()
     this.setState({ current, zi, pickrXY })
+
+    Util.listenToLosingFocus( '#pickr *', () => { this.setPicking( false )})
   },
 
   pickYin( e, i ) {
@@ -123,9 +125,7 @@ let IO = React.createClass({
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
           current.map(( yin, i ) => {
-            return <li key={i}>
-              <button onClick={( e ) => this.pickYin( e, i )}>{yin}</button>
-            </li>
+            return <li key={i} onClick={( e ) => this.pickYin( e, i )}>{yin}</li>
           })
         }</ul>
       </div>

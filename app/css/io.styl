@@ -71,7 +71,7 @@ main blockquote
     float left 
     margin -1em .5em 0 .5em
     // box
-    display: none
+    display none
     height 1.8em
     width 1.8em
     overflow hidden
@@ -84,17 +84,18 @@ main blockquote
     border-radius 50%
     color transparent
   button#play:before
-    content: '唸'
-    color: rgba( #fff, .7 )
-    font-weight: bold
-    line-height: 1.75
+    content '唸'
+    color rgba( #fff, .7 )
+    font-weight bold
+    line-height 1.75
 
 #pickr
   // posi
   position absolute
-  margin 3em 0 0 -1.25em
+  margin 2.7em 0 0 -1.25em
   // box
-  padding .5em
+  min-width 4em
+  padding .5em 1em
   // typo
   list-style none
   // style
@@ -112,21 +113,20 @@ main blockquote
     color @background-color
 
   &
-    display: none
+    display none
   .picking &
-    display: block
+    display block
 
   li
     // box
-    display: inline-block
-    padding: .1em .5em
+    display inline-block
+    width 1.5em
+    padding .1em .75em .1em .25em
+    vertical-align top
     // typo
-    font-family: $zhuyin, 'Han Kaiti CNS', cursive, serif
-
-  li button
-    // box
-    padding: 0
+    font-family $zhuyin, 'Han Kaiti CNS', cursive, serif
+    font-size .75em
+    text-align left
     // style
-    background: none
-    border: 0
+    cursor pointer
 

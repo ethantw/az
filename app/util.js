@@ -14,6 +14,22 @@ let Util = {
     xhr.send( '' )
   },
 
+  LS: {
+    get( id )      {  return window.localStorage.getItem( id )  },
+    set( id, val ) {  return window.localStorage.setItem( id, val )  },
+  },
+
+  listenToLosingFocus( selector, loseFocus ) {
+    let remover
+    let listener = ( e ) => {
+      if ( e.target.matches( selector ))  return
+      loseFocus()
+      remover = document.removeEventListener( 'click', listener )
+    } 
+    document.addEventListener( 'click', listener )
+    return remover
+  },
+
   hanify( html ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html

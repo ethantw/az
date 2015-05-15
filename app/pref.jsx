@@ -1,7 +1,5 @@
 
-let LS = window.localStorage
-let getLS = ( id )      => LS.getItem( id )
-let setLS = ( id, val ) => LS.setItem( id, val )
+import Util from './util.js'
 
 class Select extends React.Component {
   constructor( props ) {
@@ -16,7 +14,6 @@ class Select extends React.Component {
     this.open  = this.open.bind( this )
     this.close = this.close.bind( this )
     this.handleToggle        = this.handleToggle.bind( this )
-    this.listenToLosingFocus = this.listenToLosingFocus.bind( this )
   }
 
   node() {
@@ -36,25 +33,15 @@ class Select extends React.Component {
   handleToggle() {
     let { clazz } = this.node()
     let isntOpen = !clazz.contains( 'open' )
-    let listener
+    let remover = () => {}
 
     if ( isntOpen ) {
       this.open()
-      listener = this.listenToLosingFocus()
+      remover = Util.listenToLosingFocus( 'label.open ul *', this.close )
     } else {
       this.close()
-      document.removeEventListener( 'click', listener )
+      remover()
     }
-  }
-
-  listenToLosingFocus() {
-    let listener = ( e ) => {
-      if ( e.target.matches( 'label.open ul *' ))  return
-      this.close()
-      document.removeEventListener( 'click', listener )
-    }
-    document.addEventListener( 'click', listener )
-    return listener
   }
 
   render() {
@@ -72,7 +59,7 @@ class Select extends React.Component {
         key.map(( key ) => <li
           className={ selected === key ? 'selected' : '' }
           onClick={ () => {
-            setLS( id, key )
+            Util.LS.set( id, key )
             this.setState({
               selected: key
             })
@@ -101,10 +88,10 @@ export default class Pref extends React.Component {
     super( props ) 
     this.state = {
       pref: {
-        syntax:  getLS( 'syntax' )  || 'han',
-        system:  getLS( 'system' )  || 'zhuyin',
-        display: getLS( 'display' ) || 'zhuyin',
-        jinze:   getLS( 'jinze' )   || 'yes',
+        syntax:  Util.LS.get( 'syntax' )  || 'han',
+        system:  Util.LS.get( 'system' )  || 'zhuyin',
+        display: Util.LS.get( 'display' ) || 'zhuyin',
+        jinze:   Util.LS.get( 'jinze' )   || 'yes',
       },
     }
   }
