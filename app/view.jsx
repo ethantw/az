@@ -73,7 +73,7 @@ let IO = React.createClass({
     let annotated = Util.annotate( input, this.state.pickee )
     let az        = annotated.az
     let output    = Util.wrap.complex( annotated.html )
-    this.setPicking()
+    this.setPicking( false )
     this.setState({ input, output, az })
   },
 
