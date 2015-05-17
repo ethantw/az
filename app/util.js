@@ -1,7 +1,5 @@
 
-const rcjk   = Han.TYPESET.char.cjk
-const ranno  = /`([^`:~]*):([^`:~]*)~/gi
-const rheter = /^\*/
+import R from './reg'
 
 let Util = {
   XHR( url, done ) {
@@ -49,9 +47,9 @@ let Util = {
   wrap: {
     simple( html ) {
       html = html.replace(
-        ranno, ( match, zi, yin ) => {
-          let isHeter = rheter.test( yin )
-          let arb = `${ zi }<rt>${ yin.replace( rheter, '' ) }</rt>`
+        R.anno, ( match, zi, yin ) => {
+          let isHeter = R.heter.test( yin )
+          let arb = `${ zi }<rt>${ yin.replace( R.heter, '' ) }</rt>`
           return ( isHeter ) ?
             `<ruby class='zhuyin'><a-z>${ arb }</a-z></ruby>` :
             `<ruby class='zhuyin'>${ arb }</ruby>`
@@ -62,15 +60,60 @@ let Util = {
 
     complex( html ) {
       let rtc = ''
-      let rbc = html.replace( ranno, ( match, zi, yin ) => {
-        let isHeter = rheter.test( yin )
+      let rbc = html.replace( R.anno, ( match, zi, yin ) => {
+        let isHeter = R.heter.test( yin )
         let rb  = `<rb>${ zi }</rb>`
-        rtc += `<rt>${ yin.replace( rheter, '' ) }</rt>`
+        rtc += `<rt>${ yin.replace( R.heter, '' ) }</rt>`
         return ( isHeter ) ? `<a-z>${ rb }</a-z>` : rb
       })
       rtc = `<rtc class='zhuyin'>${ rtc }</rtc>`
       html = `<ruby class='complex'>${ rbc + rtc }</ruby>`
       return Util.hanify( html )
+    },
+
+    zhuyin( rt, isSelfContained ) {
+      let yin  = rt.replace( R.zhuyin.diao, '' ) || ''
+      let diao = rt.replace( yin, '' ) || ''
+      let len  = yin.length
+      let html = `
+        <h-zhuyin diao='${ diao }' length='${ len }'>
+          <h-yin>${ yin }</h-yin>
+          <h-diao>${ diao }</h-diao>
+        </h-zhuyin>
+      `.replace( /\n\s*/g, '' )
+      return isSelfContained ? { __html: `${html}` } : { html, yin, diao, len }
+    },
+
+    ru: {
+      zhuyin( rb, rt ) {
+        rt = Util.wrap.zhuyin( rt )
+        return `
+          <h-ru zhuyin diao='${ rt.diao }' length='${ rt.len }'>
+            ${ rb }
+            ${ rt.html }
+          </h-ru>
+        `.replace( /\n\s*/g, '' )
+      },
+
+      pinyin( rb, rt ) {
+        let pinyin = PINYIN[ rt ] || rt
+        return `
+          <h-ru annotation='${ rt }'>
+            ${ rb }
+            <rt>${ rt }</rt>
+          </h-ru>
+        `.replace( /\n\s*/g, '' )
+      },
+
+      wadegiles( rb, rt ) {
+        let pinyin = PINYIN[ rt ] || rt
+        return `
+          <h-ru annotation='${ rt }'>
+            ${ rb }
+            <rt>${ rt }</rt>
+          </h-ru>
+        `.replace( /\n\s*/g, '' )
+      },
     },
   },
 }

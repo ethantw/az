@@ -1,4 +1,6 @@
 
+import Util from './util'
+
 export default {
   zi( target ) {
     if ( !target.matches( 'h-ruby a-z, h-ruby a-z *' ))  return
@@ -8,7 +10,6 @@ export default {
       target = target.parentNode
     }
 
-    target.classList.remove( 'picked' )
     target.classList.add( 'picking' )
     i  = target.getAttribute( 'i' )
     ru = target.querySelector( 'h-ru' )
@@ -23,26 +24,13 @@ export default {
 
   yin( node, i, zhuyin ) {
     node = node.cloneNode( true )
-    let yin  = zhuyin.replace( Han.TYPESET.zhuyin.diao, '' )
-    let diao = zhuyin.replace( yin, '' )
-    let len  = yin.length
-    let az   = node.querySelector( `a-z[i='${i}']` )
-    let zi   = az.querySelector( 'rb' ).outerHTML
-
-    az.classList.remove( 'picking' )
-    az.classList.add( 'picked' )
+    let az = node.querySelector( `a-z[i='${i}']` )
+    let zi = az.querySelector( 'rb' ).outerHTML
 
     if ( az ) {
-      az.innerHTML = `
-        <h-ru zhuyin diao='${ diao }' length='${ len }'>
-          ${zi}
-          <h-zhuyin>
-            <h-yin>${ yin }</h-yin>
-            <h-diao>${ diao }</h-diao>
-          </h-zhuyin>
-        </h-ru>
-      `
-      .replace( /\n\s*/g, '' )
+      az.classList.remove( 'picking' )
+      az.classList.add( 'picked' )
+      az.innerHTML = Util.wrap.ru.zhuyin( zi, zhuyin )
     }
     return { __html: node.innerHTML }
   },

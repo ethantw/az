@@ -94,6 +94,7 @@ let IO = React.createClass({
 
     cleanFormer()
     az = Pickr.zi( e.target )
+    if ( !az )  return
 
     let current = az.i
     let zi      = az.zi
@@ -127,8 +128,9 @@ let IO = React.createClass({
 
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
-          current.map(( yin, i ) => {
-            return <li key={i} onClick={( e ) => this.pickYin( e, i )}>{yin}</li>
+          current.map(( read, i ) => {
+            let rt = Util.wrap.zhuyin( read, true )
+            return <li onClick={( e ) => this.pickYin( e, i )} dangerouslySetInnerHTML={rt} />
           })
         }</ul>
       </div>
@@ -148,16 +150,10 @@ let Page = React.createClass({
 
   toggleUI( component ) {
     let clazz  = React.findDOMNode( this.refs.body ).classList
-    let after  = !this.state[component]
-    let method = after ? 'add' : 'remove'
-    clazz[method]( component )
+    clazz.toggle( component )
     clazz.add( 'not-init' )
     clazz.remove( 'init' )
-
-    this.setState({
-      init:        false,
-      [component]: after
-    })
+    this.setState({ init: false })
   },
 
   render() {
