@@ -11,12 +11,12 @@ $zhuyin = 'Zhuyin Kaiti'
 $serif  = 'Biaodian Pro Serif', Georgia, $zhuyin, 'Han Songti', serif
 $sans   = 'Biaodian Pro Sans', 'Helvetica Neue', Arial, $zhuyin, 'Han Heiti', sans-serif
 
-npm( $m )
-  '../../node_modules/' + $m
+npm( $mod ) {  '../../node_modules/' + $mod  }
 
 @import npm( 'font-handsome' )
 @import layout
 @import nav
 @import io
 @import pref
+@import zhuyin
 

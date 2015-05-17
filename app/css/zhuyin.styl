@@ -1,0 +1,62 @@
+
+-scale( $size )
+  -moz-transform:    scale( $size ) !important
+  -ms-transform:     scale( $size ) !important
+  -webkit-transform: scale( $size ) !important
+  transform:         scale( $size ) !important
+-clean-scale()
+  -moz-transform:    none !important
+  -ms-transform:     none !important
+  -webkit-transform: none !important
+  transform:         none !important
+
+h-zhuyin
+  //-scale( .3 )
+h-yin
+  //-clean-scale()
+
+body #pickr
+  h-zhuyin
+    // posi
+    position relative
+    // box
+    display inline-block
+    height 2.7em
+    width .8em
+    // typo
+    line-height .9
+
+    h-diao
+      // posi
+      position absolute
+      right -.9em
+      top 0
+      // box
+      display inline-block
+      width 1em
+
+    &[length='1']
+      h-zhuyin
+        margin-top: .125em
+       h-diao
+        margin-top -.35em
+    &[length='2']
+      h-zhuyin
+        margin-top: -.175em
+      h-diao
+        margin-top .5em
+    &[length='3']
+      h-zhuyin
+        margin-top: -.45em
+      h-diao
+        margin-top 1.3em
+    &[diao='˙']
+      h-diao
+        right -.42em
+      &[length='1'] h-diao
+        margin-top: -.5em
+      &[length='2'] h-diao
+        margin-top: -.3em
+      &[length='3'] h-diao
+        margin-top: -.25em
+
