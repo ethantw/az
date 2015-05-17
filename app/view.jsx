@@ -1,9 +1,8 @@
 
+import R     from './reg.js'
 import Util  from './util.js'
 import Pickr from './pickr.js'
 import Pref  from './pref.jsx'
-
-const rcjk = Han.TYPESET.char.cjk
 
 Util.XHR( './data/sound.min.json',   ( sound ) => {
 Util.XHR( './data/reverse.min.json', ( reverse ) => {
@@ -13,7 +12,7 @@ const Reverse = JSON.parse( reverse )
 
 Util.annotate = ( input, pickee=[] ) => {
   let az   = []
-  let html = Util.jinzify( input ).replace( rcjk, ( zi ) => {
+  let html = Util.jinzify( input ).replace( R.cjk, ( zi ) => {
     let yin = Sound[zi]
 
     if ( !yin )  return zi
@@ -23,9 +22,10 @@ Util.annotate = ( input, pickee=[] ) => {
       az.push( yin )
       yin = picked && picked.zi === zi ?
         ( typeof picked.yin === 'number' ?
-          `*${ yin[picked.yin] }` : `*${ picked.yin }` )
+          `*${ yin[picked.yin] }` :
+          `*${ picked.yin }` )
         :
-        `*${ yin[0] }`
+          `*${ yin[0] }`
     }
     return `\`${ zi }:${ yin }~`
   })
@@ -53,9 +53,9 @@ let IO = React.createClass({
   getInitialState() {
     let input     = '用《萌典》半自動為漢字標音的部分嗎？'
     let pickee = {
-      0: {  zi: '為', yin: 1 },
-      3: {  zi: '的', yin: 2 },
-      4: {  zi: '分', yin: 1 },
+      0: { zi: '為', yin: 1 },
+      3: { zi: '的', yin: 2 },
+      4: { zi: '分', yin: 1 },
     }
     let annotated = Util.annotate( input, pickee )
     let output    = Util.wrap.complex( annotated.html )
@@ -85,19 +85,22 @@ let IO = React.createClass({
   },
 
   pickZi( e ) {
-    let output  = React.findDOMNode( this.refs.output )
-    let old     = output.querySelector( 'a-z.picking' )
-    let az      = Pickr.zi( e.target )
-    if ( old )  old.classList.remove( 'picking' )
-    if ( !az )  return this.setPicking( false )
+    let cleanFormer = () => {
+      let former = React.findDOMNode( this.refs.output ).querySelector( 'a-z.picking' )
+      if ( former )  former.classList.remove( 'picking' )
+      this.setPicking( false )
+    }
+    let az
+
+    cleanFormer()
+    az = Pickr.zi( e.target )
 
     let current = az.i
     let zi      = az.zi
     let pickrXY = az.style || null
     this.setPicking()
     this.setState({ current, zi, pickrXY })
-
-    Util.listenToLosingFocus( '#pickr *', () => { this.setPicking( false )})
+    Util.listenToLosingFocus( 'a-z *, #pickr *', cleanFormer )
   },
 
   pickYin( e, i ) {
