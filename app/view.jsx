@@ -6,32 +6,86 @@ import Pref  from './pref.jsx'
 
 Util.XHR( './data/sound.min.json',   ( sound ) => {
 Util.XHR( './data/reverse.min.json', ( reverse ) => {
+Util.XHR( './data/pinyin.min.json',  ( ro ) => {
 
 const Sound   = JSON.parse( sound )
 const Reverse = JSON.parse( reverse )
 
-Util.annotate = ( input, pickee=[] ) => {
-  let az   = []
-  let html = Util.jinzify( input ).replace( R.cjk, ( zi ) => {
-    let yin = Sound[zi]
-
-    if ( !yin )  return zi
-    if ( yin.length > 1 ) {
-      let i = az.length
-      let picked = pickee[i]
-      az.push( yin )
-      yin = picked && picked.zi === zi ?
-        ( typeof picked.yin === 'number' ?
-          `*${ yin[picked.yin] }` :
-          `*${ picked.yin }` )
-        :
-          `*${ yin[0] }`
-    }
-    return `\`${ zi }:${ yin }~`
-  })
-  return { az, html }
+const { Pinyin, WG } = JSON.parse( ro )
+const Vowel = {
+  a:   [ 'a', 'ā', 'á', 'ǎ', 'à' ],
+  e:   [ 'e', 'ē', 'é', 'ě', 'è' ],
+  i:   [ 'i', 'ī', 'í', 'ǐ', 'ì' ],
+  o:   [ 'o', 'ō', 'ó', 'ǒ', 'ò' ],
+  u:   [ 'u', 'ū', 'ú', 'ǔ', 'ù' ],
+  'ü': [ 'ü', 'ǖ', 'ǘ', 'ǚ', 'ǜ' ],
+  wg:  [ '⁰', '¹', '²', '³', '⁴' ]
 }
 
+Object.assign( Util, {
+  annotate( input, pickee=[] ) {
+    let system = Util.LS.get( 'system' )
+    let jinze  = Util.LS.get( 'jinze' )
+    let az     = []
+    let html   = marked ? marked( input, { sanitize: true }) : input
+
+    html = jinze === 'yes' ? Util.jinzify( html ) : html
+    html = html.replace( R.cjk, ( zi ) => {
+      let sound = Sound[zi]
+      if ( !sound )  return zi
+
+      let isHeter = sound.length > 1 ? '*' : ''
+      let ret = sound[0]
+
+      if ( isHeter ) {
+        let i = az.length
+        let picked = pickee[i]
+        az.push( sound )
+        ret = picked && picked.zi === zi ?
+          ( 
+            typeof picked.yin === 'number' ?
+              sound[picked.yin]
+            :
+              picked.yin
+          )
+          :
+            sound[0]
+      }
+      if (  system === 'pinyin' ) {
+        ret = Util.getPinyin( ret ) + isHeter
+      } else if ( system === 'wg' ) {
+        ret = Util.getWG( ret ) + isHeter
+      } else {
+        ret = ret + isHeter
+      }
+      return `\`${ zi }:${ ret }~`
+    })
+    return { az, html }
+  },
+
+  getPinyin( sound ) {
+    let { yin, diao } = Util.getYD( sound, true )
+    let pinyin = Pinyin[ yin ] || sound
+    pinyin = pinyin
+      .replace( /([aeiouü])+/i, ( v ) => {
+        if ( /[aeo]/i.test( v )) {
+          return v.replace( /([aeo])/i, ( v ) => Vowel[v][diao] )
+        } else if ( /iu/i.test( v )) {
+          return v.replace( /u/i, Vowel.u[diao] )
+        } else if ( /[iuü]/i.test( v )) {
+          return v.replace( /([iuü])/i, ( v ) => Vowel[v][diao] )
+        }
+        return v
+      })
+    return pinyin || sound
+  },
+
+  getWG( sound ) {
+    let { yin, diao } = Util.getYD( sound, true )
+    let pinyin = Pinyin[ yin ] || sound
+    return ( WG[ pinyin ] || pinyin ) + Vowel.wg[ diao ]
+  },
+})
 
 let Nav = React.createClass({
   togglePref() {
@@ -128,8 +182,12 @@ let IO = React.createClass({
 
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
-          current.map(( read, i ) => {
-            let rt = Util.wrap.zhuyin( read, true )
+          current.map(( sound, i ) => {
+            let display = Util.LS.get( 'display' )
+            let rt = display === 'pinyin' ?
+              { __html: Util.getPinyin( sound ) }
+              :
+                Util.wrap.zhuyin( sound, true )
             return <li onClick={( e ) => this.pickYin( e, i )} dangerouslySetInnerHTML={rt} />
           })
         }</ul>
@@ -170,6 +228,7 @@ let Page = React.createClass({
 let target = document.getElementById( 'page' ) || document.body
 React.render( <Page />, target )
 
+})
 })
 })
 

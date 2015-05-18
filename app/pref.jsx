@@ -114,7 +114,7 @@ export default class Pref extends React.Component {
             both:   '注音－拼音共同標注',
             zhuyin: '注音符號',
             pinyin: '漢語拼音',
-            wade:   '威妥瑪拼音'
+            wg:     '威妥瑪拼音'
           }} />
         </li>
         <li>

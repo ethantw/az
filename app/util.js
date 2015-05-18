@@ -44,6 +44,21 @@ let Util = {
     return div.innerHTML
   },
 
+  getYD( sound, returnDiaoInDigit ) {
+    let yin  = sound.replace( R.zhuyin.diao, '' ) || ''
+    let diao = sound.replace( yin, '' ) || ''
+
+    if ( returnDiaoInDigit ) {
+      if ( !diao ) diao = '1'
+      diao = diao
+        .replace( 'ˋ', '4' )
+        .replace( 'ˇ', '3' )
+        .replace( 'ˊ', '2' )
+        .replace( '˙', '0' )
+    }
+    return { yin, diao }
+  },
+
   wrap: {
     simple( html ) {
       html = html.replace(
