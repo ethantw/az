@@ -71,7 +71,10 @@ let Util = {
             `<ruby class='zhuyin'>${ arb }</ruby>`
         }
       )
-      return Util.rubify( html )
+      return {
+        html,
+        output: Util.rubify( html ),
+      }
     },
 
     complex( html ) {
@@ -84,7 +87,10 @@ let Util = {
       })
       rtc = `<rtc class='zhuyin'>${ rtc }</rtc>`
       html = `<ruby class='complex'>${ rbc + rtc }</ruby>`
-      return Util.rubify( html )
+      return {
+        html,
+        output: Util.rubify( html ),
+      }
     },
 
     zhuyin( rt, isSelfContained ) {

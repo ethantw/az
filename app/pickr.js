@@ -22,17 +22,13 @@ export default {
     return { i, style, zi }
   },
 
-  yin( node, i, zhuyin ) {
-    node = node.cloneNode( true )
+  yin( node, i ) {
     let az = node.querySelector( `a-z[i='${i}']` )
-    let zi = az.querySelector( 'rb' ).outerHTML
 
     if ( az ) {
       az.classList.remove( 'picking' )
       az.classList.add( 'picked' )
-      az.innerHTML = Util.wrap.ru.zhuyin( zi, zhuyin )
     }
-    return { __html: node.innerHTML }
   },
 }
 

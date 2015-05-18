@@ -13,11 +13,11 @@ const Reverse = JSON.parse( reverse )
 
 const { Pinyin, WG } = JSON.parse( ro )
 const Vowel = {
-  a:   [ 'a', 'ā', 'á', 'ǎ', 'à' ],
-  e:   [ 'e', 'ē', 'é', 'ě', 'è' ],
-  i:   [ 'i', 'ī', 'í', 'ǐ', 'ì' ],
-  o:   [ 'o', 'ō', 'ó', 'ǒ', 'ò' ],
-  u:   [ 'u', 'ū', 'ú', 'ǔ', 'ù' ],
+   a:  [ 'a', 'ā', 'á', 'ǎ', 'à' ],
+   e:  [ 'e', 'ē', 'é', 'ě', 'è' ],
+   i:  [ 'i', 'ī', 'í', 'ǐ', 'ì' ],
+   o:  [ 'o', 'ō', 'ó', 'ǒ', 'ò' ],
+   u:  [ 'u', 'ū', 'ú', 'ǔ', 'ù' ],
   'ü': [ 'ü', 'ǖ', 'ǘ', 'ǚ', 'ǜ' ],
   wg:  [ '⁰', '¹', '²', '³', '⁴' ]
 }
@@ -27,8 +27,8 @@ Object.assign( Util, {
     let system = Util.LS.get( 'system' )
     let jinze  = Util.LS.get( 'jinze' ) === 'yes' ? true : false
     let az     = []
-    let html   = marked ? marked( input, { sanitize: true }) : input
-    let hinst  = Util.jinzify( html, jinze )
+    let raw    = marked ? marked( input, { sanitize: true }) : input
+    let hinst  = Util.jinzify( raw, jinze )
     .replace( R.cjk, ( portion, match ) => {
       let zi = match[0]
       let sound = Sound[zi]
@@ -60,8 +60,8 @@ Object.assign( Util, {
       }
       return `\`${ zi }:${ ret }~`
     })
-    html = hinst.context.innerHTML
-    return { az, html }
+    raw = hinst.context.innerHTML
+    return { az, raw }
   },
 
   getPinyin( sound ) {
@@ -106,30 +106,40 @@ let Nav = React.createClass({
 
 let IO = React.createClass({
   getInitialState() {
-    let input     = '用《萌典》半自動為漢字標音的部分嗎？'
+    let current   = 0
+    let zi        = null
+    let picking   = false
+    let pickrXY   = {}
+    let input     = '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌'
     let pickee = {
       0: { zi: '為', yin: 1 },
       3: { zi: '的', yin: 2 },
       4: { zi: '分', yin: 1 },
     }
-    let annotated = Util.annotate( input, pickee )
-    let output    = Util.wrap.complex( annotated.html )
-    let az        = annotated.az
-    let current   = 0
-    let zi        = null
-    let picking   = false
-    let pickrXY   = {}
+    return { input, pickee, zi, picking, pickrXY }
+  },
 
-    return { input, output, az, current, zi, pickee, picking, pickrXY }
+  componentWillMount() {  this.IO()  },
+  componentDidMount()  {  this.afterIO()  },
+
+  IO( pickee=this.state.pickee, input=this.state.input ) {
+    let { az, raw }      = Util.annotate( input, pickee )
+    let { html, output } = Util.wrap.complex( raw )
+    this.setState({ az, html, output }, this.afterIO )
+  },
+
+  afterIO() {
+    let output = React.findDOMNode( this.refs.output )
+    let az     = output.querySelectorAll( 'a-z[i]' )
+    Object.keys( this.state.pickee )
+    .forEach(( i ) => {
+      az[ i ].classList.add( 'picked' )
+    })
   },
 
   handleInput( e ) {
-    let input     = e.target.value
-    let annotated = Util.annotate( input, this.state.pickee )
-    let az        = annotated.az
-    let output    = Util.wrap.complex( annotated.html )
     this.setPicking( false )
-    this.setState({ input, output, az })
+    this.setState({ input: e.target.value }, this.IO )
   },
 
   setPicking( sw = true ) {
@@ -162,13 +172,12 @@ let IO = React.createClass({
   pickYin( e, i ) {
     let output  = React.findDOMNode( this.refs.output )
     let current = this.state.current
-    let pickee  = Object.assign( [], this.state.pickee )
+    let pickee  = this.state.pickee
     pickee[current] = {
       zi: this.state.zi,
       yin: this.state.az[current][i]
     }
-    output = Pickr.yin( output, current, pickee[current].yin )
-    this.setState({ output, pickee })
+    this.IO( pickee )
   },
 
   handlePlay() {},
