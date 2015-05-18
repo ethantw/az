@@ -3,8 +3,8 @@ import Util from './util'
 
 export default {
   zi( target ) {
-    if ( !target.matches( 'h-ruby a-z, h-ruby a-z *' ))  return
-    let ru, zi, style, i
+    if ( !target.matches( 'a-z, a-z *' ))  return
+    let ru, rb, zi, style, i
 
     while ( target.nodeName !== 'A-Z' ) {
       target = target.parentNode
@@ -12,8 +12,9 @@ export default {
 
     target.classList.add( 'picking' )
     i  = target.getAttribute( 'i' )
-    ru = target.querySelector( 'h-ru' )
-    zi = target.querySelector( 'rb' ).textContent
+    ru = target.querySelector( 'h-ru' ) || target
+    rb = target.querySelector( 'rb' )
+    zi = ( rb || target ).textContent[0]
 
     style = {
       left: `${ru.offsetLeft}px`,

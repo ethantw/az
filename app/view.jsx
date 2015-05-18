@@ -25,10 +25,10 @@ const Vowel = {
 Object.assign( Util, {
   annotate( input, pickee=[] ) {
     let system = Util.LS.get( 'system' )
-    let jinze  = Util.LS.get( 'jinze' ) === 'yes' ? true : false
+    let jinze  = Util.LS.get( 'jinze' ) !== 'no' ? true : false
     let az     = []
     let raw    = marked ? marked( input, { sanitize: true }) : input
-    let hinst  = Util.jinzify( raw, jinze )
+    let hinst  = Util.hinst( raw, jinze )
     .replace( R.cjk, ( portion, match ) => {
       let zi = match[0]
       let sound = Sound[zi]
@@ -51,10 +51,13 @@ Object.assign( Util, {
           :
             sound[0]
       }
+
       if (  system === 'pinyin' ) {
         ret = Util.getPinyin( ret ) + isHeter
       } else if ( system === 'wg' ) {
         ret = Util.getWG( ret ) + isHeter
+      } else if ( system === 'both' ) {
+        ret = Util.getBoth( ret ) + isHeter
       } else {
         ret = ret + isHeter
       }
@@ -85,6 +88,11 @@ Object.assign( Util, {
     let { yin, diao } = Util.getYD( sound, true )
     let pinyin = Pinyin[ yin ] || sound
     return ( WG[ pinyin ] || pinyin ) + Vowel.wg[ diao ]
+  },
+
+  getBoth( sound ) {
+    let pinyin = Util.getPinyin( sound )
+    return `${ sound }|${ pinyin }`
   },
 })
 
@@ -123,8 +131,9 @@ let IO = React.createClass({
   componentDidMount()  {  this.afterIO()  },
 
   IO( pickee=this.state.pickee, input=this.state.input ) {
+    let system = Util.LS.get( 'system' )
     let { az, raw }      = Util.annotate( input, pickee )
-    let { html, output } = Util.wrap.complex( raw )
+    let { html, output } = Util.wrap.complex( raw, system === 'pinyin' || system === 'wg' )
     this.setState({ az, html, output }, this.afterIO )
   },
 

@@ -33,16 +33,16 @@ let Util = {
     div.innerHTML = html
     Han( div ).renderRuby()
     Array.from( div.querySelectorAll( 'a-z' )).map(( az, i ) => az.setAttribute( 'i', i ))
-    html = div.innerHTML.replace( /<\/h\-ruby><h\-ruby class=\"zhuyin\">/g, '' )
+    html = div.innerHTML.replace( /<\/h\-ruby><h\-ruby class=\"(zhuyin|pinyin)\">/gi, '' )
     return { __html: html }
   },
 
-  jinzify( html, jinze ) {
+  // hinst: Han instance
+  hinst( html, jinze=true ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html
     let ret = Han( div )
-    if ( jinze )  ret.jinzify()
-    return ret
+    return ( jinze ) ? ret.jinzify() : ret
   },
 
   getYD( sound, returnDiaoInDigit ) {
@@ -61,14 +61,15 @@ let Util = {
   },
 
   wrap: {
-    simple( html ) {
+    simple( html, isntZhuyin=false ) {
+      let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
       html = html.replace(
         R.anno, ( match, zi, yin ) => {
           let isHeter = R.heter.test( yin )
           let arb = `${ zi }<rt>${ yin.replace( R.heter, '' ) }</rt>`
           return ( isHeter ) ?
-            `<ruby class='zhuyin'><a-z>${ arb }</a-z></ruby>` :
-            `<ruby class='zhuyin'>${ arb }</ruby>`
+            `<a-z><ruby class='${ clazz }'>${ arb }</ruby></a-z>` :
+            `<ruby class='${ clazz }'>${ arb }</ruby>`
         }
       )
       return {
@@ -77,16 +78,24 @@ let Util = {
       }
     },
 
-    complex( html ) {
-      let rtc = ''
+    complex( html, isntZhuyin=false ) {
+      let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
+      let rtc  = ''
+      let rtc2 = ''
       let rbc = html.replace( R.anno, ( match, zi, yin ) => {
         let isHeter = R.heter.test( yin )
+        let isBoth  = R.both.test( yin )
         let rb  = `<rb>${ zi }</rb>`
-        rtc += `<rt>${ yin.replace( R.heter, '' ) }</rt>`
-        return ( isHeter ) ? `<a-z>${ rb }</a-z>` : rb
+
+        yin   = yin.replace( R.heter, '' ).split( '|' )
+        rtc  += `<rt>${ yin[0] }</rt>`
+        rtc2 += isBoth ? `<rt>${ yin[1] }</rt>` : ''
+
+        return isHeter ? `<a-z>${ rb }</a-z>` : rb
       })
-      rtc = `<rtc class='zhuyin'>${ rtc }</rtc>`
-      html = `<ruby class='complex'>${ rbc + rtc }</ruby>`
+      rtc  = `<rtc class='${ clazz }'>${ rtc }</rtc>`
+      rtc2 = rtc2 ? `<rtc class='pinyin'>${ rtc2 }</rtc>` : ''
+      html = `<ruby class='complex'>${ rbc + rtc + rtc2 }</ruby>`
       return {
         html,
         output: Util.rubify( html ),
