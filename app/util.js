@@ -28,7 +28,7 @@ let Util = {
     return remover
   },
 
-  hanify( html ) {
+  rubify( html ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html
     Han( div ).renderRuby()
@@ -37,11 +37,12 @@ let Util = {
     return { __html: html }
   },
 
-  jinzify( html ) {
+  jinzify( html, jinze ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html
-    Han( div ).jinzify()
-    return div.innerHTML
+    let ret = Han( div )
+    if ( jinze )  ret.jinzify()
+    return ret
   },
 
   getYD( sound, returnDiaoInDigit ) {
@@ -70,7 +71,7 @@ let Util = {
             `<ruby class='zhuyin'>${ arb }</ruby>`
         }
       )
-      return Util.hanify( html )
+      return Util.rubify( html )
     },
 
     complex( html ) {
@@ -83,7 +84,7 @@ let Util = {
       })
       rtc = `<rtc class='zhuyin'>${ rtc }</rtc>`
       html = `<ruby class='complex'>${ rbc + rtc }</ruby>`
-      return Util.hanify( html )
+      return Util.rubify( html )
     },
 
     zhuyin( rt, isSelfContained ) {

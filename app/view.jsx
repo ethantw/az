@@ -25,12 +25,12 @@ const Vowel = {
 Object.assign( Util, {
   annotate( input, pickee=[] ) {
     let system = Util.LS.get( 'system' )
-    let jinze  = Util.LS.get( 'jinze' )
+    let jinze  = Util.LS.get( 'jinze' ) === 'yes' ? true : false
     let az     = []
     let html   = marked ? marked( input, { sanitize: true }) : input
-
-    html = jinze === 'yes' ? Util.jinzify( html ) : html
-    html = html.replace( R.cjk, ( zi ) => {
+    let hinst  = Util.jinzify( html, jinze )
+    .replace( R.cjk, ( portion, match ) => {
+      let zi = match[0]
       let sound = Sound[zi]
       if ( !sound )  return zi
 
@@ -60,6 +60,7 @@ Object.assign( Util, {
       }
       return `\`${ zi }:${ ret }~`
     })
+    html = hinst.context.innerHTML
     return { az, html }
   },
 
