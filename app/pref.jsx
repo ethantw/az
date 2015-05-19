@@ -1,5 +1,22 @@
 
-import Util from './util.js'
+import Util from './util'
+
+class Close extends React.Component {
+  constructor( props ) {
+    super( props )
+    this.closePref = this.closePref.bind( this )
+  }
+
+  closePref() {
+    this.props.parent.toggleUI( 'pref' )
+  }
+
+  render() {
+    return (
+    <button className='close' onClick={this.closePref}>關閉</button>
+    )
+  }
+}
 
 class Select extends React.Component {
   constructor( props ) {
@@ -13,7 +30,7 @@ class Select extends React.Component {
     this.node  = this.node.bind( this )
     this.open  = this.open.bind( this )
     this.close = this.close.bind( this )
-    this.handleToggle        = this.handleToggle.bind( this )
+    this.handleToggle = this.handleToggle.bind( this )
   }
 
   node() {
@@ -70,18 +87,6 @@ class Select extends React.Component {
     )
   }
 }
-
-let Close = React.createClass({
-  closePref() {
-    this.props.parent.toggleUI( 'pref' )
-  },
-
-  render() {
-    return (
-    <button className='close' onClick={this.closePref}>關閉</button>
-    )
-  }
-})
 
 export default class Pref extends React.Component {
   constructor( props ) {

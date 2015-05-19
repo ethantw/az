@@ -1,7 +1,7 @@
 
-import R     from './reg.js'
-import Util  from './util.js'
-import Pickr from './pickr.js'
+import R     from './reg'
+import Util  from './util'
+import Pickr from './pickr'
 import Pref  from './pref.jsx'
 
 Util.XHR([
@@ -109,7 +109,7 @@ let Nav = React.createClass({
       <a className='gh-repo' href='//github.com/ethantw/az'>GitHub</a>
     </nav>
     )
-  }
+  },
 })
 
 let IO = React.createClass({
@@ -212,7 +212,7 @@ let IO = React.createClass({
       </div>
     </main>
     )
-  }
+  },
 })
 
 let Page = React.createClass({
@@ -240,7 +240,7 @@ let Page = React.createClass({
       <Pref parent={this} />
     </div>
     )
-  }
+  },
 })
 
 let target = document.getElementById( 'page' ) || document.body
