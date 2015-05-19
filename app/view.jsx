@@ -4,14 +4,14 @@ import Util  from './util.js'
 import Pickr from './pickr.js'
 import Pref  from './pref.jsx'
 
-Util.XHR( './data/sound.min.json',   ( sound ) => {
-Util.XHR( './data/reverse.min.json', ( reverse ) => {
-Util.XHR( './data/pinyin.min.json',  ( ro ) => {
+Util.XHR([
+  './data/sound.min.json',
+  './data/reverse.min.json',
+  './data/pinyin.min.json',
+], ( Sound, Reverse, Romanization ) => {
 
-const Sound   = JSON.parse( sound )
-const Reverse = JSON.parse( reverse )
+const { Pinyin, WG } = Romanization
 
-const { Pinyin, WG } = JSON.parse( ro )
 const Vowel = {
    a:  [ 'a', 'ā', 'á', 'ǎ', 'à' ],
    e:  [ 'e', 'ē', 'é', 'ě', 'è' ],
@@ -140,10 +140,9 @@ let IO = React.createClass({
   afterIO() {
     let output = React.findDOMNode( this.refs.output )
     let az     = output.querySelectorAll( 'a-z[i]' )
+
     Object.keys( this.state.pickee )
-    .forEach(( i ) => {
-      az[ i ].classList.add( 'picked' )
-    })
+      .forEach(( i ) => az[ i ].classList.add( 'picked' ))
   },
 
   handleInput( e ) {
@@ -247,7 +246,5 @@ let Page = React.createClass({
 let target = document.getElementById( 'page' ) || document.body
 React.render( <Page />, target )
 
-})
-})
 })
 

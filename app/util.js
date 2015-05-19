@@ -3,13 +3,25 @@ import R from './reg'
 
 let Util = {
   XHR( url, done ) {
-    let xhr = new XMLHttpRequest()
+    let data = []
+    url = url instanceof Array ? url : [ url ]
 
-    xhr.onreadystatechange = () => {
-      if ( xhr.readyState === 4 )  done( xhr.responseText )
+    // TODO: substitute with `[].fill()` instead
+    for ( let i = 0, up = url.length; i < up; i++ ) {
+      data[i] = undefined
     }
-    xhr.open( 'GET', url, true )
-    xhr.send( '' )
+
+    url.forEach( ( url, i ) => {
+      let xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = () => {
+        if ( xhr.readyState === 4 ) {
+          data[i] = JSON.parse( xhr.responseText )
+          if ( data.every(( data ) => !!data ))  done( ...data )
+        }
+      }
+      xhr.open( 'GET', url, true )
+      xhr.send( '' )
+    })
   },
 
   LS: {
