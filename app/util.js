@@ -73,9 +73,9 @@ let Util = {
   },
 
   wrap: {
-    simple( html, isntZhuyin=false ) {
+    simple( raw, isntZhuyin=false ) {
       let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
-      html = html.replace(
+      let html = raw.replace(
         R.anno, ( match, zi, yin ) => {
           let isHeter = R.heter.test( yin )
           let arb = `${ zi }<rt>${ yin.replace( R.heter, '' ) }</rt>`
@@ -90,24 +90,38 @@ let Util = {
       }
     },
 
-    complex( html, isntZhuyin=false ) {
+    complex( raw, isntZhuyin=false ) {
       let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
-      let rtc  = ''
-      let rtc2 = ''
-      let rbc = html.replace( R.anno, ( match, zi, yin ) => {
-        let isHeter = R.heter.test( yin )
-        let isBoth  = R.both.test( yin )
-        let rb  = `<rb>${ zi }</rb>`
+      let div = document.createElement( 'div' )
+      let html, rbc
 
-        yin   = yin.replace( R.heter, '' ).split( '|' )
-        rtc  += `<rt>${ yin[0] }</rt>`
-        rtc2 += isBoth ? `<rt>${ yin[1] }</rt>` : ''
+      div.innerHTML = raw
 
-        return isHeter ? `<a-z>${ rb }</a-z>` : rb
+      Array
+      .from( div.querySelectorAll( '*:not(li) p, li, h1, h2, h3, h4, h5, h6' ))
+      .forEach(( elem ) => {
+        let [ html, rbc, rtc, rtc2 ] = [ elem.innerHTML, '', '', '' ]
+
+        rbc = html.replace( R.anno, ( match, zi, yin ) => {
+          let isHeter = R.heter.test( yin )
+          let isBoth  = R.both.test( yin )
+          let rb  = `<rb>${ zi }</rb>`
+
+          yin   = yin.replace( R.heter, '' ).split( '|' )
+          rtc  += `<rt>${ yin[0] }</rt>`
+          rtc2 += isBoth ? `<rt>${ yin[1] }</rt>` : ''
+          return isHeter ? `<a-z>${ rb }</a-z>` : rb
+        })
+
+        elem.innerHTML = `
+          <ruby class='complex'>${ rbc }
+            <rtc class='${ clazz }'>${ rtc }</rtc>
+            ${ rtc2 ? `<rtc class='pinyin'>${ rtc2 }</rtc>` : '' }
+          </ruby>
+        `
       })
-      rtc  = `<rtc class='${ clazz }'>${ rtc }</rtc>`
-      rtc2 = rtc2 ? `<rtc class='pinyin'>${ rtc2 }</rtc>` : ''
-      html = `<ruby class='complex'>${ rbc + rtc + rtc2 }</ruby>`
+
+      html = div.innerHTML
       return {
         html,
         output: Util.rubify( html ),

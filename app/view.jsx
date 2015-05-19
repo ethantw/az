@@ -196,7 +196,7 @@ let IO = React.createClass({
     <main id='io' ref='io' className='layout'>
       <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} /> 
       <div id='out'>
-        <blockquote ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
+        <article ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
 
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
