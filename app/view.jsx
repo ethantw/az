@@ -131,9 +131,13 @@ let IO = React.createClass({
   componentDidMount()  {  this.afterIO()  },
 
   IO( pickee=this.state.pickee, input=this.state.input ) {
+    let syntax = Util.LS.get( 'syntax' )
     let system = Util.LS.get( 'system' )
+    let method = ( syntax === 'simp' && system !== 'both' ) ? 'simple' : 'complex'
+    let isntZhuyin = system === 'pinyin' || system === 'wg'
+
     let { az, raw }      = Util.annotate( input, pickee )
-    let { html, output } = Util.wrap.complex( raw, system === 'pinyin' || system === 'wg' )
+    let { html, output } = Util.wrap[method]( raw, isntZhuyin )
     this.setState({ az, html, output }, this.afterIO )
   },
 
