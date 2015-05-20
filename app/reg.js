@@ -4,6 +4,7 @@ export default {
   zhuyin: Han.TYPESET.zhuyin,
   anno:   /`([^`:~]*):([^`:~]*)~/gi,
   heter:  /\*$/,
+  picked: /\*\*$/,
   both:   /\|/,
 }
 

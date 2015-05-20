@@ -42,10 +42,10 @@ let Util = {
 
   rubify( html ) {
     let div = document.createElement( 'div' )
-    div.innerHTML = html
+    div.innerHTML = html.replace( /<\/ruby><ruby class=([\"\'])(zhuyin|pinyin)\1>/gi, '' )
     Han( div ).renderRuby()
     Array.from( div.querySelectorAll( 'a-z' )).map(( az, i ) => az.setAttribute( 'i', i ))
-    html = div.innerHTML.replace( /<\/h\-ruby><h\-ruby class=\"(zhuyin|pinyin)\">/gi, '' )
+    html = div.innerHTML
     return { __html: html }
   },
 
@@ -77,10 +77,11 @@ let Util = {
       let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
       let html = raw.replace(
         R.anno, ( match, zi, yin ) => {
-          let isHeter = R.heter.test( yin )
-          let arb = `${ zi }<rt>${ yin.replace( R.heter, '' ) }</rt>`
+          let isHeter  = R.heter.test( yin )
+          let isPicked = R.picked.test( yin ) ? ' picked' : ''
+          let arb      = `${ zi }<rt>${ yin.replace( /\*+$/g, '' ) }</rt>`
           return ( isHeter ) ?
-            `<a-z><ruby class='${ clazz }'>${ arb }</ruby></a-z>` :
+            `<a-z class='${ isPicked }'><ruby class='${ clazz }'>${ arb }</ruby></a-z>` :
             `<ruby class='${ clazz }'>${ arb }</ruby>`
         }
       )
@@ -105,9 +106,9 @@ let Util = {
         rbc = html.replace( R.anno, ( match, zi, yin ) => {
           let isHeter = R.heter.test( yin )
           let isBoth  = R.both.test( yin )
-          let rb  = `<rb>${ zi }</rb>`
+          let rb      = `<rb>${ zi }</rb>`
 
-          yin   = yin.replace( R.heter, '' ).split( '|' )
+          yin   = yin.replace( /\*+$/g, '' ).split( '|' )
           rtc  += `<rt>${ yin[0] }</rt>`
           rtc2 += isBoth ? `<rt>${ yin[1] }</rt>` : ''
           return isHeter ? `<a-z>${ rb }</a-z>` : rb

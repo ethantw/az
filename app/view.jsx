@@ -26,6 +26,7 @@ Object.assign( Util, {
   annotate( input, pickee=[] ) {
     let system = Util.LS.get( 'system' )
     let jinze  = Util.LS.get( 'jinze' ) !== 'no' ? true : false
+    let clean  = false
     let az     = []
     let raw    = marked ? marked( input, { sanitize: true }) : input
     let hinst  = Util.hinst( raw, jinze )
@@ -34,37 +35,42 @@ Object.assign( Util, {
       let sound = Sound[zi]
       if ( !sound )  return zi
 
-      let isHeter = sound.length > 1 ? '*' : ''
-      let ret = sound[0]
+      let isHeter  = sound.length > 1
+      let isPicked = false 
+      let ret      = sound[0]
+      let end      = ''
 
       if ( isHeter ) {
         let i = az.length
         let picked = pickee[i]
+        let doesMatch = picked && picked.zi === zi
+
         az.push( sound )
-        ret = picked && picked.zi === zi ?
-          ( 
-            typeof picked.yin === 'number' ?
-              sound[picked.yin]
-            :
-              picked.yin
-          )
-          :
-            sound[0]
+        if ( picked && !doesMatch ) {
+          pickee = []
+        } else if ( doesMatch ) {
+          isPicked = true
+          ret = typeof picked.yin === 'number' ?
+            sound[picked.yin] : picked.yin
+        }
       }
 
       if (  system === 'pinyin' ) {
-        ret = Util.getPinyin( ret ) + isHeter
+        ret = Util.getPinyin( ret )
       } else if ( system === 'wg' ) {
-        ret = Util.getWG( ret ) + isHeter
+        ret = Util.getWG( ret )
       } else if ( system === 'both' ) {
-        ret = Util.getBoth( ret ) + isHeter
-      } else {
-        ret = ret + isHeter
+        ret = Util.getBoth( ret )
       }
-      return `\`${ zi }:${ ret }~`
+
+      end += isHeter  ? '*' : '' 
+      end += isPicked ? '*' : '' 
+
+      return `\`${ zi }:${ ret + end }~`
     })
     raw = hinst.context.innerHTML
-    return { az, raw }
+    clean = ( pickee.toString() === '' ) ? true : false
+    return { az, raw, clean }
   },
 
   getPinyin( sound ) {
@@ -114,21 +120,21 @@ let Nav = React.createClass({
 
 let IO = React.createClass({
   getInitialState() {
-    let current   = 0
-    let zi        = null
-    let picking   = false
-    let pickrXY   = {}
-    let input     = '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌'
-    let pickee = {
-      0: { zi: '為', yin: 1 },
-      3: { zi: '的', yin: 2 },
-      4: { zi: '分', yin: 1 },
+    return {
+      current: 0,
+      zi: null,
+      picking: false,
+      pickrXY: {},
+      input: '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌',
+      pickee: {
+        0: { zi: '為', yin: 1 },
+        3: { zi: '的', yin: 2 },
+        4: { zi: '分', yin: 1 },
+      },
     }
-    return { input, pickee, zi, picking, pickrXY }
   },
 
   componentWillMount() {  this.IO()  },
-  componentDidMount()  {  this.afterIO()  },
 
   IO( pickee=this.state.pickee, input=this.state.input ) {
     let syntax = Util.LS.get( 'syntax' )
@@ -136,17 +142,10 @@ let IO = React.createClass({
     let method = ( syntax === 'simp' && system !== 'both' ) ? 'simple' : 'complex'
     let isntZhuyin = system === 'pinyin' || system === 'wg'
 
-    let { az, raw }      = Util.annotate( input, pickee )
-    let { html, output } = Util.wrap[method]( raw, isntZhuyin )
-    this.setState({ az, html, output }, this.afterIO )
-  },
-
-  afterIO() {
-    let output = React.findDOMNode( this.refs.output )
-    let az     = output.querySelectorAll( 'a-z[i]' )
-
-    Object.keys( this.state.pickee )
-      .forEach(( i ) => az[ i ].classList.add( 'picked' ))
+    let { az, raw, clean } = Util.annotate( input, pickee )
+    let { html, output }   = Util.wrap[method]( raw, isntZhuyin )
+    if ( clean )  this.setState({ pickee: [] })
+    this.setState({ az, html, output })
   },
 
   handleInput( e ) {
@@ -198,10 +197,17 @@ let IO = React.createClass({
     let current = this.state.az[this.state.current] || []
     return (
     <main id='io' ref='io' className='layout'>
-      <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} /> 
+      <div id='in'>
+        <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} />
+        <ul id='utility'>
+          <li><button>拷貝輸出代碼</button></li>
+          <li><button>取得網址</button></li>
+          <li><button>鎖定</button></li>
+        </ul>
+      </div>
+
       <div id='out'>
         <article ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
-
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
           current.map(( sound, i ) => {
@@ -229,7 +235,7 @@ let Page = React.createClass({
   },
 
   toggleUI( component ) {
-    let clazz  = React.findDOMNode( this.refs.body ).classList
+    let clazz = React.findDOMNode( this.refs.body ).classList
     clazz.toggle( component )
     clazz.add( 'not-init' )
     clazz.remove( 'init' )
