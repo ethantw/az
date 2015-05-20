@@ -7,7 +7,6 @@
 nav.layout .pref:before,
 nav.layout .about:before,
 nav.layout .gh-repo:before,
-#pickr:before,
 #pref.layout button.close:first-of-type:before,
 #pref.layout li button:after {
   -moz-box-sizing: border-box;
@@ -94,9 +93,6 @@ nav.layout .gh-repo:before {
 #pref.layout li button:after {
   content: '\f0d7';
 }
-#pickr:before {
-  content: '\f0d8';
-}
 :root {
   box-sizing: border-box;
   font-size: 10px;
@@ -154,10 +150,12 @@ nav.layout .gh-repo:before {
   font-size: 1.8em;
   vertical-align: -0.1em;
 }
+main.layout #input {
+  display: block;
+}
 main.layout textarea {
   position: relative;
   margin: 1rem auto;
-  display: block;
   height: 6em;
   max-height: 40vh;
   width: 96%;
@@ -176,15 +174,31 @@ main.layout textarea:focus {
   border-color: #bfb38c;
   color: #333;
 }
-main blockquote {
+#utility {
+  display: none;
+}
+main article {
   margin: 3rem auto;
   width: 96%;
   padding: 0;
   font-family: 'Biaodian Pro Serif', Georgia, 'Zhuyin Kaiti', 'Han Songti', serif;
   font-size: 1.5em;
 }
+main article :link,
+main article :visited {
+  color: #3681c2;
+}
+main article a:hover {
+  color: #d9534f;
+}
+main article a:active {
+  color: #c32e2a;
+}
 #out {
   position: relative;
+}
+#out em .x {
+  -webkit-text-emphasis-position: over;
 }
 #out a-z {
   cursor: pointer;
@@ -193,18 +207,28 @@ main blockquote {
 #out a-z:before {
   position: absolute;
   margin-left: 0.35em;
-  margin-top: 0.1em;
+  margin-top: 1.7em;
+  z-index: 10;
   content: '';
   display: inline-block;
   background-color: #337ab7;
   border-radius: 0.5em;
   padding: 0.15em;
 }
+#out a-z:before .x {
+  margin-top: 2.3em;
+}
 #out a-z:not(:hover):before {
   opacity: 0.7;
 }
 #out a-z.picking:before {
   background-color: #d9534f;
+  border: 0.1em solid #fff;
+  margin-left: 0.25em;
+  margin-top: 1.6em;
+}
+#out a-z.picking:before .x {
+  margin-top: 2.2em;
 }
 #out a-z.picked:before {
   background-color: #5bc0de;
@@ -239,12 +263,8 @@ main blockquote {
   border-bottom: 2px solid rgba(92,184,92,0.7);
   border-radius: 0.5em;
 }
-#pickr:before {
-  position: absolute;
-  top: -0.65em;
-  left: 1em;
-  font-size: 1.5em;
-  color: #fff;
+#pickr .x {
+  margin-top: 3.5em;
 }
 #pickr {
   display: none;
@@ -253,17 +273,21 @@ main blockquote {
   display: block;
 }
 #pickr li {
+  margin-right: 0.5em;
   display: inline-block;
   width: 1.5em;
-  padding: 0.1em 0.75em 0.1em 0.25em;
-  vertical-align: top;
-  font-family: 'Zhuyin Kaiti', 'Han Kaiti CNS', cursive, serif;
+  padding: 0.5em 0.75em 0.1em 0.25em;
+  font-family: 'Zhuyin Kaiti', 'Biaodian Pro Sans', 'Helvetica Neue', Arial, 'Zhuyin Kaiti', 'Han Heiti', sans-serif;
   font-size: 0.75em;
   text-align: left;
   cursor: pointer;
 }
+#pickr li:last-child {
+  margin-right: 0.125em;
+}
 #pref.layout {
   position: fixed;
+  z-index: 20;
   min-height: 19em;
   height: 50vh;
   background-color: #e7decf;
@@ -486,4 +510,48 @@ main blockquote {
   to {
     bottom: -100vh;
   }
+}
+body #pickr h-zhuyin {
+  position: relative;
+  display: inline-block;
+  height: 2.7em;
+  width: 0.8em;
+  line-height: 0.9;
+}
+body #pickr h-zhuyin h-diao {
+  position: absolute;
+  right: -0.9em;
+  top: 0;
+  display: inline-block;
+  width: 1em;
+}
+body #pickr h-zhuyin[length='1'] h-zhuyin {
+  margin-top: 0.125em;
+}
+body #pickr h-zhuyin[length='1'] h-diao {
+  margin-top: -0.35em;
+}
+body #pickr h-zhuyin[length='2'] h-zhuyin {
+  margin-top: -0.175em;
+}
+body #pickr h-zhuyin[length='2'] h-diao {
+  margin-top: 0.5em;
+}
+body #pickr h-zhuyin[length='3'] h-zhuyin {
+  margin-top: -0.45em;
+}
+body #pickr h-zhuyin[length='3'] h-diao {
+  margin-top: 1.3em;
+}
+body #pickr h-zhuyin[diao='˙'] h-diao {
+  right: -0.42em;
+}
+body #pickr h-zhuyin[diao='˙'][length='1'] h-diao {
+  margin-top: -0.5em;
+}
+body #pickr h-zhuyin[diao='˙'][length='2'] h-diao {
+  margin-top: -0.3em;
+}
+body #pickr h-zhuyin[diao='˙'][length='3'] h-diao {
+  margin-top: -0.25em;
 }
