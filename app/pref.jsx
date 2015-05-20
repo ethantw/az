@@ -77,9 +77,8 @@ class Select extends React.Component {
           className={ selected === key ? 'selected' : '' }
           onClick={ () => {
             Util.LS.set( id, key )
-            this.setState({
-              selected: key
-            })
+            this.props.io.IO()
+            this.setState({ selected: key })
           }}>{ item[key] }</li> )
       }
       </ul>
@@ -102,20 +101,22 @@ export default class Pref extends React.Component {
   }
 
   render() {
+    const io = this.props.io
     const { syntax, system, display, jinze } = this.state.pref
+
     return (
     <div id='pref' className='layout'>
       <Close parent={this.props.parent} />
       <ul>
         <li>
-          <Select name='代碼生成格式' id='syntax' val={syntax} item={{
+          <Select io={io} name='代碼生成格式' id='syntax' val={syntax} item={{
             simp: 'HTML5（簡易）',
             rtc:  'HTML5（複合式）',
             han:  '漢字標準格式（已渲染）'
           }} />
         </li>
         <li>
-          <Select name='標音系統' id='system' val={system} item={{
+          <Select io={io} name='標音系統' id='system' val={system} item={{
             both:   '注音－拼音共同標注',
             zhuyin: '注音符號',
             pinyin: '漢語拼音',
@@ -123,13 +124,13 @@ export default class Pref extends React.Component {
           }} />
         </li>
         <li>
-          <Select name='選擇發音時的標音系統' id='display' val={display} item={{
+          <Select io={io} name='選擇發音時的標音系統' id='display' val={display} item={{
             zhuyin: '注音',
             pinyin: '拼音'
           }} />
         </li>
         <li>
-          <Select name='標點禁則渲染' id='jinze' val={jinze} item={{
+          <Select io={io} name='標點禁則渲染' id='jinze' val={jinze} item={{
             yes: '啓用',
             no:  '關閉'
           }} />

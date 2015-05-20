@@ -1,12 +1,13 @@
 
 main.layout
+  #input
+    display block
   textarea
     $border = rgb( 75%, 70%, 55% ) 
     // posi
     position relative
     margin 1rem auto
     // box
-    display block
     height 6em 
     max-height 40vh
     width 96%
@@ -26,6 +27,8 @@ main.layout
       background-color #f5f5f5
       border-color $border
       color #333
+#utility
+  display none
 
 main article
   // posi
@@ -37,10 +40,22 @@ main article
   font-family $serif
   font-size 1.5em
   //line-height 2.5
+
+  :link,
+  :visited
+    color lighten( $k-primary, 5% )
+  a:hover
+    color $k-danger
+  a:active
+    color darken( $k-danger, 20% )
+
   
 #out
   // posi
   position: relative
+
+  & em  .x//// right-angled
+    -webkit-text-emphasis-position over
 
   a-z
     // posi
@@ -51,7 +66,8 @@ main article
     // posi
     position absolute
     margin-left .35em
-    margin-top .1em
+    margin-top 1.7em
+    z-index 10
     // box
     content ''
     display inline-block
@@ -59,10 +75,20 @@ main article
     background-color $k-primary
     border-radius .5em
     padding .15em
+
+    & .x//// right-angled
+      margin-top 2.3em
+      
   a-z:not(:hover):before
     opacity .7
   a-z.picking:before
     background-color $k-danger
+    border .1em solid #fff
+    margin-left .25em
+    margin-top 1.6em
+
+    & .x//// right-angled
+      margin-top 2.2em
   a-z.picked:before
     background-color $k-info
     
@@ -102,15 +128,9 @@ main article
   background-color #fff
   border-bottom 2px solid rgba( $k-success, .7 )
   border-radius .5em
-  +fh( caret-up )
-    // posi
-    position absolute
-    top -.65em
-    left 1em
-    // typo
-    font-size 1.5em
-    // style
-    color @background-color
+
+  & .x//// right-angled
+    margin-top 3.5em
 
   &
     display none
@@ -125,7 +145,7 @@ main article
     width 1.5em
     padding .5em .75em .1em .25em
     // typo
-    font-family $zhuyin, 'Han Kaiti CNS', cursive, serif
+    font-family $zhuyin, $sans
     font-size .75em
     text-align left
     // style

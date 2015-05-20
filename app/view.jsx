@@ -144,6 +144,7 @@ let IO = React.createClass({
 
     let { az, raw, clean } = Util.annotate( input, pickee )
     let { html, output }   = Util.wrap[method]( raw, isntZhuyin )
+
     if ( clean )  this.setState({ pickee: [] })
     this.setState({ az, html, output })
   },
@@ -166,7 +167,12 @@ let IO = React.createClass({
       if ( former )  former.classList.remove( 'picking' )
       this.setPicking( false )
     }
+    let target = e.target
     let az
+
+    if ( target.matches( 'a[href], a[href] *' ) && !( e.metaKey || e.shiftKey || e.ctrlKey || e.altKey )) {
+      e.preventDefault()
+    }
 
     cleanFormer()
     az = Pickr.zi( e.target )
@@ -198,10 +204,12 @@ let IO = React.createClass({
     return (
     <main id='io' ref='io' className='layout'>
       <div id='in'>
-        <textarea defaultValue={this.state.input} rows='7' onChange={this.handleInput} />
+        <textarea id='input' defaultValue={this.state.input} rows='7' onChange={this.handleInput} />
+        <textarea id='html' hidden value={this.state.html} rows='7' />
+        <input id='url' hidden value={this.state.url} />
         <ul id='utility'>
           <li><button>拷貝輸出代碼</button></li>
-          <li><button>取得網址</button></li>
+          <li><button>拷貝網址</button></li>
           <li><button>鎖定</button></li>
         </ul>
       </div>
@@ -246,8 +254,8 @@ let Page = React.createClass({
     return (
     <div id='body' ref='body' className='layout init'>
       <Nav parent={this} />
-      <IO parent={this} />
-      <Pref parent={this} />
+      <IO ref='io' parent={this} />
+      <Pref parent={this} io={this.refs.io} />
     </div>
     )
   },

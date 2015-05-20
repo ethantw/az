@@ -81,8 +81,8 @@ let Util = {
           let isPicked = R.picked.test( yin ) ? ' picked' : ''
           let arb      = `${ zi }<rt>${ yin.replace( /\*+$/g, '' ) }</rt>`
           return ( isHeter ) ?
-            `<a-z class='${ isPicked }'><ruby class='${ clazz }'>${ arb }</ruby></a-z>` :
-            `<ruby class='${ clazz }'>${ arb }</ruby>`
+            `<a-z class="${ isPicked }"><ruby class="${ clazz }">${ arb }</ruby></a-z>` :
+            `<ruby class="${ clazz }">${ arb }</ruby>`
         }
       )
       return {
@@ -104,22 +104,23 @@ let Util = {
         let [ html, rbc, rtc, rtc2 ] = [ elem.innerHTML, '', '', '' ]
 
         rbc = html.replace( R.anno, ( match, zi, yin ) => {
-          let isHeter = R.heter.test( yin )
-          let isBoth  = R.both.test( yin )
-          let rb      = `<rb>${ zi }</rb>`
+          let isHeter  = R.heter.test( yin )
+          let isPicked = R.picked.test( yin ) ? 'class="picked"' : ''
+          let isBoth   = R.both.test( yin )
+          let rb       = `<rb>${ zi }</rb>`
 
           yin   = yin.replace( /\*+$/g, '' ).split( '|' )
           rtc  += `<rt>${ yin[0] }</rt>`
           rtc2 += isBoth ? `<rt>${ yin[1] }</rt>` : ''
-          return isHeter ? `<a-z>${ rb }</a-z>` : rb
+          return isHeter ? `<a-z ${ isPicked }>${ rb }</a-z>` : rb
         })
 
         elem.innerHTML = `
-          <ruby class='complex'>${ rbc }
-            <rtc class='${ clazz }'>${ rtc }</rtc>
-            ${ rtc2 ? `<rtc class='pinyin'>${ rtc2 }</rtc>` : '' }
+          <ruby class="complex">${ rbc }
+            <rtc class="${ clazz }">${ rtc }</rtc>
+            ${ rtc2 ? `<rtc class="pinyin">${ rtc2 }</rtc>` : '' }
           </ruby>
-        `
+        `.replace( /\n\s+/gi, '' )
       })
 
       html = div.innerHTML
