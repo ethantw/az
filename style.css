@@ -218,6 +218,9 @@ main article a:active {
 #out a-z:before .x {
   margin-top: 2.3em;
 }
+#out a-z:before .x {
+  margin-left: 0.55em;
+}
 #out a-z:not(:hover):before {
   opacity: 0.7;
 }
@@ -229,6 +232,9 @@ main article a:active {
 }
 #out a-z.picking:before .x {
   margin-top: 2.2em;
+}
+#out a-z.picking:before .x {
+  margin-left: 0.45em;
 }
 #out a-z.picked:before {
   background-color: #5bc0de;
@@ -265,6 +271,9 @@ main article a:active {
 }
 #pickr .x {
   margin-top: 3.5em;
+}
+#pickr .x {
+  margin-top: 2em;
 }
 #pickr {
   display: none;
@@ -510,6 +519,39 @@ main article a:active {
   to {
     bottom: -100vh;
   }
+}
+h-ruby h-ru[annotation] {
+  display: inline-flex;
+  display: -webkit-inline-flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  vertical-align: 1em;
+  line-height: 2.5;
+  text-align: center;
+}
+h-ruby h-ru[annotation]:before {
+  content: none;
+  display: none;
+}
+h-ruby h-ru[annotation] rb,
+h-ruby h-ru[annotation] rt {
+  -webkit-flex: 1 100%;
+  flex: 1 100%;
+  -webkit-order: 2;
+  order: 2;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  line-height: 1;
+}
+h-ruby h-ru[annotation] rt {
+  margin-top: -2em;
+  max-width: 100%;
+  min-width: 1em;
+  -webkit-order: 1;
+  order: 1;
+  font: inherit;
+  font-size: 0.45em;
+  text-align: center;
 }
 body #pickr h-zhuyin {
   position: relative;
