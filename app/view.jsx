@@ -125,7 +125,7 @@ let IO = React.createClass({
       zi: null,
       picking: false,
       pickrXY: {},
-      input: '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌',
+      input: '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌\n讓媽媽來安裝窗戶。',
       pickee: {
         0: { zi: '為', yin: 1 },
         3: { zi: '的', yin: 2 },

@@ -15,6 +15,40 @@ h-zhuyin
 h-yin
   //-clean-scale()
 
+//  Romanization
+// --------------
+h-ruby h-ru[annotation]
+  // posi
+  position relative
+  // box
+  display -webkit-inline-flex
+  display inline-flex
+  -webkit-flex-flow row-reverse wrap
+  flex-flow row-reverse wrap
+  -webkit-justify-content center
+  justify-content center
+  min-height 2em
+  min-width 1em
+  vertical-align 1.2em
+
+  rb,
+  rt
+    // typo
+    text-align center
+  rb
+    // posi
+    position absolute
+    top .55em
+    left 0
+    right 0
+  rt
+    // typo
+    font-size .55em
+
+    &:before,
+    &:after
+      content '\200A'
+
 body #pickr
   h-zhuyin
     // posi
