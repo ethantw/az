@@ -1,23 +1,22 @@
 
 -scale( $size )
-  -moz-transform:    scale( $size ) !important
-  -ms-transform:     scale( $size ) !important
-  -webkit-transform: scale( $size ) !important
-  transform:         scale( $size ) !important
+  -moz-transform:    scale( $size )
+  -ms-transform:     scale( $size )
+  -webkit-transform: scale( $size )
+  transform:         scale( $size )
+  -moz-transform-origin:    left top
+  -ms-transform-origin:     left top
+  -webkit-transform-origin: left top
+  transform-origin:         left top
 -clean-scale()
   -moz-transform:    none !important
   -ms-transform:     none !important
   -webkit-transform: none !important
   transform:         none !important
 
-h-zhuyin
-  //-scale( .3 )
-h-yin
-  //-clean-scale()
-
 //  Romanization
 // --------------
-h-ruby h-ru[annotation]
+h-ru[annotation]
   // posi
   position relative
   // box
@@ -27,7 +26,6 @@ h-ruby h-ru[annotation]
   flex-flow row-reverse wrap
   -webkit-justify-content center
   justify-content center
-  min-height 2em
   min-width 1em
   vertical-align 1.2em
 
@@ -49,48 +47,84 @@ h-ruby h-ru[annotation]
     &:after
       content '\200A'
 
-body #pickr
+//  Zhuyin
+// --------
+$han-zhuyin
   h-zhuyin
     // posi
     position relative
     // box
     display inline-block
-    height 2.7em
-    width .8em
+    height (.4*3)em
+    width .4em
+    vertical-align -(.4/2)em
+    //- reset all possible text styles
+    font-style none !important
+    font-weight normal !important
+    text-decoration none !important
+    -webkit-text-emphasis none !important
+    text-emphasis none !important
     // typo
-    line-height .9
+    font-family $zhuyin, 'Han Kaiti CNS', cursive, serif
+  h-zhuyin > *
+    // box
+    -scale( .4 )
+    display inline-block
+    width 1em
+  h-yin
+    // box
+    vertical-align middle
+    line-height 1
+  h-diao
+    // posi
+    position absolute
+    bottom 0
+    right -.9em
+    // box
+    height @width
+    // typo
+    line-height 1
+  h-diao:empty
+    display none
 
+  &[length='1'],
+  [length='1']
     h-diao
-      // posi
-      position absolute
-      right -.9em
+      bottom 0
+  &[length='2'],
+  [length='2']
+    h-yin
+      vertical-align -.8em
+    h-diao
+      bottom -.2em
+  &[length='3'],
+  [length='3']
+    h-yin
+      line-height .9
+    h-diao
+      bottom -.25em
+  &[diao='˙'],
+  [diao='˙']
+    h-diao
       top 0
-      // box
-      display inline-block
-      width 1em
+      right auto
+      bottom auto
+      left .07em
+    &[length='1'] h-diao,
+    [length='1'] h-diao
+      top .25em
+    &[length='2'] h-diao,
+    [length='2'] h-diao
+      top .05em
+    &[length='3'] h-diao,
+    [length='3'] h-diao
+      top -.15em
 
-    &[length='1']
-      h-zhuyin
-        margin-top: .125em
-       h-diao
-        margin-top -.35em
-    &[length='2']
-      h-zhuyin
-        margin-top: -.175em
-      h-diao
-        margin-top .5em
-    &[length='3']
-      h-zhuyin
-        margin-top: -.45em
-      h-diao
-        margin-top 1.3em
-    &[diao='˙']
-      h-diao
-        right -.42em
-      &[length='1'] h-diao
-        margin-top: -.5em
-      &[length='2'] h-diao
-        margin-top: -.3em
-      &[length='3'] h-diao
-        margin-top: -.25em
+h-ru[zhuyin]
+  @extend $han-zhuyin
+  // posi
+  margin-right .2em
+  // box
+  display inline-block
+  // typo
 
