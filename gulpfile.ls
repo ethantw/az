@@ -38,7 +38,7 @@ gulp.task \dev <[ www server ]> ->
   gulp.watch './app/css/*.styl' <[ css ]>
 
 gulp.task \lib ->
-  src \./app/lib/*
+  src \./app/lib/**/*
     .pipe dest WWW
 
 gulp.task \es6 ->
