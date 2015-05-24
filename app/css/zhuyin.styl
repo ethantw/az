@@ -23,8 +23,8 @@ h-ru[annotation]
   // box
   display -webkit-inline-flex
   display inline-flex
-  -webkit-flex-flow row-reverse wrap
-  flex-flow row-reverse wrap
+  -webkit-flex-flow row wrap
+  flex-flow row wrap
   -webkit-justify-content center
   justify-content center
   min-width 1em
@@ -34,24 +34,31 @@ h-ru[annotation]
   em &
     margin-bottom 1.8em
 
-  rb,
-  rt
+  > rb,
+  > h-ru,
+  > rt
     // typo
     line-height 1
     text-align center
-  rb
+  > rb,
+  > h-ru
     // posi
     position absolute
-    top .6em
     left 0
     right 0
-  rt
+  > rb
+    top .6em
+  > rt
     // typo
     font-size .5em
 
     &:before,
     &:after
       content '\200A'
+  > h-ru[zhuyin]
+    top auto
+  > h-ru[zhuyin] + rt
+    margin-top 2.1em
 
 //  Zhuyin
 // --------
@@ -132,4 +139,34 @@ h-ru[zhuyin]
   margin-right .2em
   // box
   display inline-block
+  // typo
+  line-height 1.8
+
+//  Right-angle
+// -------------
+[rightangle]
+  h-ru[annotation]
+    // box
+    min-width 1.8em
+    vertical-align -.6em
+  em & h-ru[annotation],
+  em h-ru[annotation]
+    margin-bottom 0
+
+h-ru h-ru[zhuyin]
+  // posi
+  margin-top -.4em
+  margin-left .2em
+  // box
+  width 1.8em
+  // typo
+  line-height 1.8
+
+  em &
+    // posi
+    margin-top -.7em
+    margin-bottom 0
+    // typo
+    -webkit-text-emphasis-position over
+    text-emphasis-position over
 
