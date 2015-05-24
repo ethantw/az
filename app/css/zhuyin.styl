@@ -19,7 +19,7 @@
 h-ru[annotation]
   // posi
   position relative
-  margin-top -.25em
+  margin-top .05em
   // box
   display -webkit-inline-flex
   display inline-flex
@@ -28,21 +28,26 @@ h-ru[annotation]
   -webkit-justify-content center
   justify-content center
   min-width 1em
-  vertical-align 1.2em
+  vertical-align 1em
+
+  // Adjustments for emphasis marks (着重號)
+  em &
+    margin-bottom 1.8em
 
   rb,
   rt
     // typo
+    line-height 1
     text-align center
   rb
     // posi
     position absolute
-    top .55em
+    top .6em
     left 0
     right 0
   rt
     // typo
-    font-size .55em
+    font-size .5em
 
     &:before,
     &:after
@@ -127,5 +132,4 @@ h-ru[zhuyin]
   margin-right .2em
   // box
   display inline-block
-  // typo
 
