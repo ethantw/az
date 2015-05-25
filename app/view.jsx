@@ -4,6 +4,12 @@ import Util  from './util'
 import Pickr from './pickr'
 import Pref  from './pref.jsx'
 
+const LIB = {
+  css:    '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.css">',
+  js:     '<script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.js"></script>',
+  render: '<script>var d=document;d.addEventListener("DOMContentLoaded",function(){Han(d.body).renderRuby()})</script>',
+}
+
 Util.XHR([
   './data/sound.min.json',
   './data/reverse.min.json',
@@ -159,10 +165,19 @@ let IO = React.createClass({
     let isntZhuyin = system === 'pinyin' || system === 'wg'
 
     let { az, raw, clean } = Util.annotate( input, pickee )
-    let { html, output }   = Util.wrap[method]( raw, isntZhuyin )
+    let { code, output }   = Util.wrap[method]( raw, isntZhuyin )
+    let lib = syntax === 'han' ? LIB.css : `${LIB.css}\n${LIB.js}\n${LIB.render}`
+
+    code = syntax === 'han' ? output.__html : code
+    code += `\n${lib}\n`
+    code = Util.mergeRuby(
+      code
+      .replace( /<a\-z[^>]*>/gi, '' )
+      .replace( /<\/a\-z>/gi, '' )
+    )
 
     if ( clean )  this.setState({ pickee: [] })
-    this.setState({ az, html, output })
+    this.setState({ az, code, output })
   },
 
   handleInput( e ) {
@@ -199,7 +214,7 @@ let IO = React.createClass({
     let pickrXY = az.style || null
     this.setPicking()
     this.setState({ current, zi, pickrXY })
-    Util.listenToLosingFocus( 'a-z *, #pickr *', cleanFormer )
+    Util.listenToLosingFocus( 'a-z *, #pickr *, nav *, #pref *', cleanFormer )
   },
 
   pickYin( e, i ) {
@@ -211,6 +226,7 @@ let IO = React.createClass({
       yin: this.state.az[current][i]
     }
     this.IO( pickee )
+    this.setPicking( false )
   },
 
   handlePlay() {},
@@ -226,7 +242,7 @@ let IO = React.createClass({
     <main id='io' ref='io' className='layout'>
       <div id='in' ref='in' className='input'>
         <textarea id='input' ref='input' defaultValue={this.state.input} onChange={this.handleInput} />
-        <textarea id='code' value={this.state.html} />
+        <textarea id='code' value={this.state.code} />
         <textarea id='url' value={this.state.url} />
         <ul id='utility'>
           {

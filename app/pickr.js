@@ -17,8 +17,8 @@ export default {
     zi = ( rb || target ).textContent[0]
 
     style = {
-      left: `${ru.offsetLeft}px`,
-      top:  `${ru.offsetTop}px`,
+      left: `${target.offsetLeft}px`,
+      top:  `${target.offsetTop}px`,
     }
     return { i, style, zi }
   },

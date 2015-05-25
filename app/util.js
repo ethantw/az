@@ -40,9 +40,13 @@ let Util = {
     return remover
   },
 
+  mergeRuby( html ) {
+    return html.replace( /<\/ruby><ruby\sclass=([\"\'])(zhuyin|pinyin)\1>/gi, '' )
+  },
+
   rubify( html ) {
     let div = document.createElement( 'div' )
-    div.innerHTML = html.replace( /<\/ruby><ruby class=([\"\'])(zhuyin|pinyin)\1>/gi, '' )
+    div.innerHTML = Util.mergeRuby( html )
     Han( div ).renderRuby()
     Array.from( div.querySelectorAll( 'a-z' )).map(( az, i ) => az.setAttribute( 'i', i ))
     html = div.innerHTML
@@ -75,7 +79,7 @@ let Util = {
   wrap: {
     simple( raw, isntZhuyin=false ) {
       let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
-      let html = raw.replace(
+      let code = raw.replace(
         R.anno, ( match, zi, yin ) => {
           let isHeter  = R.heter.test( yin )
           let isPicked = R.picked.test( yin ) ? ' picked' : ''
@@ -86,24 +90,24 @@ let Util = {
         }
       )
       return {
-        html,
-        output: Util.rubify( html ),
+        code,
+        output: Util.rubify( code ),
       }
     },
 
     complex( raw, isntZhuyin=false ) {
       let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
       let div = document.createElement( 'div' )
-      let html, rbc
+      let code, rbc
 
       div.innerHTML = raw
 
       Array
       .from( div.querySelectorAll( '*:not(li) p, li, h1, h2, h3, h4, h5, h6' ))
       .forEach(( elem ) => {
-        let [ html, rbc, rtc, rtc2 ] = [ elem.innerHTML, '', '', '' ]
+        let [ code, rbc, rtc, rtc2 ] = [ elem.innerHTML, '', '', '' ]
 
-        rbc = html.replace( R.anno, ( match, zi, yin ) => {
+        rbc = code.replace( R.anno, ( match, zi, yin ) => {
           let isHeter  = R.heter.test( yin )
           let isPicked = R.picked.test( yin ) ? 'class="picked"' : ''
           let isBoth   = R.both.test( yin )
@@ -123,10 +127,10 @@ let Util = {
         `.replace( /\n\s+/gi, '' )
       })
 
-      html = div.innerHTML
+      code = div.innerHTML
       return {
-        html,
-        output: Util.rubify( html ),
+        code,
+        output: Util.rubify( code ),
       }
     },
 
