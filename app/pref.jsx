@@ -77,7 +77,7 @@ class Select extends React.Component {
           className={ selected === key ? 'selected' : '' }
           onClick={ () => {
             Util.LS.set( id, key )
-            this.props.io.IO()
+            this.props.io.setPref()
             this.setState({ selected: key })
           }}>{ item[key] }</li> )
       }

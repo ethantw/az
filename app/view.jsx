@@ -139,6 +139,17 @@ let IO = React.createClass({
     let node = React.findDOMNode( this.refs.input )
     node.focus()
     node.select()
+    this.setPref()
+  },
+
+  setPref() {
+    let node    = React.findDOMNode( this.refs.io )
+    let system  = Util.LS.get( 'system' )
+    let display = Util.LS.get( 'display' )
+
+    this.IO()
+    node.setAttribute( 'data-system',  system  )
+    node.setAttribute( 'data-display', display )
   },
 
   IO( pickee=this.state.pickee, input=this.state.input ) {

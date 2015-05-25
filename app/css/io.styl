@@ -125,9 +125,6 @@ main article
   // posi
   position: relative
 
-  & em  .x//// right-angled
-    -webkit-text-emphasis-position over
-
   a-z
     // posi
     cursor pointer
@@ -137,7 +134,7 @@ main article
     // posi
     position absolute
     margin-left .35em
-    margin-top 1.7em
+    margin-top 1.65em
     // box
     content ''
     display inline-block
@@ -146,10 +143,12 @@ main article
     border-radius .5em
     padding .15em
 
-    & .x//// right-angled
-      margin-top 2.3em
-    & .x//// Romanisation
-      margin-left .55em
+    [data-system='both'] &
+      margin-left .75em
+      margin-top 2em
+    [data-system='pinyin'] &,
+    [data-system='wg'] &
+      margin-top 1.85em
       
   a-z:not(:hover):before
     opacity .7
@@ -158,12 +157,14 @@ main article
     background-color $k-danger
     border .1em solid #fff
     margin-left .25em
-    margin-top 1.6em
+    margin-top 1.55em
 
-    & .x//// right-angled
-      margin-top 2.2em
-    & .x//// Romanisation
-      margin-left .45em
+    [data-system='both'] &
+      margin-left .65em
+      margin-top 1.9em
+    [data-system='pinyin'] &,
+    [data-system='wg'] &
+      margin-top 1.75em
   a-z.picked:before
     background-color $k-info
     
@@ -194,7 +195,7 @@ main article
   @extend $han-zhuyin
   // posi
   position absolute
-  margin 3em 0 0 -1.25em
+  margin 2.7em 0 0 -1.25em
   // box
   min-width 4em
   padding .5em 1em
@@ -206,10 +207,11 @@ main article
   border-bottom 2px solid rgba( $k-success, .7 )
   border-radius .5em
 
-  & .x//// right-angled
-    margin-top 3.5em
-  & .x//// Romanisation
-    margin-top 2em
+  [data-system='both'] &
+    //
+  [data-system='pinyin'] &,
+  [data-system='wg'] &
+    margin-top 3em
 
   &
     display none
@@ -230,4 +232,6 @@ main article
     cursor pointer
   li:last-child
     margin-right .125em
+  [data-display='pinyin'] & li
+    font-size 1.2em
 
