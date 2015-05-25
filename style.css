@@ -7,6 +7,11 @@
 nav.layout .pref:before,
 nav.layout .about:before,
 nav.layout .gh-repo:before,
+#utility .input button:before,
+#utility .code button:before,
+#utility .url button:before,
+#utility .lock button:before,
+.locked #utility .lock button:before,
 #pref.layout button.close:first-of-type:before,
 #pref.layout li button:after {
   -moz-box-sizing: border-box;
@@ -24,6 +29,14 @@ nav.layout .gh-repo:before,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transform: translate(0, 0);
+}
+#utility .lock button {
+  color: transparent;
+  display: inline-block;
+  height: 1.1em;
+  width: 1.1em;
+  overflow: hidden;
+  padding: 0.05em;
 }
 nav.layout .pref:hover:before {
   -webkit-animation: fh-spin 2s infinite linear;
@@ -84,6 +97,12 @@ nav.layout .pref:hover:before {
 nav.layout .pref:before {
   content: '\f013';
 }
+#utility .lock button:before {
+  content: '\f023';
+}
+#utility .input button:before {
+  content: '\f039';
+}
 nav.layout .about:before {
   content: '\f05a';
 }
@@ -91,7 +110,197 @@ nav.layout .gh-repo:before {
   content: '\f09b';
 }
 #pref.layout li button:after {
-  content: '\f0d7';
+  content: '\f107';
+}
+#utility .code button:before {
+  content: '\f121';
+}
+.locked #utility .lock button:before {
+  content: '\f13e';
+}
+#utility .url button:before {
+  content: '\f1e0';
+}
+h-ru[annotation] {
+  position: relative;
+  margin-top: 0.05em;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+  min-width: 1em;
+  vertical-align: 1em;
+}
+em h-ru[annotation] {
+  margin-bottom: 1.8em;
+}
+h-ru[annotation] > rb,
+h-ru[annotation] > h-ru,
+h-ru[annotation] > rt {
+  line-height: 1;
+  text-align: center;
+}
+h-ru[annotation] > rb,
+h-ru[annotation] > h-ru {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+h-ru[annotation] > rb {
+  top: 0.6em;
+}
+h-ru[annotation] > rt {
+  font-size: 0.5em;
+}
+h-ru[annotation] > rt:before,
+h-ru[annotation] > rt:after {
+  content: '\200A';
+}
+h-ru[annotation] > h-ru[zhuyin] {
+  top: auto;
+}
+h-ru[annotation] > h-ru[zhuyin] + rt {
+  margin-top: 2.1em;
+}
+h-ru[zhuyin] h-zhuyin,
+#pickr h-zhuyin {
+  position: relative;
+  display: inline-block;
+  height: 1.2em;
+  width: 0.4em;
+  vertical-align: -0.2em;
+  font-style: none !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
+  -webkit-text-emphasis: none !important;
+  text-emphasis: none !important;
+  font-family: 'Zhuyin Kaiti', 'Han Kaiti CNS', cursive, serif;
+}
+h-ru[zhuyin] h-zhuyin > *,
+#pickr h-zhuyin > * {
+  -moz-transform: scale(0.4);
+  -ms-transform: scale(0.4);
+  -webkit-transform: scale(0.4);
+  transform: scale(0.4);
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+  display: inline-block;
+  width: 1em;
+}
+h-ru[zhuyin] h-yin,
+#pickr h-yin {
+  vertical-align: middle;
+  line-height: 1;
+}
+h-ru[zhuyin] h-diao,
+#pickr h-diao {
+  position: absolute;
+  bottom: 0;
+  right: -0.9em;
+  height: ;
+  line-height: 1;
+}
+h-ru[zhuyin] h-diao:empty,
+#pickr h-diao:empty {
+  display: none;
+}
+h-ru[zhuyin][length='1'] h-diao,
+#pickr[length='1'] h-diao,
+h-ru[zhuyin] [length='1'] h-diao,
+#pickr [length='1'] h-diao {
+  bottom: 0;
+}
+h-ru[zhuyin][length='2'] h-yin,
+#pickr[length='2'] h-yin,
+h-ru[zhuyin] [length='2'] h-yin,
+#pickr [length='2'] h-yin {
+  vertical-align: -0.8em;
+}
+h-ru[zhuyin][length='2'] h-diao,
+#pickr[length='2'] h-diao,
+h-ru[zhuyin] [length='2'] h-diao,
+#pickr [length='2'] h-diao {
+  bottom: -0.2em;
+}
+h-ru[zhuyin][length='3'] h-yin,
+#pickr[length='3'] h-yin,
+h-ru[zhuyin] [length='3'] h-yin,
+#pickr [length='3'] h-yin {
+  line-height: 0.9;
+}
+h-ru[zhuyin][length='3'] h-diao,
+#pickr[length='3'] h-diao,
+h-ru[zhuyin] [length='3'] h-diao,
+#pickr [length='3'] h-diao {
+  bottom: -0.25em;
+}
+h-ru[zhuyin][diao='˙'] h-diao,
+#pickr[diao='˙'] h-diao,
+h-ru[zhuyin] [diao='˙'] h-diao,
+#pickr [diao='˙'] h-diao {
+  top: 0;
+  right: auto;
+  bottom: auto;
+  left: 0;
+}
+h-ru[zhuyin][diao='˙'][length='1'] h-diao,
+#pickr[diao='˙'][length='1'] h-diao,
+h-ru[zhuyin] [diao='˙'][length='1'] h-diao,
+#pickr [diao='˙'][length='1'] h-diao,
+h-ru[zhuyin][diao='˙'] [length='1'] h-diao,
+#pickr[diao='˙'] [length='1'] h-diao,
+h-ru[zhuyin] [diao='˙'] [length='1'] h-diao,
+#pickr [diao='˙'] [length='1'] h-diao {
+  top: 0.25em;
+}
+h-ru[zhuyin][diao='˙'][length='2'] h-diao,
+#pickr[diao='˙'][length='2'] h-diao,
+h-ru[zhuyin] [diao='˙'][length='2'] h-diao,
+#pickr [diao='˙'][length='2'] h-diao,
+h-ru[zhuyin][diao='˙'] [length='2'] h-diao,
+#pickr[diao='˙'] [length='2'] h-diao,
+h-ru[zhuyin] [diao='˙'] [length='2'] h-diao,
+#pickr [diao='˙'] [length='2'] h-diao {
+  top: 0.1em;
+}
+h-ru[zhuyin][diao='˙'][length='3'] h-diao,
+#pickr[diao='˙'][length='3'] h-diao,
+h-ru[zhuyin] [diao='˙'][length='3'] h-diao,
+#pickr [diao='˙'][length='3'] h-diao,
+h-ru[zhuyin][diao='˙'] [length='3'] h-diao,
+#pickr[diao='˙'] [length='3'] h-diao,
+h-ru[zhuyin] [diao='˙'] [length='3'] h-diao,
+#pickr [diao='˙'] [length='3'] h-diao {
+  top: -0.15em;
+}
+h-ru[zhuyin] {
+  margin-right: 0.2em;
+  display: inline-block;
+  line-height: 1.8;
+}
+[rightangle] h-ru[annotation] {
+  min-width: 1.8em;
+  vertical-align: -0.6em;
+}
+em [rightangle] h-ru[annotation],
+[rightangle] em h-ru[annotation] {
+  margin-bottom: 0;
+}
+h-ru h-ru[zhuyin] {
+  margin-top: -0.4em;
+  margin-left: 0.2em;
+  width: 1.8em;
+  line-height: 1.8;
+}
+em h-ru h-ru[zhuyin] {
+  margin-top: -0.7em;
+  margin-bottom: 0;
+  -webkit-text-emphasis-position: over;
+  text-emphasis-position: over;
 }
 :root {
   box-sizing: border-box;
@@ -150,55 +359,110 @@ nav.layout .gh-repo:before {
   font-size: 1.8em;
   vertical-align: -0.1em;
 }
-main.layout #input {
-  display: block;
-}
-main.layout textarea {
+main.layout #in {
   position: relative;
   margin: 1rem auto;
-  height: 6em;
-  max-height: 40vh;
+  display: block;
   width: 96%;
+}
+main.layout textarea {
+  display: none;
+  height: 10em;
+  max-height: 45vh;
+  width: 100%;
   padding: 0.25em 0.5em;
   resize: vertical;
   font-size: 20px;
   background-color: #f0f0f0;
   border: 1px solid #d2caaf;
   border-radius: 0.5rem;
+  border-bottom-right-radius: 0;
   color: #666;
   outline: 0;
 }
 main.layout textarea:hover,
 main.layout textarea:focus {
-  background-color: #f5f5f5;
-  border-color: #bfb38c;
+  border-color: #d2caaf;
   color: #333;
 }
-#utility {
-  display: none;
+main.layout textarea[readonly] {
+  color: #aaa;
 }
-main article {
+#in.input #input,
+#in.code #code,
+#in.url #url {
+  display: block;
+}
+#in.input .input button,
+#in.code .code button,
+#in.url .url button {
+  background-color: #f0f0f0;
+  border-top-color: #f0f0f0;
+}
+#utility {
+  position: relative;
+  margin-top: -1px;
+  padding: 0;
+  list-style: none;
+  text-align: right;
+}
+#utility li {
+  margin-left: -1px;
+  display: inline-block;
+}
+#utility li:last-child {
+  margin-right: 1px;
+}
+#utility button {
+  padding: 0.4em 0.6em 0.3em;
+  height: auto;
+  width: auto;
+  font-size: 0.9em;
+  background: none #efe9df;
+  border: 1px solid #d2caaf;
+  border-bottom-left-radius: 0.2em;
+  border-bottom-right-radius: 0.2em;
+  color: #948553;
+}
+#utility button:before {
+  margin-right: 0.2em;
+  color: #555;
+}
+#utility .lock button {
+  position: absolute;
+  left: 0.25em;
+  top: 0;
+  padding-top: 0.7em;
+  height: 2em;
+  width: 2em;
+  background: none;
+  border: 0;
+}
+#utility .lock button:before {
+  color: #333;
+}
+article {
   margin: 3rem auto;
   width: 96%;
   padding: 0;
   font-family: 'Biaodian Pro Serif', Georgia, 'Zhuyin Kaiti', 'Han Songti', serif;
   font-size: 1.5em;
 }
-main article :link,
-main article :visited {
+article :link,
+article :visited {
   color: #3681c2;
 }
-main article a:hover {
+article a:hover {
   color: #d9534f;
 }
-main article a:active {
+article a:active {
   color: #c32e2a;
+}
+article rt {
+  font-family: 'Biaodian Pro Sans', 'Helvetica Neue', Arial, 'Zhuyin Kaiti', 'Han Heiti', sans-serif;
 }
 #out {
   position: relative;
-}
-#out em .x {
-  -webkit-text-emphasis-position: over;
 }
 #out a-z {
   cursor: pointer;
@@ -207,34 +471,38 @@ main article a:active {
 #out a-z:before {
   position: absolute;
   margin-left: 0.35em;
-  margin-top: 1.7em;
-  z-index: 10;
+  margin-top: 1.65em;
   content: '';
   display: inline-block;
   background-color: #337ab7;
   border-radius: 0.5em;
   padding: 0.15em;
 }
-#out a-z:before .x {
-  margin-top: 2.3em;
+[data-system='both'] #out a-z:before {
+  margin-left: 0.75em;
+  margin-top: 2em;
 }
-#out a-z:before .x {
-  margin-left: 0.55em;
+[data-system='pinyin'] #out a-z:before,
+[data-system='wg'] #out a-z:before {
+  margin-top: 1.85em;
 }
 #out a-z:not(:hover):before {
   opacity: 0.7;
 }
 #out a-z.picking:before {
+  z-index: 10;
   background-color: #d9534f;
   border: 0.1em solid #fff;
   margin-left: 0.25em;
-  margin-top: 1.6em;
+  margin-top: 1.55em;
 }
-#out a-z.picking:before .x {
-  margin-top: 2.2em;
+[data-system='both'] #out a-z.picking:before {
+  margin-left: 0.65em;
+  margin-top: 1.9em;
 }
-#out a-z.picking:before .x {
-  margin-left: 0.45em;
+[data-system='pinyin'] #out a-z.picking:before,
+[data-system='wg'] #out a-z.picking:before {
+  margin-top: 1.75em;
 }
 #out a-z.picked:before {
   background-color: #5bc0de;
@@ -264,16 +532,15 @@ main article a:active {
   margin: 2.7em 0 0 -1.25em;
   min-width: 4em;
   padding: 0.5em 1em;
+  line-height: 1.8;
   list-style: none;
   background-color: #fff;
   border-bottom: 2px solid rgba(92,184,92,0.7);
   border-radius: 0.5em;
 }
-#pickr .x {
-  margin-top: 3.5em;
-}
-#pickr .x {
-  margin-top: 2em;
+[data-system='pinyin'] #pickr,
+[data-system='wg'] #pickr {
+  margin-top: 3em;
 }
 #pickr {
   display: none;
@@ -284,15 +551,17 @@ main article a:active {
 #pickr li {
   margin-right: 0.5em;
   display: inline-block;
-  width: 1.5em;
-  padding: 0.5em 0.75em 0.1em 0.25em;
   font-family: 'Zhuyin Kaiti', 'Biaodian Pro Sans', 'Helvetica Neue', Arial, 'Zhuyin Kaiti', 'Han Heiti', sans-serif;
-  font-size: 0.75em;
+  font-size: 2em;
+  font-weight: 200;
   text-align: left;
   cursor: pointer;
 }
 #pickr li:last-child {
   margin-right: 0.125em;
+}
+[data-display='pinyin'] #pickr li {
+  font-size: 1.2em;
 }
 #pref.layout {
   position: fixed;
@@ -519,81 +788,4 @@ main article a:active {
   to {
     bottom: -100vh;
   }
-}
-h-ruby h-ru[annotation] {
-  display: inline-flex;
-  display: -webkit-inline-flex;
-  -webkit-flex-flow: row wrap;
-  flex-flow: row wrap;
-  vertical-align: 1em;
-  line-height: 2.5;
-  text-align: center;
-}
-h-ruby h-ru[annotation]:before {
-  content: none;
-  display: none;
-}
-h-ruby h-ru[annotation] rb,
-h-ruby h-ru[annotation] rt {
-  -webkit-flex: 1 100%;
-  flex: 1 100%;
-  -webkit-order: 2;
-  order: 2;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  line-height: 1;
-}
-h-ruby h-ru[annotation] rt {
-  margin-top: -2em;
-  max-width: 100%;
-  min-width: 1em;
-  -webkit-order: 1;
-  order: 1;
-  font: inherit;
-  font-size: 0.45em;
-  text-align: center;
-}
-body #pickr h-zhuyin {
-  position: relative;
-  display: inline-block;
-  height: 2.7em;
-  width: 0.8em;
-  line-height: 0.9;
-}
-body #pickr h-zhuyin h-diao {
-  position: absolute;
-  right: -0.9em;
-  top: 0;
-  display: inline-block;
-  width: 1em;
-}
-body #pickr h-zhuyin[length='1'] h-zhuyin {
-  margin-top: 0.125em;
-}
-body #pickr h-zhuyin[length='1'] h-diao {
-  margin-top: -0.35em;
-}
-body #pickr h-zhuyin[length='2'] h-zhuyin {
-  margin-top: -0.175em;
-}
-body #pickr h-zhuyin[length='2'] h-diao {
-  margin-top: 0.5em;
-}
-body #pickr h-zhuyin[length='3'] h-zhuyin {
-  margin-top: -0.45em;
-}
-body #pickr h-zhuyin[length='3'] h-diao {
-  margin-top: 1.3em;
-}
-body #pickr h-zhuyin[diao='˙'] h-diao {
-  right: -0.42em;
-}
-body #pickr h-zhuyin[diao='˙'][length='1'] h-diao {
-  margin-top: -0.5em;
-}
-body #pickr h-zhuyin[diao='˙'][length='2'] h-diao {
-  margin-top: -0.3em;
-}
-body #pickr h-zhuyin[diao='˙'][length='3'] h-diao {
-  margin-top: -0.25em;
 }
