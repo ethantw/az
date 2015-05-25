@@ -1,34 +1,103 @@
 
 main.layout
-  #input
-    display block
-  textarea
-    $border = rgb( 75%, 70%, 55% ) 
+  #in
     // posi
     position relative
     margin 1rem auto
     // box
-    height 6em 
-    max-height 40vh
+    display block
     width 96%
+  textarea
+    // box
+    display none
+    height 10em 
+    max-height 45vh
+    width 100%
     padding .25em .5em
     resize vertical
     // typo
     font-size 20px
     // style
     background-color #f0f0f0
-    border 1px solid lighten( $border, 30% )
+    border 1px solid $k-bd-input
     border-radius .5rem
+    border-bottom-right-radius 0
     color #666
     outline 0
 
     &:hover,
     &:focus
       background-color #f5f5f5
-      border-color $border
+      border-color $k-bd-input
       color #333
+
+#in.input #input,
+#in.code #html,
+#in.url #url
+    display block
+#in.input .input button
+#in.code .code button
+#in.url .url button
+  background-color $k-bg-input
+  border-top-color $k-bg-input
+
 #utility
-  display none
+  // posi
+  position relative
+  margin-top -.1em
+  // box
+  padding 0
+  // typo
+  list-style none
+  text-align right
+
+  li
+    // posi
+    margin-left -1px
+    // box
+    display inline-block
+  li:last-child
+    margin-right 1px
+  button
+    // box
+    padding .4em .6em .3em
+    height auto
+    width @height
+    // typo
+    font-size .9em
+    // style
+    background none
+    border 1px solid $k-bd-input
+    border-top 0
+    border-bottom-left-radius  .2em
+    border-bottom-right-radius .2em
+    color darken( $k-bd-input, 40% )
+  button:before // icons
+    // posi
+    margin-right .2em
+    // style
+    color #555
+  .input button
+    fh( align-justify )
+  .code button
+    fh( code )
+  .url button
+    fh( share-alt )
+  .lock button
+    // posi
+    position absolute
+    left .25em
+    top 0
+    // box
+    padding-top .7em
+    height 2em
+    width @height
+    // typo
+    fh( lock )
+    fh-hide-text()
+    // style
+    background none
+    border 0
 
 main article
   // posi
@@ -39,7 +108,6 @@ main article
   // typo
   font-family $serif
   font-size 1.5em
-  //line-height 2.5
 
   :link,
   :visited
@@ -67,7 +135,6 @@ main article
     position absolute
     margin-left .35em
     margin-top 1.7em
-    z-index 10
     // box
     content ''
     display inline-block
@@ -84,6 +151,7 @@ main article
   a-z:not(:hover):before
     opacity .7
   a-z.picking:before
+    z-index 10
     background-color $k-danger
     border .1em solid #fff
     margin-left .25em
@@ -123,7 +191,7 @@ main article
   @extend $han-zhuyin
   // posi
   position absolute
-  margin 2.7em 0 0 -1.25em
+  margin 3em 0 0 -1.25em
   // box
   min-width 4em
   padding .5em 1em
@@ -153,6 +221,7 @@ main article
     // typo
     font-family $zhuyin, $sans
     font-size 2em
+    font-weight 200
     text-align left
     // style
     cursor pointer

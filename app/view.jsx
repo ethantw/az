@@ -201,16 +201,28 @@ let IO = React.createClass({
 
   render() {
     let current = this.state.az[this.state.current] || []
+    let utility = [
+      { c: 'input', n: '輸入' },
+      { c: 'code',  n: '拷貝輸出代碼' },
+      { c: 'url',   n: '拷貝網址' },
+    ]
     return (
     <main id='io' ref='io' className='layout'>
-      <div id='in'>
-        <textarea id='input' defaultValue={this.state.input} rows='7' onChange={this.handleInput} />
-        <textarea id='html' hidden value={this.state.html} rows='7' />
-        <input id='url' hidden value={this.state.url} />
+      <div id='in' ref='in' className='input'>
+        <textarea id='input' defaultValue={this.state.input} onChange={this.handleInput} />
+        <textarea id='html' value={this.state.html} />
+        <textarea id='url' value={this.state.url} />
         <ul id='utility'>
-          <li><button>拷貝輸出代碼</button></li>
-          <li><button>拷貝網址</button></li>
-          <li><button>鎖定</button></li>
+          {
+          utility.map(( it ) => (
+            <li className={ it.c }>
+              <button onClick={() => {
+                React.findDOMNode( this.refs['in'] ).className = it.c
+              }}>{ it.n }</button>
+            </li>
+          ))
+          }
+          <li className='lock'><button>鎖定</button></li>
         </ul>
       </div>
 
