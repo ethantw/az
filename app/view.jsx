@@ -7,7 +7,7 @@ import Pref  from './pref.jsx'
 const LIB = {
   css:    '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.css">',
   js:     '<script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.js"></script>',
-  render: '<script>var d=document;d.addEventListener("DOMContentLoaded",function(){Han(d.body).renderRuby()})</script>',
+  render: '<script>document.addEventListener("DOMContentLoaded",function(){Han().initCond().renderRuby()})</script>',
 }
 
 Util.XHR([
@@ -295,6 +295,10 @@ let Page = React.createClass({
       pref:  false,
       about: false
     }
+  },
+
+  componentDidMount() {
+    Han().initCond()
   },
 
   toggleUI( component ) {
