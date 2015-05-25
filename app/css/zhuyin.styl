@@ -70,7 +70,7 @@ $han-zhuyin
     display inline-block
     height (.4*3)em
     width .4em
-    vertical-align -(.4/2)em
+    vertical-align text-bottom
     //- reset all possible text styles
     font-style none !important
     font-weight normal !important
@@ -169,4 +169,37 @@ h-ru h-ru[zhuyin]
     // typo
     -webkit-text-emphasis-position over
     text-emphasis-position over
+
+$han-fake-emphasis-mark
+  &:after
+    position absolute
+    bottom -1.57em
+    left 50%
+    margin-left -.3em
+    content ''
+    display inline-block
+    height .25em
+    width @height
+    background-color #000
+    border-radius .5em
+
+.no-textemphasis
+  em h-ru
+    @extend $han-fake-emphasis-mark
+    &[zhuyin]
+      position relative
+    &[zhuyin]:after
+      bottom -.08em
+      margin-left -.35em
+    &[annotation]:after
+      margin-left -.125em
+  [rightangle] em
+    h-ru[annotation]:after
+      display none
+    h-ru h-ru
+      position absolute
+      margin-top -.4em
+    h-ru h-ru:after
+      bottom auto
+      top -.1em
 
