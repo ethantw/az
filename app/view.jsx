@@ -135,6 +135,11 @@ let IO = React.createClass({
   },
 
   componentWillMount() {  this.IO()  },
+  componentDidMount() {
+    let node = React.findDOMNode( this.refs.input )
+    node.focus()
+    node.select()
+  },
 
   IO( pickee=this.state.pickee, input=this.state.input ) {
     let syntax = Util.LS.get( 'syntax' )
@@ -209,20 +214,31 @@ let IO = React.createClass({
     return (
     <main id='io' ref='io' className='layout'>
       <div id='in' ref='in' className='input'>
-        <textarea id='input' defaultValue={this.state.input} onChange={this.handleInput} />
-        <textarea id='html' value={this.state.html} />
+        <textarea id='input' ref='input' defaultValue={this.state.input} onChange={this.handleInput} />
+        <textarea id='code' value={this.state.html} />
         <textarea id='url' value={this.state.url} />
         <ul id='utility'>
           {
           utility.map(( it ) => (
             <li className={ it.c }>
               <button onClick={() => {
-                React.findDOMNode( this.refs['in'] ).className = it.c
+                let node     = React.findDOMNode( this.refs['in'] )
+                let isLocked = node.classList.contains( 'locked' )
+                let textarea = document.getElementById( it.c )
+                node.className = it.c + ( isLocked ? ' locked' : '' )
+                textarea.focus()
+                textarea.select()
+                textarea.scrollTop = textarea.scrollHeight
               }}>{ it.n }</button>
             </li>
           ))
           }
-          <li className='lock'><button>鎖定</button></li>
+          <li className='lock'><button onClick={() => {
+            let clazz  = React.findDOMNode( this.refs['in'] ).classList
+            let input  = React.findDOMNode( this.refs.input )
+            clazz.toggle( 'locked' )
+            input.readOnly = !input.readOnly
+          }}>輸入框鎖定切換</button></li>
         </ul>
       </div>
 

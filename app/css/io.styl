@@ -18,7 +18,7 @@ main.layout
     // typo
     font-size 20px
     // style
-    background-color #f0f0f0
+    background-color $k-bg-input
     border 1px solid $k-bd-input
     border-radius .5rem
     border-bottom-right-radius 0
@@ -27,12 +27,13 @@ main.layout
 
     &:hover,
     &:focus
-      background-color #f5f5f5
       border-color $k-bd-input
       color #333
+    &[readonly]
+      color #aaa
 
 #in.input #input,
-#in.code #html,
+#in.code #code,
 #in.url #url
     display block
 #in.input .input button
@@ -44,7 +45,7 @@ main.layout
 #utility
   // posi
   position relative
-  margin-top -.1em
+  margin-top -1px
   // box
   padding 0
   // typo
@@ -66,9 +67,8 @@ main.layout
     // typo
     font-size .9em
     // style
-    background none
+    background none darken( $k-bg, 2% )
     border 1px solid $k-bd-input
-    border-top 0
     border-bottom-left-radius  .2em
     border-bottom-right-radius .2em
     color darken( $k-bd-input, 40% )
@@ -83,6 +83,7 @@ main.layout
     fh( code )
   .url button
     fh( share-alt )
+
   .lock button
     // posi
     position absolute
@@ -98,6 +99,8 @@ main.layout
     // style
     background none
     border 0
+  .locked & .lock button
+    fh( unlock-alt )
 
 main article
   // posi
