@@ -156,7 +156,7 @@ h-ru[annotation] > rt {
 }
 h-ru[annotation] > rt:before,
 h-ru[annotation] > rt:after {
-  content: '\200A';
+  content: '\2006';
 }
 h-ru[annotation] > h-ru[zhuyin] {
   top: auto;
@@ -170,7 +170,7 @@ h-ru[zhuyin] h-zhuyin,
   display: inline-block;
   height: 1.2em;
   width: 0.4em;
-  vertical-align: -0.2em;
+  vertical-align: text-bottom;
   font-style: none !important;
   font-weight: normal !important;
   text-decoration: none !important;
@@ -245,7 +245,7 @@ h-ru[zhuyin] [diao='˙'] h-diao,
   top: 0;
   right: auto;
   bottom: auto;
-  left: 0;
+  left: 0.08em;
 }
 h-ru[zhuyin][diao='˙'][length='1'] h-diao,
 #pickr[diao='˙'][length='1'] h-diao,
@@ -302,6 +302,39 @@ em h-ru h-ru[zhuyin] {
   -webkit-text-emphasis-position: over;
   text-emphasis-position: over;
 }
+.no-textemphasis em h-ru:after {
+  position: absolute;
+  bottom: -1.57em;
+  left: 50%;
+  margin-left: -0.3em;
+  content: '';
+  display: inline-block;
+  height: 0.25em;
+  width: 0.25em;
+  background-color: #000;
+  border-radius: 0.5em;
+}
+.no-textemphasis em h-ru[zhuyin] {
+  position: relative;
+}
+.no-textemphasis em h-ru[zhuyin]:after {
+  bottom: -0.08em;
+  margin-left: -0.35em;
+}
+.no-textemphasis em h-ru[annotation]:after {
+  margin-left: -0.125em;
+}
+.no-textemphasis [rightangle] em h-ru[annotation]:after {
+  display: none;
+}
+.no-textemphasis [rightangle] em h-ru h-ru {
+  position: absolute;
+  margin-top: -0.4em;
+}
+.no-textemphasis [rightangle] em h-ru h-ru:after {
+  bottom: auto;
+  top: -0.1em;
+}
 :root {
   box-sizing: border-box;
   font-size: 10px;
@@ -322,6 +355,9 @@ body {
 #body > .layout {
   width: 100%;
   padding: 0 calc((100% - 96rem) / 2);
+}
+button {
+  outline: 0;
 }
 nav.layout {
   position: fixed;
@@ -430,7 +466,7 @@ main.layout textarea[readonly] {
 }
 #utility .lock button {
   position: absolute;
-  left: 0.25em;
+  left: 0.05em;
   top: 0;
   padding-top: 0.7em;
   height: 2em;
@@ -445,7 +481,7 @@ article {
   margin: 3rem auto;
   width: 96%;
   padding: 0;
-  font-family: 'Biaodian Pro Serif', Georgia, 'Zhuyin Kaiti', 'Han Songti', serif;
+  font-family: 'Biaodian Pro Serif', Georgia, 'Zhuyin Kaiti', 'Kozuka Mincho Pr6N', 'Han Songti', serif;
   font-size: 1.5em;
 }
 article :link,
@@ -465,21 +501,27 @@ article rt {
   position: relative;
 }
 #out a-z {
+  position: relative;
   cursor: pointer;
   display: inline-block;
 }
 #out a-z:before {
   position: absolute;
-  margin-left: 0.35em;
-  margin-top: 1.65em;
+  left: 50%;
+  margin: 1.65em 0 0 -0.125em;
   content: '';
   display: inline-block;
+  overflow: hidden;
+  height: 0.25em;
+  width: 0.25em;
   background-color: #337ab7;
-  border-radius: 0.5em;
+  border-radius: 100%;
   padding: 0.15em;
 }
+[data-system='zhuyin'] #out a-z:before {
+  margin-left: -0.45em;
+}
 [data-system='both'] #out a-z:before {
-  margin-left: 0.75em;
   margin-top: 2em;
 }
 [data-system='pinyin'] #out a-z:before,
@@ -489,23 +531,25 @@ article rt {
 #out a-z:not(:hover):before {
   opacity: 0.7;
 }
+#out a-z.picked:before {
+  background-color: #5bc0de;
+}
 #out a-z.picking:before {
   z-index: 10;
+  margin: 1.55em 0 0 -0.23em;
   background-color: #d9534f;
   border: 0.1em solid #fff;
-  margin-left: 0.25em;
-  margin-top: 1.55em;
+  opacity: 1;
+}
+[data-system='zhuyin'] #out a-z.picking:before {
+  margin-left: -0.55em;
 }
 [data-system='both'] #out a-z.picking:before {
-  margin-left: 0.65em;
   margin-top: 1.9em;
 }
 [data-system='pinyin'] #out a-z.picking:before,
 [data-system='wg'] #out a-z.picking:before {
   margin-top: 1.75em;
-}
-#out a-z.picked:before {
-  background-color: #5bc0de;
 }
 #out button#play {
   float: left;
@@ -529,7 +573,7 @@ article rt {
 }
 #pickr {
   position: absolute;
-  margin: 2.7em 0 0 -1.25em;
+  margin: 2.7em 0 0 0.25em;
   min-width: 4em;
   padding: 0.5em 1em;
   line-height: 1.8;
@@ -537,6 +581,9 @@ article rt {
   background-color: #fff;
   border-bottom: 2px solid rgba(92,184,92,0.7);
   border-radius: 0.5em;
+}
+[data-system='both'] #pickr {
+  margin-top: 3.2em;
 }
 [data-system='pinyin'] #pickr,
 [data-system='wg'] #pickr {
@@ -556,6 +603,9 @@ article rt {
   font-weight: 200;
   text-align: left;
   cursor: pointer;
+}
+#pickr li:hover {
+  text-shadow: 0 0 0.2em #5bc0de;
 }
 #pickr li:last-child {
   margin-right: 0.125em;
