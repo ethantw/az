@@ -97,7 +97,7 @@ nav.layout .pref:hover:before {
 nav.layout .pref:before {
   content: '\f013';
 }
-#utility .lock button:before {
+.locked #utility .lock button:before {
   content: '\f023';
 }
 #utility .input button:before {
@@ -115,7 +115,7 @@ nav.layout .gh-repo:before {
 #utility .code button:before {
   content: '\f121';
 }
-.locked #utility .lock button:before {
+#utility .lock button:before {
   content: '\f13e';
 }
 #utility .url button:before {
@@ -424,6 +424,11 @@ main.layout textarea:focus {
 main.layout textarea[readonly] {
   color: #aaa;
 }
+main.layout #code,
+main.layout #url {
+  white-space: pre;
+  word-wrap: normal;
+}
 #in.input #input,
 #in.code #code,
 #in.url #url {
@@ -483,6 +488,7 @@ article {
   padding: 0;
   font-family: 'Biaodian Pro Serif', Georgia, 'Zhuyin Kaiti', 'Kozuka Mincho Pr6N', 'Han Songti', serif;
   font-size: 1.5em;
+  line-height: 2.5;
 }
 article :link,
 article :visited {
@@ -508,25 +514,25 @@ article rt {
 #out a-z:before {
   position: absolute;
   left: 50%;
-  margin: 1.65em 0 0 -0.125em;
+  margin: 2em 0 0 -0.125em;
   content: '';
   display: inline-block;
   overflow: hidden;
   height: 0.25em;
   width: 0.25em;
   background-color: #337ab7;
-  border-radius: 100%;
+  border-radius: 50%;
   padding: 0.15em;
 }
 [data-system='zhuyin'] #out a-z:before {
   margin-left: -0.45em;
 }
 [data-system='both'] #out a-z:before {
-  margin-top: 2em;
+  margin-top: 2.5em;
 }
 [data-system='pinyin'] #out a-z:before,
 [data-system='wg'] #out a-z:before {
-  margin-top: 1.85em;
+  margin-top: 2em;
 }
 #out a-z:not(:hover):before {
   opacity: 0.7;
@@ -536,7 +542,7 @@ article rt {
 }
 #out a-z.picking:before {
   z-index: 10;
-  margin: 1.55em 0 0 -0.23em;
+  margin: 1.9em 0 0 -0.23em;
   background-color: #d9534f;
   border: 0.1em solid #fff;
   opacity: 1;
@@ -545,11 +551,11 @@ article rt {
   margin-left: -0.55em;
 }
 [data-system='both'] #out a-z.picking:before {
-  margin-top: 1.9em;
+  margin-top: 2.4em;
 }
 [data-system='pinyin'] #out a-z.picking:before,
 [data-system='wg'] #out a-z.picking:before {
-  margin-top: 1.75em;
+  margin-top: 1.9em;
 }
 #out button#play {
   float: left;
@@ -583,11 +589,11 @@ article rt {
   border-radius: 0.5em;
 }
 [data-system='both'] #pickr {
-  margin-top: 3.2em;
+  margin: 3.5em 0 0 0.8em;
 }
 [data-system='pinyin'] #pickr,
 [data-system='wg'] #pickr {
-  margin-top: 3em;
+  margin-top: 2.8em;
 }
 #pickr {
   display: none;
