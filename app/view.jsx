@@ -4,6 +4,7 @@ import Util  from './util'
 import Pickr from './pickr'
 import Pref  from './pref.jsx'
 
+const WWW = 'https://ethantw.github.io/az/'
 const LIB = {
   css:    '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.css">',
   js:     '<script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.js"></script>',
@@ -29,7 +30,7 @@ const Vowel = {
 }
 
 Object.assign( Util, {
-  annotate( input, pickee=[] ) {
+  annotate( input, pickee=[], doesAvoidMatching=false ) {
     let system = Util.LS.get( 'system' )
     let jinze  = Util.LS.get( 'jinze' ) !== 'no' ? true : false
     let clean  = false
@@ -48,16 +49,19 @@ Object.assign( Util, {
 
       if ( isHeter ) {
         let i = az.length
-        let picked = pickee[i]
+        let picked = pickee[i] || 0
         let doesMatch = picked && picked.zi === zi
 
         az.push( sound )
-        if ( picked && !doesMatch ) {
+        if ( picked && !doesMatch && !doesAvoidMatching ) {
           pickee = []
         } else if ( doesMatch ) {
           isPicked = true
-          ret = typeof picked.yin === 'number' ?
-            sound[picked.yin] : picked.yin
+          ret = typeof picked.yin === 'number' ? sound[picked.yin] : picked.yin
+        } else if ( doesAvoidMatching ) {
+          let deci = parseInt( picked, 16 )
+          ret = sound[deci]
+          pickee[i] = { zi, yin: deci }
         }
       }
 
@@ -69,14 +73,14 @@ Object.assign( Util, {
         ret = Util.getBoth( ret )
       }
 
-      end += isHeter  ? '*' : '' 
-      end += isPicked ? '*' : '' 
+      end += isHeter  ? '*' : ''
+      end += isPicked ? '*' : ''
 
       return `\`${ zi }:${ ret + end }~`
     })
     raw = hinst.context.innerHTML
     clean = ( pickee.toString() === '' ) ? true : false
-    return { az, raw, clean }
+    return { az, raw, clean, pickee }
   },
 
   getPinyin( sound ) {
@@ -131,16 +135,22 @@ let IO = React.createClass({
       zi: null,
       picking: false,
       pickrXY: {},
-      input: '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌\n讓媽媽來安裝窗戶。',
-      pickee: {
-        0: { zi: '為', yin: 1 },
-        3: { zi: '的', yin: 2 },
-        4: { zi: '分', yin: 1 },
-      },
     }
   },
 
-  componentWillMount() {  this.IO()  },
+  componentWillMount() {
+    let def = [
+      encodeURIComponent( '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌\n讓媽媽來安裝窗戶。' ),
+      '10021'
+    ]
+    let hash = location.hash.replace( /^#/, '' ) || def.join('/')
+    if ( !/\//.test( hash ))  hash += '/0'
+    let [ input, pickee ] = hash.split('/')
+    input = decodeURIComponent( input )
+    pickee = pickee.split('') || [ 0 ]
+    this.IO( pickee, input, true )
+  },
+
   componentDidMount() {
     let node = React.findDOMNode( this.refs.input )
     node.focus()
@@ -158,26 +168,39 @@ let IO = React.createClass({
     node.setAttribute( 'data-display', display )
   },
 
-  IO( pickee=this.state.pickee, input=this.state.input ) {
+  IO( pickee=this.state.pickee, input=this.state.input, doAvoidMatching=false ) {
     let syntax = Util.LS.get( 'syntax' )
     let system = Util.LS.get( 'system' )
     let method = ( syntax === 'simp' && system !== 'both' ) ? 'simple' : 'complex'
     let isntZhuyin = system === 'pinyin' || system === 'wg'
 
-    let { az, raw, clean } = Util.annotate( input, pickee )
+    let result = Util.annotate( input, pickee, doAvoidMatching )
+    let { az, raw, clean } = result
     let { code, output }   = Util.wrap[method]( raw, isntZhuyin )
-    let lib = syntax === 'han' ? LIB.css : `${LIB.css}\n${LIB.js}\n${LIB.render}`
+    let url
+    pickee = result.pickee
+
+    {
+      let key = Object.keys( pickee )
+      let p   = [ 0 ]
+      for ( let i = 0, end = key[key.length-1]; i <= end; i++ ) {
+        p[i] = pickee.hasOwnProperty( i ) ? ( pickee[i].yin ).toString(16) : '0'
+      }
+      url = `${WWW}#${encodeURIComponent( input )}/${p.join('')}`
+    }
 
     code = syntax === 'han' ? output.__html : code
-    code += `\n${lib}\n`
+    code += `\n${
+      syntax === 'han' ? LIB.css : `${LIB.css}\n${LIB.js}\n${LIB.render}`
+    }\n`
     code = Util.mergeRuby(
       code
       .replace( /<a\-z[^>]*>/gi, '' )
       .replace( /<\/a\-z>/gi, '' )
     )
 
+    this.setState({ input, az, code, output, url, pickee })
     if ( clean )  this.setState({ pickee: [] })
-    this.setState({ az, code, output })
   },
 
   handleInput( e ) {
@@ -223,7 +246,7 @@ let IO = React.createClass({
     let pickee  = this.state.pickee
     pickee[current] = {
       zi: this.state.zi,
-      yin: this.state.az[current][i]
+      yin: i
     }
     this.IO( pickee )
     this.setPicking( false )

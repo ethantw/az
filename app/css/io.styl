@@ -31,6 +31,10 @@ main.layout
       color #333
     &[readonly]
       color #aaa
+  #code,
+  #url
+    white-space pre
+    word-wrap normal
 
 #in.input #input,
 #in.code #code,
@@ -94,13 +98,13 @@ main.layout
     height 2em
     width @height
     // typo
-    fh( lock )
+    fh( unlock-alt )
     fh-hide-text()
     // style
     background none
     border 0
   .locked & .lock button
-    fh( unlock-alt )
+    fh( lock )
 
 article
   // posi
@@ -111,6 +115,7 @@ article
   // typo
   font-family $serif
   font-size 1.5em
+  line-height 2.5
 
   :link,
   :visited
@@ -136,7 +141,7 @@ article
     // posi
     position absolute
     left 50%
-    margin 1.65em 0 0 -.125em
+    margin 2em 0 0 -.125em
     // box
     content ''
     display inline-block
@@ -145,16 +150,16 @@ article
     width @height
     // style
     background-color $k-primary
-    border-radius 100%
+    border-radius 50%
     padding .15em
 
     [data-system='zhuyin'] &
       margin-left -.45em
     [data-system='both'] &
-      margin-top 2em
+      margin-top 2.5em
     [data-system='pinyin'] &,
     [data-system='wg'] &
-      margin-top 1.85em
+      margin-top 2em
       
   a-z:not(:hover):before
     opacity .7
@@ -163,7 +168,7 @@ article
   a-z.picking:before
     // posi
     z-index 10
-    margin 1.55em 0 0 -.23em
+    margin 1.9em 0 0 -.23em
     // style
     background-color $k-danger
     border .1em solid #fff
@@ -172,10 +177,10 @@ article
     [data-system='zhuyin'] &
       margin-left -.55em
     [data-system='both'] &
-      margin-top 1.9em
+      margin-top 2.4em
     [data-system='pinyin'] &,
     [data-system='wg'] &
-      margin-top 1.75em
+      margin-top 1.9em
     
   button#play
     // posi
@@ -217,10 +222,10 @@ article
   border-radius .5em
 
   [data-system='both'] &
-    margin-top 3.2em
+    margin 3.5em 0 0 .8em
   [data-system='pinyin'] &,
   [data-system='wg'] &
-    margin-top 3em
+    margin-top 2.8em
 
   &
     display none
