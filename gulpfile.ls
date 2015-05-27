@@ -72,4 +72,6 @@ gulp.task \data ->
 gulp.task \html ->
   src \./app/*.html
     .pipe dest WWW
+  src \./CNAME
+    .pipe dest WWW
 
