@@ -50,7 +50,7 @@ gulp.task \es6 ->
 
 gulp.task \jsx ->
   browserify {
-    entries: \./app/view.jsx
+    entries: \./app/main.js
     debug: yes
   }
   .add require.resolve \babelify/polyfill

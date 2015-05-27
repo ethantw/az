@@ -76,6 +76,27 @@ let Util = {
     return { yin, diao }
   },
 
+  getAZInfo( target ) {
+    if ( !target.matches( 'a-z, a-z *' ))  return
+    let ru, rb, zi, style, i
+
+    while ( target.nodeName !== 'A-Z' ) {
+      target = target.parentNode
+    }
+
+    target.classList.add( 'picking' )
+    i  = target.getAttribute( 'i' )
+    ru = target.querySelector( 'h-ru' ) || target
+    rb = target.querySelector( 'rb' )
+    zi = ( rb || target ).textContent[0]
+
+    style = {
+      left: `${target.offsetLeft}px`,
+      top:  `${target.offsetTop}px`,
+    }
+    return { i, style, zi }
+  },
+
   wrap: {
     simple( raw, isntZhuyin=false ) {
       let clazz = isntZhuyin ? 'pinyin' : 'zhuyin'
@@ -145,38 +166,6 @@ let Util = {
         </h-zhuyin>
       `.replace( /\n\s*/g, '' )
       return isSelfContained ? { __html: `${html}` } : { html, yin, diao, len }
-    },
-
-    ru: {
-      zhuyin( rb, rt ) {
-        rt = Util.wrap.zhuyin( rt )
-        return `
-          <h-ru zhuyin diao='${ rt.diao }' length='${ rt.len }'>
-            ${ rb }
-            ${ rt.html }
-          </h-ru>
-        `.replace( /\n\s*/g, '' )
-      },
-
-      pinyin( rb, rt ) {
-        let pinyin = PINYIN[ rt ] || rt
-        return `
-          <h-ru annotation='${ rt }'>
-            ${ rb }
-            <rt>${ rt }</rt>
-          </h-ru>
-        `.replace( /\n\s*/g, '' )
-      },
-
-      wadegiles( rb, rt ) {
-        let pinyin = PINYIN[ rt ] || rt
-        return `
-          <h-ru annotation='${ rt }'>
-            ${ rb }
-            <rt>${ rt }</rt>
-          </h-ru>
-        `.replace( /\n\s*/g, '' )
-      },
     },
   },
 }
