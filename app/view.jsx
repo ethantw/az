@@ -31,6 +31,7 @@ let IO = React.createClass({
     return {
       current: 0,
       zi: null,
+      currentYin: 0,
       picking: false,
       pickrXY: {},
     }
@@ -73,8 +74,8 @@ let IO = React.createClass({
     let isntZhuyin = system === 'pinyin' || system === 'wg'
 
     let result = Util.annotate( input, pickee, doAvoidMatching )
-    let { az, raw, clean } = result
-    let { code, output }   = Util.wrap[method]( raw, isntZhuyin )
+    let { az, raw }      = result
+    let { code, output } = Util.wrap[method]( raw, isntZhuyin )
     let url
     pickee = result.pickee
 
@@ -98,7 +99,6 @@ let IO = React.createClass({
     )
 
     this.setState({ input, az, code, output, url, pickee })
-    if ( clean )  this.setState({ pickee: [] })
   },
 
   handleInput( e ) {
@@ -130,24 +130,26 @@ let IO = React.createClass({
     az = Util.getAZInfo( e.target )
     if ( !az )  return
 
-    let current = az.i
-    let zi      = az.zi
-    let pickrXY = az.style || null
+    let current    = az.i
+    let zi         = az.zi
+    let picked     = this.state.pickee[current]
+    let currentYin = picked ? picked.yin : 0
+    let pickrXY    = az.style || null
     this.setPicking()
-    this.setState({ current, zi, pickrXY })
+    this.setState({ current, currentYin, zi, pickrXY })
     Util.listenToLosingFocus( 'a-z *, #pickr *, nav *, #pref *', cleanFormer )
   },
 
-  pickYin( e, i ) {
+  pickYin( i ) {
     let output  = React.findDOMNode( this.refs.output )
     let current = this.state.current
     let pickee  = this.state.pickee
     pickee[current] = {
-      zi: this.state.zi,
+      zi:  this.state.zi,
       yin: i
     }
     this.IO( pickee )
-    this.setPicking( false )
+    this.setState({ currentYin: i })
   },
 
   handlePlay() {},
@@ -195,12 +197,14 @@ let IO = React.createClass({
         <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
           current.map(( sound, i ) => {
-            let display = Util.LS.get( 'display' )
-            let rt = display === 'pinyin' ?
+            let currentYin = this.state.currentYin || 0
+            let display    = Util.LS.get( 'display' )
+            let clazz      = i === currentYin ? 'current' : ''
+            let rt         = display === 'pinyin' ?
               { __html: Util.getPinyin( sound ) }
               :
                 Util.wrap.zhuyin( sound, true )
-            return <li onClick={( e ) => this.pickYin( e, i )} dangerouslySetInnerHTML={rt} />
+            return <li onClick={() => this.pickYin( i )} className={clazz} dangerouslySetInnerHTML={rt} />
           })
         }</ul>
       </div>

@@ -165,6 +165,12 @@ article
     opacity .7
   a-z.picked:before
     background-color $k-info
+  a-z.picking
+    rb
+      color #706363
+    h-zhuyin,
+    rt
+      color #c84332
   a-z.picking:before
     // posi
     z-index 10
@@ -216,6 +222,7 @@ article
   // typo
   line-height 1.8
   list-style none
+  counter-reset yin
   // style
   background-color #fff
   border-bottom 2px solid rgba( $k-success, .7 )
@@ -244,10 +251,26 @@ article
     text-align left
     // style
     cursor pointer
+  li:before
+    // posi
+    margin 0 .3em
+    // box
+    vertical-align middle
+    // typo
+    counter-increment yin
+    content counter( yin )
+    font-size .5em
+    // style
+    color #999
+  li.current,
   li:hover
     text-shadow 0 0 .2em $k-info
   li:last-child
     margin-right .125em
   [data-display='pinyin'] & li
     font-size 1.2em
+
+    &:before
+      vertical-align baseline
+      font-size .75em
 
