@@ -540,6 +540,13 @@ article rt {
 #out a-z.picked:before {
   background-color: #5bc0de;
 }
+#out a-z.picking rb {
+  color: #706363;
+}
+#out a-z.picking h-zhuyin,
+#out a-z.picking rt {
+  color: #c84332;
+}
 #out a-z.picking:before {
   z-index: 10;
   margin: 1.9em 0 0 -0.23em;
@@ -584,6 +591,7 @@ article rt {
   padding: 0.5em 1em;
   line-height: 1.8;
   list-style: none;
+  counter-reset: yin;
   background-color: #fff;
   border-bottom: 2px solid rgba(92,184,92,0.7);
   border-radius: 0.5em;
@@ -610,6 +618,15 @@ article rt {
   text-align: left;
   cursor: pointer;
 }
+#pickr li:before {
+  margin: 0 0.3em;
+  vertical-align: middle;
+  counter-increment: yin;
+  content: counter(yin);
+  font-size: 0.5em;
+  color: #999;
+}
+#pickr li.current,
 #pickr li:hover {
   text-shadow: 0 0 0.2em #5bc0de;
 }
@@ -618,6 +635,10 @@ article rt {
 }
 [data-display='pinyin'] #pickr li {
   font-size: 1.2em;
+}
+[data-display='pinyin'] #pickr li:before {
+  vertical-align: baseline;
+  font-size: 0.75em;
 }
 #pref.layout {
   position: fixed;
