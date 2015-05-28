@@ -535,6 +535,7 @@ article rt {
 [data-system='both'] #out a-z:before {
   margin-top: 2.5em;
 }
+[data-system='both'] #out a-z:before,
 [data-system='pinyin'] #out a-z:before,
 [data-system='wg'] #out a-z:before {
   margin-left: -0.125em;
@@ -565,6 +566,7 @@ article rt {
 [data-system='both'] #out a-z.picking:before {
   margin-top: 2.4em;
 }
+[data-system='both'] #out a-z.picking:before,
 [data-system='pinyin'] #out a-z.picking:before,
 [data-system='wg'] #out a-z.picking:before {
   margin-left: -0.23em;
