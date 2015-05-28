@@ -24,6 +24,16 @@ let Util = {
     })
   },
 
+  inverse( obj ) {
+    let ret = {}
+    for ( let prop in obj ) {
+      if ( obj.hasOwnProperty( prop )) {
+        ret[ obj[prop] ] = prop
+      }
+    }
+    return ret
+  },
+
   LS: {
     get( id )      {  return window.localStorage.getItem( id )  },
     set( id, val ) {  return window.localStorage.setItem( id, val )  },

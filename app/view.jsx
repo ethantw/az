@@ -10,6 +10,7 @@ const LIB = {
 }
 
 export default ( Util ) => {
+
 let Nav = React.createClass({
   togglePref() {
     this.props.parent.toggleUI( 'pref' )
@@ -24,6 +25,16 @@ let Nav = React.createClass({
     </nav>
     )
   },
+})
+
+let Speaker = React.createClass({
+  render() {
+    return (
+    <button className='speaker' title='播放讀音' onClick={() => {
+      Util.speak( this.props.speak )
+    }}>播放讀音</button>
+    )
+  }
 })
 
 let IO = React.createClass({
@@ -57,10 +68,37 @@ let IO = React.createClass({
     this.setPref()
   },
 
+  componentDidUpdate() {
+    if ( !window.SpeechSynthesisUtterance )  return
+    let output = React.findDOMNode( this.refs.output )
+    Array.from( output.querySelectorAll( '*:not(li) p, li, h1, h2, h3, h4, h5, h6' ))
+    .forEach(( elem ) => {
+      let system = Util.LS.get( 'system' )
+      let holder = document.createElement( 'span' )
+      let before = elem.querySelector( '.speaker-holder' )
+      let p = elem.cloneNode( true )
+
+      Array.from( p.querySelectorAll( 'h-ru' ))
+      .map(( ru ) => {
+        let sound = ru.querySelector( 'h-zhuyin, rt' ).textContent
+        if ( system === 'pinyin' || system === 'wg' )  sound = Util.getZhuyin( sound, system )
+        ru.innerHTML = sound
+        return ru
+      })
+
+      let speak  = p.textContent.replace( /播放讀音$/, '' )
+
+      holder.classList.add( 'speaker-holder' )
+      if ( before )  elem.removeChild( before )
+      elem.appendChild( holder )
+      React.render( React.createElement( Speaker, { speak }), holder )
+    })
+  },
+
   setPref() {
     let node    = React.findDOMNode( this.refs.io )
-    let system  = Util.LS.get( 'system' )
-    let display = Util.LS.get( 'display' )
+    let system  = Util.LS.get( 'system' ) || 'zhuyin'
+    let display = Util.LS.get( 'display' ) || 'zhuyin'
 
     this.IO()
     node.setAttribute( 'data-system',  system  )
@@ -152,8 +190,6 @@ let IO = React.createClass({
     this.setState({ currentYin: i })
   },
 
-  handlePlay() {},
-
   render() {
     let current = this.state.az[this.state.current] || []
     let utility = [
@@ -194,7 +230,6 @@ let IO = React.createClass({
 
       <div id='out'>
         <article ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
-        <button id='play' title='播放讀音' onClick={this.handlePlay}>播放讀音</button>
         <ul id='pickr' hidden style={this.state.pickrXY}>{
           current.map(( sound, i ) => {
             let currentYin = this.state.currentYin || 0

@@ -64,11 +64,11 @@ document.addEventListener( 'keydown', ( e ) => {
 
 Util.XHR([
   './data/sound.min.json',
-  './data/reverse.min.json',
   './data/pinyin.min.json',
-], ( Sound, Reverse, Romanization ) => {
+], ( Sound, Romanization ) => {
 
-const { Pinyin, WG } = Romanization
+const { Pinyin, WG }       = Romanization
+const [ PinyinMap, WGMap ] = [ Util.inverse( Pinyin ), Util.inverse( WG ) ]
 
 const Vowel = {
    a:  [ 'a', 'ā', 'á', 'ǎ', 'à' ],
@@ -167,6 +167,17 @@ Object.assign( Util, {
   getBoth( sound ) {
     let pinyin = Util.getPinyin( sound )
     return `${ sound }|${ pinyin }`
+  },
+
+  getZhuyin( pinyin, system ) {
+    return pinyin
+  },
+
+  speak( text ) {
+    if ( !window.SpeechSynthesisUtterance )  return
+    let utter = new window.SpeechSynthesisUtterance( text )
+    utter.lang = 'zh-TW'
+    window.speechSynthesis.speak( utter )
   },
 })
 

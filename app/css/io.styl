@@ -141,7 +141,7 @@ article
     // posi
     position absolute
     left 50%
-    margin 2em 0 0 -.125em
+    margin 2em 0 0 -.45em
     // box
     content ''
     display inline-block
@@ -174,7 +174,7 @@ article
   a-z.picking:before
     // posi
     z-index 10
-    margin 1.9em 0 0 -.23em
+    margin 1.9em 0 0 -.55em
     // style
     background-color $k-danger
     border .1em solid #fff
@@ -188,28 +188,27 @@ article
     [data-system='wg'] &
       margin-top 1.9em
     
-  button#play
-    // posi
-    float left 
-    margin -1em .5em 0 .5em
-    // box
-    display none
-    height 1.8em
-    width 1.8em
-    overflow hidden
-    // typo
-    font-family $sans
-    font-size 1.5em
-    // style
-    background-color rgb(  80%, 55%, 45% )
-    border 0
-    border-radius 50%
-    color transparent
-  button#play:before
-    content '唸'
-    color rgba( #fff, .7 )
-    font-weight bold
-    line-height 1.75
+button.speaker
+  // posi
+  margin-left .5em
+  // box
+  height 1.5em
+  width @height
+  padding-left .2em
+  // typo
+  font-family $sans
+  font-size .8em
+  line-height 1.5*.8
+  vertical-align text-top
+  // style
+  background-color lighten( $k-success, 10% )//rgb(  35%, 65%, 80% )
+  border 0
+  border-radius 50%
+  // icon
+  fh-hide-text()
+  +fh( play )
+    font-size .8em
+    color rgba( #fff, .85 )
 
 #pickr
   @extend $han-zhuyin
