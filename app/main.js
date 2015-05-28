@@ -1,5 +1,6 @@
 
 import { cjk } from './reg'
+import SIMP    from './simp'
 import Util    from './util'
 import View    from './view.jsx'
 
@@ -14,10 +15,10 @@ function isPicking( elem ) {
   return ( elem instanceof Element ) ? elem.classList.contains( 'picking' ) : false
 }
 
-function pickYin( elem, idx ) {
+function pick( elem, idx ) {
   try {
     elem.click()
-    document.querySelector( `a-z[i='${idx}']` ).classList.add( 'picking' )
+    if ( idx )  document.querySelector( `a-z[i='${idx}']` ).classList.add( 'picking' )
   } catch(e) {}
 }
 
@@ -38,28 +39,23 @@ document.addEventListener( 'keydown', ( e ) => {
   switch ( KEY[ e.which ] ) {
     // Pick Zi (heteronym)
     case 'j':
-      try {
-        $az[idx+1].querySelector('rb').click()
-      } catch (e) {}
+      pick( $az[idx+1].querySelector( 'rb' ))
       break
     case 'k':
-      try {
-        $az[idx-1].querySelector('rb').click()
-      } catch (e) {}
+      pick( $az[idx-1].querySelector( 'rb' ))
       break
     // Pick Yin
-    case 'j':
     case 'h':
-      if ( isPickrOn )  pickYin( $yin.previousSibling, idx )
+      if ( isPickrOn )  pick( $yin.previousSibling, idx )
       break
     case 'l':
-      if ( isPickrOn )  pickYin( $yin.nextSibling, idx )
+      if ( isPickrOn )  pick( $yin.nextSibling, idx )
       break
-    // Pick Yin via order numbers
+    // Pick Yin via ordered numbers
     default:
       if ( !isPickrOn )  return
       let nth = e.which - 49 + 1
-      pickYin(
+      pick(
         $pickr.querySelector( `li:nth-child(${nth})` ) || $pickr.querySelector( 'li:last-child' ),
         idx
       )
@@ -96,7 +92,14 @@ Object.assign( Util, {
     .replace( cjk, ( portion, match ) => {
       let zi    = match[0]
       let sound = Sound[zi]
-      if ( !sound )  return zi
+
+      // Simplified/variant Hanzi support
+      if ( !sound ) {
+        let idx   = SIMP.indexOf( zi )
+        let trad  = (( idx+1 ) % 2 ) ? SIMP[idx + 1] : zi
+        sound     = Sound[trad]
+        if ( !sound )  return zi
+      }
 
       let isHeter  = sound.length > 1
       let isPicked = false 
@@ -167,7 +170,7 @@ Object.assign( Util, {
   },
 })
 
-let view = React.createElement( View( Util ))
+let view = React.createElement(View( Util ))
 let target = document.getElementById( 'page' ) || document.body
 React.render( view, target )
 
