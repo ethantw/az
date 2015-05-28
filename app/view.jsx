@@ -2,7 +2,7 @@
 import R     from './reg'
 import Pref  from './pref.jsx'
 
-const WWW = 'https://ethantw.github.io/az/'
+const WWW = 'https://az.hanzi.co/'
 const LIB = {
   css:    '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.css">',
   js:     '<script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.js"></script>',
