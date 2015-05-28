@@ -537,7 +537,7 @@ article rt {
 }
 [data-system='pinyin'] #out a-z:before,
 [data-system='wg'] #out a-z:before {
-  margin-top: 2em;
+  margin-left: -0.125em;
 }
 #out a-z:not(:hover):before {
   opacity: 0.7;
@@ -567,7 +567,7 @@ article rt {
 }
 [data-system='pinyin'] #out a-z.picking:before,
 [data-system='wg'] #out a-z.picking:before {
-  margin-top: 1.9em;
+  margin-left: -0.23em;
 }
 button.speaker {
   margin-left: 0.5em;
