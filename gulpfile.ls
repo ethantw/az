@@ -22,7 +22,7 @@ const WWW = \./_www/
 src = gulp.src
 dest = gulp.dest
 
-gulp.task \deploy <[ www min ]> ->
+gulp.task \deploy <[ min ]> ->
   src \./_www/**/*
     .pipe gulp-gh-pages!
 
@@ -32,7 +32,7 @@ gulp.task \server !->
 
 gulp.task \app <[ lib html js css ]>
 gulp.task \www <[ data app ]>
-gulp.task \min <[ uglify cssmin ]>
+gulp.task \min <[ www ]> -> gulp.start <[ uglify cssmin ]>
 
 gulp.task \dev <[ www server ]> ->
   gulp.watch './app/*.html' <[ html ]>
