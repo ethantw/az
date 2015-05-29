@@ -53,10 +53,14 @@ let IO = React.createClass({
       encodeURIComponent( '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌\n讓媽媽來安裝窗戶。' ),
       '10021'
     ]
-    let hash = location.hash.replace( /^#/, '' ) || def.join('/')
-    if ( !/\//.test( hash ))  hash += '/0'
+
+    // Do not use `location.hash` for Firefox decodes URI improperly
+    let hash = location.href.split('#')[1] || def.join('/')
+    hash += /\//.test( hash ) ? '' : '/0'
+
     let [ input, pickee ] = hash.split('/')
-    input = decodeURIComponent( input )
+
+    input  = decodeURIComponent( input )
     pickee = pickee.split('') || [ 0 ]
     this.IO( pickee, input, true )
   },
