@@ -39,26 +39,36 @@ document.addEventListener( 'keydown', ( e ) => {
   switch ( KEY[ e.which ] ) {
     // Pick Zi (heteronym)
     case 'j':
-      pick( $az[idx+1].querySelector( 'rb' ))
+      try {
+        pick( $az[idx+1].querySelector( 'rb, ruby, h-ruby' ))
+      } catch(e) {}
       break
     case 'k':
-      pick( $az[idx-1].querySelector( 'rb' ))
+      try {
+        pick( $az[idx-1].querySelector( 'rb, ruby, h-ruby' ))
+      } catch(e) {}
       break
     // Pick Yin
     case 'h':
-      if ( isPickrOn )  pick( $yin.previousSibling, idx )
+      try {
+        if ( isPickrOn )  pick( $yin.previousSibling, idx )
+      } catch(e) {}
       break
     case 'l':
-      if ( isPickrOn )  pick( $yin.nextSibling, idx )
+      try {
+        if ( isPickrOn )  pick( $yin.nextSibling, idx )
+      } catch(e) {}
       break
     // Pick Yin via ordered numbers
     default:
       if ( !isPickrOn )  return
-      let nth = e.which - 49 + 1
-      pick(
-        $pickr.querySelector( `li:nth-child(${nth})` ) || $pickr.querySelector( 'li:last-child' ),
-        idx
-      )
+      try {
+        let nth = e.which - 49 + 1
+        pick(
+          $pickr.querySelector( `li:nth-child(${nth})` ) || $pickr.querySelector( 'li:last-child' ),
+          idx
+        )
+      } catch(e) {}
   }
 })
 
@@ -67,8 +77,7 @@ Util.XHR([
   './data/pinyin.min.json',
 ], ( Sound, Romanization ) => {
 
-const { Pinyin, WG }       = Romanization
-const [ PinyinMap, WGMap ] = [ Util.inverse( Pinyin ), Util.inverse( WG ) ]
+const { Pinyin, WG } = Romanization
 
 const Vowel = {
    a:  [ 'a', 'ā', 'á', 'ǎ', 'à' ],
@@ -169,15 +178,12 @@ Object.assign( Util, {
     return `${ sound }|${ pinyin }`
   },
 
-  getZhuyin( pinyin, system ) {
-    return pinyin
-  },
-
   speak( text ) {
-    if ( !window.SpeechSynthesisUtterance )  return
+    if ( !window.SpeechSynthesisUtterance )  return alert( text )
     let utter = new window.SpeechSynthesisUtterance( text )
     utter.lang = 'zh-TW'
     window.speechSynthesis.speak( utter )
+    console.log( text )
   },
 })
 

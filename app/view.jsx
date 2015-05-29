@@ -69,20 +69,33 @@ let IO = React.createClass({
   },
 
   componentDidUpdate() {
-    if ( !window.SpeechSynthesisUtterance )  return
     let output = React.findDOMNode( this.refs.output )
     Array.from( output.querySelectorAll( '*:not(li) p, li, h1, h2, h3, h4, h5, h6' ))
     .forEach(( elem ) => {
-      let system = Util.LS.get( 'system' )
       let holder = document.createElement( 'span' )
       let before = elem.querySelector( '.speaker-holder' )
       let p = elem.cloneNode( true )
 
-      Array.from( p.querySelectorAll( 'h-ru' ))
+      Array.from( p.querySelectorAll( 'h-ru, ruby' ))
       .map(( ru ) => {
-        let sound = ru.querySelector( 'h-zhuyin, rt' ).textContent
-        if ( system === 'pinyin' || system === 'wg' )  sound = Util.getZhuyin( sound, system )
-        ru.innerHTML = sound
+        let zi = ru.textContent
+          .replace( Han.TYPESET.group.western, '' )
+          .replace( /[⁰¹²³⁴]/gi, '' )
+          .replace( new RegExp( `${Han.UNICODE.zhuyin.base}`, 'gi' ), '' )
+          .replace( new RegExp( `${Han.UNICODE.zhuyin.tone}`, 'gi' ), '' )
+          //.replace( new RegExp( `${Han.UNICODE.zhuyin.ruyun}`, 'gi' ), '' )
+        ru.innerHTML = zi
+
+        if ( ru.matches( 'a-z *' )) {
+          let az = ru.parentNode
+          while ( !az.matches( 'a-z' )) {
+            az = az.parentNode 
+          }
+          let i  = az.getAttribute( 'i' )
+          let picked = this.state.pickee[i] ? this.state.pickee[i].yin : 0
+          let sound = this.state.az[i][picked].replace( /^˙(.+)$/i, '$1˙' )
+          ru.innerHTML = `|${sound}|`
+        }
         return ru
       })
 
