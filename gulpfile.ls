@@ -5,6 +5,7 @@ require! {
   babelify
   gulp
   \gulp-babel : babel
+  \gulp-uglify
   \gulp-watch
   \gulp-live-server
   \gulp-concat-util : concat
@@ -12,16 +13,16 @@ require! {
   \gulp-react : react
   \gulp-sass
   \gulp-stylus
+  \gulp-cssmin
   \gulp-gh-pages
 }
 
 const WWW = \./_www/
-const COMPILED = WWW + \tmp/
 
 src = gulp.src
 dest = gulp.dest
 
-gulp.task \deploy <[ data app ]> ->
+gulp.task \deploy <[ www min ]> ->
   src \./_www/**/*
     .pipe gulp-gh-pages!
 
@@ -29,26 +30,20 @@ gulp.task \server !->
   server = gulp-live-server.static WWW, 7654
   server.start!
 
-gulp.task \app <[ lib html jsx css ]>
+gulp.task \app <[ lib html js css ]>
 gulp.task \www <[ data app ]>
+gulp.task \min <[ uglify cssmin ]>
 
 gulp.task \dev <[ www server ]> ->
   gulp.watch './app/*.html' <[ html ]>
-  gulp.watch './app/*.{js,jsx}' <[ jsx ]>
+  gulp.watch './app/*.{js,jsx}' <[ js ]>
   gulp.watch './app/css/*.styl' <[ css ]>
 
 gulp.task \lib ->
   src \./app/lib/**/*
     .pipe dest WWW
 
-gulp.task \es6 ->
-  src \./app/*.js
-    .pipe babel!
-    .pipe dest COMPILED
-  src \./app/*.jsx
-    .pipe dest COMPILED
-
-gulp.task \jsx ->
+gulp.task \js ->
   browserify {
     entries: \./app/main.js
     debug: yes
@@ -59,11 +54,28 @@ gulp.task \jsx ->
   .pipe source \./main.js
   .pipe dest WWW
 
+gulp.task \uglify ->
+  src "#{WWW}/main.js"
+    .pipe gulp-uglify {
+      output: { ascii_only: yes }
+    }
+    .pipe dest WWW
+
 gulp.task \css ->
   src \./app/css/index.styl
     .pipe gulp-stylus!
     .pipe concat \style.css
     .pipe dest WWW
+
+gulp.task \cssmin ->
+  src "#{WWW}*.css"
+    .pipe gulp-cssmin!
+    .pipe dest WWW
+  src \./app/css/zhuyin.styl
+    .pipe gulp-stylus!
+    .pipe gulp-cssmin!
+    .pipe concat \han.ruby.css
+    .pipe dest "#{WWW}201505/"
 
 gulp.task \data ->
   src \./data/*
