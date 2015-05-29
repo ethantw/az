@@ -192,25 +192,23 @@ article
     
 button.speaker
   // posi
-  margin-left .3em
   // box
   height 1.2em
   width @height
-  padding-left .15em
   // typo
   font-family $sans
   font-size .8em
-  line-height 1.2*.72
-  vertical-align text-top
+  line-height 1.2*.7
+  vertical-align .3em
   // style
-  background-color lighten( $k-success, 10% )
+  background none
   border 0
   border-radius 50%
   // icon
   fh-hide-text()
   +fh( play )
     font-size .7em
-    color rgba( #fff, .85 )
+    color darken( $k-success, 10% )
 
 #pickr
   @extend $han-zhuyin
