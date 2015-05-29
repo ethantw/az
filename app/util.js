@@ -67,8 +67,8 @@ let Util = {
   hinst( html, jinze=true ) {
     let div = document.createElement( 'div' )
     div.innerHTML = html
-    let ret = Han( div )
-    return ( jinze ) ? ret.jinzify() : ret
+    let ret = jinze ? Han( div ).jinzify() : Han( div )
+    return Han.find( ret.context )
   },
 
   getYD( sound, returnDiaoInDigit ) {

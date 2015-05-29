@@ -50,8 +50,13 @@ let IO = React.createClass({
 
   componentWillMount() {
     let def = [
-      encodeURIComponent( '用《[萌典][萌]》*半自動*為漢字標音的部分嗎？\n[萌]: https://moedict.tw/萌\n讓媽媽來安裝窗戶。' ),
-      '10021'
+      encodeURIComponent( 
+`用《[萌典](https://moedict.tw/)》*半自動*為漢字[#的部分](https://twitter.com/?q=#的部分)來標注發音嗎？
+
+讓媽媽——\\
+來，安裝窗戶。`
+      ),
+      '121'
     ]
 
     // Do not use `location.hash` for Firefox decodes URI improperly

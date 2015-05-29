@@ -89,15 +89,19 @@ const Vowel = {
   wg:  [ '⁰', '¹', '²', '³', '⁴' ]
 }
 
+let remark = typeof Remarkable !== 'undefined' ? new Remarkable( 'commonmark' ) : undefined
+let md     = remark ? remark : { render: ( raw ) => raw }
+
 Object.assign( Util, {
   annotate( input, pickee=[], doesAvoidMatching=false ) {
     let system = Util.LS.get( 'system' )
     let jinze  = Util.LS.get( 'jinze' ) !== 'no' ? true : false
     let az     = []
-    let raw    = marked ? marked( input, { sanitize: true }) : input
+    let raw    = md.render( input )
     let hinst  = Util.hinst( raw, jinze )
 
     hinst
+    .avoid( 'pre, code' )
     .replace( cjk, ( portion, match ) => {
       let zi    = match[0]
       let sound = Sound[zi]
