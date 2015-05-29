@@ -572,13 +572,13 @@ article rt {
   margin-left: -0.23em;
 }
 button.speaker {
-  margin-left: 0.5em;
-  height: 1.5em;
-  width: 1.5em;
-  padding-left: 0.2em;
+  margin-left: 0.3em;
+  height: 1.2em;
+  width: 1.2em;
+  padding-left: 0.15em;
   font-family: 'Biaodian Pro Sans', 'Helvetica Neue', Arial, 'Zhuyin Kaiti', 'Han Heiti', sans-serif;
   font-size: 0.8em;
-  line-height: 1.2;
+  line-height: 0.864;
   vertical-align: text-top;
   background-color: #6cbf6c;
   border: 0;
@@ -588,7 +588,7 @@ button.speaker:before {
   color: #333;
 }
 button.speaker:before {
-  font-size: 0.8em;
+  font-size: 0.7em;
   color: rgba(255,255,255,0.85);
 }
 #pickr {
