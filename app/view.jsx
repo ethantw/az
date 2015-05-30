@@ -204,12 +204,12 @@ let IO = React.createClass({
     let output  = React.findDOMNode( this.refs.output )
     let current = this.state.current
     let pickee  = this.state.pickee
-    pickee[current] = {
-      zi:  this.state.zi,
-      yin: i
-    }
+
+    pickee[current] = { zi: this.state.zi, yin: i }
     this.IO( pickee )
-    this.setState({ currentYin: i })
+    this.setState({ currentYin: i }, () => {
+      document.querySelector( `a-z[i='${current}']` ).classList.add( 'picking' )
+    })
   },
 
   render() {

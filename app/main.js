@@ -15,10 +15,9 @@ function isPicking( elem ) {
   return ( elem instanceof Element ) ? elem.classList.contains( 'picking' ) : false
 }
 
-function pick( elem, idx ) {
+function pick( elem ) {
   try {
     elem.click()
-    if ( idx )  document.querySelector( `a-z[i='${idx}']` ).classList.add( 'picking' )
   } catch(e) {}
 }
 
