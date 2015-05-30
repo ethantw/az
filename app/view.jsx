@@ -95,6 +95,7 @@ let IO = React.createClass({
           //.replace( new RegExp( `${Han.UNICODE.zhuyin.ruyun}`, 'gi' ), '' )
         ru.innerHTML = zi
 
+        // Use stored and picked Yin if it’s heteronym
         if ( ru.matches( 'a-z *' )) {
           let az = ru.parentNode
           while ( !az.matches( 'a-z' )) {
@@ -108,7 +109,9 @@ let IO = React.createClass({
         return ru
       })
 
-      let speak  = p.textContent.replace( /播放讀音$/, '' )
+      let speak  = p.textContent
+        .replace( /播放讀音$/, '' )
+        .replace( /#/g, ' hashtag ' )
 
       holder.classList.add( 'speaker-holder' )
       if ( before )  elem.removeChild( before )
