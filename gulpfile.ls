@@ -33,7 +33,7 @@ gulp.task \server !->
 
 gulp.task \app <[ lib html js css ]>
 gulp.task \www <[ data app ]>
-gulp.task \min <[ www ]> -> gulp.start <[ uglify cssmin ]>
+gulp.task \min <[ www ]> -> gulp.start <[ posthtml uglify cssmin ]>
 
 gulp.task \dev <[ www server ]> ->
   gulp.watch './app/*.html' <[ html ]>
@@ -88,5 +88,14 @@ gulp.task \html ->
   src \./app/*.html
     .pipe dest WWW
   src \./CNAME
+    .pipe dest WWW
+  gulp.start <[ posthtml ]>
+
+gulp.task \posthtml ->
+  src "#{WWW}index.html"
+    .pipe concat \index.html, {
+      process: ( src ) ->
+        src.replace( /\?\{now\}/gi, "?#{Date.now()}" )
+    }
     .pipe dest WWW
 
