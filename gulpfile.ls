@@ -17,7 +17,8 @@ require! {
   \gulp-gh-pages
 }
 
-const WWW = \./_www/
+const WWW     = \./_www/
+const CHARSET = '@charset "UTF-8";\n'
 
 src = gulp.src
 dest = gulp.dest
@@ -64,6 +65,7 @@ gulp.task \uglify ->
 gulp.task \css ->
   src \./app/css/index.styl
     .pipe gulp-stylus!
+    .pipe concat.header CHARSET
     .pipe concat \style.css
     .pipe dest WWW
 
@@ -74,6 +76,7 @@ gulp.task \cssmin ->
   src \./app/css/zhuyin.styl
     .pipe gulp-stylus!
     .pipe gulp-cssmin!
+    .pipe concat.header CHARSET
     .pipe concat \han.ruby.css
     .pipe dest "#{WWW}201505/"
 
