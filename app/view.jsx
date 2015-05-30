@@ -41,11 +41,12 @@ let Pickr = React.createClass({
   componentDidUpdate() {
     let out   = document.querySelector( '#io article' )
     let pickr = document.getElementById( 'pickr' )
+    let X     = parseInt( pickr.offsetLeft, 10 ) || parseInt( pickr.style.left, 10 )
 
     pickr.style.right = 'auto'
 
     // Make sure the Pickr stay inside the output area
-    if (( pickr.offsetWidth + pickr.offsetLeft ) > out.offsetWidth ) {
+    if (( pickr.offsetWidth + X ) > out.offsetWidth ) {
       pickr.style.left  = 'auto'
       pickr.style.right = '1em'
     }
