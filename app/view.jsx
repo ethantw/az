@@ -37,6 +37,40 @@ let Speaker = React.createClass({
   }
 })
 
+let Pickr = React.createClass({
+  componentDidUpdate() {
+    let out   = document.querySelector( '#io article' )
+    let pickr = document.getElementById( 'pickr' )
+
+    pickr.style.right = 'auto'
+
+    // Make sure the Pickr stay inside the output area
+    if (( pickr.offsetWidth + pickr.offsetLeft ) > out.offsetWidth ) {
+      pickr.style.left  = 'auto'
+      pickr.style.right = '1em'
+    }
+  },
+
+  render () {
+    let IO      = this.props.IO
+    let current = IO.state.az[IO.state.current] || []
+    return (
+    <ul id='pickr' hidden style={this.props.style}>{
+      current.map(( sound, i ) => {
+        let currentYin = IO.state.currentYin || 0
+        let display    = Util.LS.get( 'display' )
+        let clazz      = i === currentYin ? 'current' : ''
+        let rt         = display === 'pinyin' ?
+          { __html: Util.getPinyin( sound ) }
+          :
+            Util.wrap.zhuyin( sound, true )
+        return <li onClick={() => IO.pickYin( i )} className={clazz} dangerouslySetInnerHTML={rt} />
+      })
+    }</ul>
+    )
+  }
+})
+
 let IO = React.createClass({
   getInitialState() {
     return {
@@ -216,7 +250,6 @@ let IO = React.createClass({
   },
 
   render() {
-    let current = this.state.az[this.state.current] || []
     let utility = [
       { c: 'input', n: '輸入' },
       { c: 'code',  n: '拷貝輸出代碼' },
@@ -255,18 +288,7 @@ let IO = React.createClass({
 
       <div id='out'>
         <article ref='output' onClick={this.pickZi} dangerouslySetInnerHTML={this.state.output} />
-        <ul id='pickr' hidden style={this.state.pickrXY}>{
-          current.map(( sound, i ) => {
-            let currentYin = this.state.currentYin || 0
-            let display    = Util.LS.get( 'display' )
-            let clazz      = i === currentYin ? 'current' : ''
-            let rt         = display === 'pinyin' ?
-              { __html: Util.getPinyin( sound ) }
-              :
-                Util.wrap.zhuyin( sound, true )
-            return <li onClick={() => this.pickYin( i )} className={clazz} dangerouslySetInnerHTML={rt} />
-          })
-        }</ul>
+        <Pickr style={this.state.pickrXY} IO={this} />
       </div>
     </main>
     )

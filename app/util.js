@@ -101,8 +101,9 @@ let Util = {
     zi = ( rb || target ).textContent[0]
 
     style = {
-      left: `${target.offsetLeft}px`,
-      top:  `${target.offsetTop}px`,
+      right: 'auto',
+      left:  `${target.offsetLeft}px`,
+      top:   `${target.offsetTop}px`,
     }
     return { i, style, zi }
   },
