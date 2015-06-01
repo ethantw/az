@@ -11,7 +11,7 @@ require! {
   \gulp-concat-util : concat
   \gulp-livescript
   \gulp-react : react
-  \gulp-sass
+  #\gulp-sass
   \gulp-stylus
   \gulp-cssmin
   \gulp-gh-pages
