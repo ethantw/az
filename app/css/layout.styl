@@ -16,12 +16,14 @@ body
   // style
   background-color $k-bg
 
-#body
+#body,
+#about
   // box
   width 100%
   padding-top 6rem
 
-#body > .layout
+#body > .layout,
+#about > .layout
   // - nav, main, #option, footer
   // box
   width 100%
@@ -30,4 +32,22 @@ body
 button
   // style
   outline 0
+
+#about
+  padding-top 0
+#about article
+  // box
+  max-width 30em
+  padding-top 3em
+  // typo
+  font-size 1.2em
+
+article kbd 
+  // box
+  padding .25em .5em
+  // style
+  border 1px solid #666
+  border-radius .125em
+  box-shadow 0 2px 0 #ccc
+
 

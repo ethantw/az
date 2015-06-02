@@ -10,6 +10,7 @@ require! {
   \gulp-live-server
   \gulp-concat-util : concat
   \gulp-livescript
+  \gulp-remarkable
   \gulp-react : react
   #\gulp-sass
   \gulp-stylus
@@ -36,7 +37,8 @@ gulp.task \www <[ data app ]>
 gulp.task \min <[ www ]> -> gulp.start <[ posthtml uglify cssmin ]>
 
 gulp.task \dev <[ www server ]> ->
-  gulp.watch './app/*.html' <[ html ]>
+  gulp.watch './app/**/*.html'  <[ html ]>
+  gulp.watch './*.md'           <[ html ]>
   gulp.watch './app/*.{js,jsx}' <[ js ]>
   gulp.watch './app/css/*.styl' <[ css ]>
 
@@ -80,18 +82,33 @@ gulp.task \cssmin ->
     .pipe concat \han.ruby.css
     .pipe dest "#{WWW}201505/"
 
+# Data
 gulp.task \data ->
   src \./data/*
     .pipe dest WWW + \data
 
-gulp.task \html ->
+# Markdown
+gulp.task \md <[ md:parse md:cp ]>
+gulp.task \md:parse ->
+  src \./about.md
+    .pipe gulp-remarkable preset: \commonmark
+    .pipe dest \./
+
+gulp.task \md:cp ->
+  src <[ ./app/template/intro.html ./about.html ./app/template/outro.html ]>
+    .pipe concat \about.html
+    .pipe dest WWW
+
+# HTML
+gulp.task \html <[ md html:cp html:post ]>
+gulp.task \html:cp ->
   src \./app/*.html
     .pipe dest WWW
+
   src \./CNAME
     .pipe dest WWW
-  gulp.start <[ posthtml ]>
 
-gulp.task \posthtml ->
+gulp.task \html:post ->
   src "#{WWW}index.html"
     .pipe concat \index.html, {
       process: ( src ) ->
