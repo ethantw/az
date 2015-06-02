@@ -37,17 +37,28 @@ button
   padding-top 0
 #about article
   // box
-  max-width 30em
-  padding-top 3em
+  max-width 32em
+  padding 3em 1em 7em
   // typo
   font-size 1.2em
 
-article kbd 
-  // box
-  padding .25em .5em
-  // style
-  border 1px solid #666
-  border-radius .125em
-  box-shadow 0 2px 0 #ccc
-
+article
+  h1,
+  h2,
+  h3,
+  h4,
+  h5
+    font-weight 400
+    line-height 1.5
+  h2
+    border-bottom 1px solid darken( $k-bg, 15% )
+  kbd 
+    // box
+    padding .2em .4em
+    // style
+    background-color #333
+    border 1px solid #666
+    border-radius .125em
+    box-shadow 0 2px 0 #ccc
+    color #eee
 

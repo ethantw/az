@@ -1,4 +1,5 @@
 
+# 簡介
 a.z.是一個*半自動*為漢字標注國語（漢語、普通話）發音的小工具，可以實時生成符合HTML5標準的行間注`<ruby>`標記，搭配漢字標準格式即可在現代瀏覽器上以正確的排版方式呈現注音符號或羅馬拼音。
 
 漢字國語讀音資料來自[中華文化總會](http://www.gacc.org.tw/)編纂的《兩岸詞典》，該典內容採用「[創用CC BY-NC-ND 3.0 台灣](https://creativecommons.org/licenses/by-nc-nd/3.0/tw/deed.zh_TW)」授權。

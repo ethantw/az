@@ -34,7 +34,7 @@ gulp.task \server !->
 
 gulp.task \app <[ lib html js css ]>
 gulp.task \www <[ data app ]>
-gulp.task \min <[ www ]> -> gulp.start <[ posthtml uglify cssmin ]>
+gulp.task \min <[ www ]> -> gulp.start <[ html:date uglify cssmin ]>
 
 gulp.task \dev <[ www server ]> ->
   gulp.watch './app/**/*.html'  <[ html ]>
@@ -88,31 +88,33 @@ gulp.task \data ->
     .pipe dest WWW + \data
 
 # Markdown
-gulp.task \md <[ md:parse md:cp ]>
+gulp.task \md <[ md:cp ]>
 gulp.task \md:parse ->
   src \./about.md
     .pipe gulp-remarkable preset: \commonmark
     .pipe dest \./
 
-gulp.task \md:cp ->
+gulp.task \md:cp <[ md:parse ]> ->
   src <[ ./app/template/intro.html ./about.html ./app/template/outro.html ]>
     .pipe concat \about.html
     .pipe dest WWW
 
 # HTML
-gulp.task \html <[ md html:cp html:post ]>
-gulp.task \html:cp ->
-  src \./app/*.html
+gulp.task \html <[ html:date ]>
+gulp.task \html:cp <[ md ]> ->
+  src \./app/index.html
     .pipe dest WWW
 
   src \./CNAME
     .pipe dest WWW
 
-gulp.task \html:post ->
-  src "#{WWW}index.html"
-    .pipe concat \index.html, {
-      process: ( src ) ->
-        src.replace( /\?\{now\}/gi, "?#{Date.now()}" )
-    }
-    .pipe dest WWW
+gulp.task \html:date <[ html:cp ]> ->
+  <[ index about ]>
+  .forEach ( page ) ->
+    src "#{WWW}#{page}.html"
+      .pipe concat "#{page}.html", {
+        process: ( src ) ->
+          src.replace( /\?\{now\}/gi, "?#{Date.now()}" )
+      }
+      .pipe dest WWW
 
