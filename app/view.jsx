@@ -85,7 +85,7 @@ let IO = React.createClass({
 
   componentWillMount() {
     let def = [
-      encodeURIComponent( 
+      encodeURIComponent(
 `用《[萌典](https://moedict.tw/)》*半自動*為漢字[#的部分](https://twitter.com/?q=#的部分)來標注發音嗎？
 
 讓媽媽——\\
@@ -95,7 +95,8 @@ let IO = React.createClass({
     ]
 
     // Do not use `location.hash` for Firefox decodes URI improperly
-    let hash = location.href.split('#')[1] || def.join('/')
+    let saved = Util.LS.get( 'saved' ) || null
+    let hash = location.href.split('#')[1] || saved || def.join('/')
     hash += /\//.test( hash ) ? '' : '/0'
 
     let [ input, pickee ] = hash.split('/')
@@ -182,7 +183,7 @@ let IO = React.createClass({
       let key = Object.keys( pickee )
       let p   = [ 0 ]
       for ( let i = 0, end = key[key.length-1]; i <= end; i++ ) {
-        p[i] = pickee.hasOwnProperty( i ) ? ( pickee[i].yin ).toString(16) : '0'
+        p[i] = pickee.hasOwnProperty( i ) ? ( pickee[i].yin || 0 ).toString(16) : '0'
       }
       url = `${WWW}#${encodeURIComponent( input )}/${p.join('')}`
     }

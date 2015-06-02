@@ -195,5 +195,14 @@ let view = React.createElement(View( Util ))
 let target = document.getElementById( 'page' ) || document.body
 React.render( view, target )
 
+window.addEventListener( 'unload', () => {
+  const url   = document.getElementById( 'url' ).value
+  const saved = url.replace( /^https\:\/\/az.hanzi.co\/#/i, '' )
+
+  if ( url !== location ) {
+    Util.LS.set( 'saved', saved )
+  }
+})
+
 })
 
