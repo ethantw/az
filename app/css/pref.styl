@@ -18,8 +18,9 @@
   position fixed
   z-index 20
   // box
-  min-height 19em
+  min-height 28em
   height 50vh
+  overflow-y auto
   // style
   background-color darken( $k-bg, 7% )
   box-shadow inset 0 .5rem 2rem darken( @background-color, 7% ), inset 0 1px 0 rgba( #eee, .3 )
@@ -28,10 +29,10 @@
   .init &
     display none
   .not-init &
-    -moz-animation    slide-down .5s
-    -ms-animation     slide-down .5s
-    -webkit-animation slide-down .5s
-    animation         slide-down .5s
+    -moz-animation    slide-down .3s
+    -ms-animation     slide-down .3s
+    -webkit-animation slide-down .3s
+    animation         slide-down .3s
     -moz-animation-fill-mode:    forwards
     -ms-animation-fill-mode:     forwards
     -webkit-animation-fill-mode: forwards
@@ -73,7 +74,8 @@
       text-shadow 0 1px 3px #855
   button.close:last-of-type
     // posi
-    margin -.8em 1em 0
+    margin 0 1em 0
+    top -1.2em
     // box
     height 1.65em
     width 2.5em

@@ -92,17 +92,19 @@ export default class Pref extends React.Component {
     super( props ) 
     this.state = {
       pref: {
-        syntax:  Util.LS.get( 'syntax' )  || 'han',
-        system:  Util.LS.get( 'system' )  || 'zhuyin',
-        display: Util.LS.get( 'display' ) || 'zhuyin',
-        jinze:   Util.LS.get( 'jinze' )   || 'yes',
+        syntax:   Util.LS.get( 'syntax' )   || 'han',
+        han:      Util.LS.get( 'han' )      || 'yes',
+        system:   Util.LS.get( 'system' )   || 'zhuyin',
+        display:  Util.LS.get( 'display' )  || 'zhuyin',
+        markdown: Util.LS.get( 'markdown' ) || 'yes',
+        jinze:    Util.LS.get( 'jinze' )    || 'yes',
       },
     }
   }
 
   render() {
     const io = this.props.io
-    const { syntax, system, display, jinze } = this.state.pref
+    const { syntax, han, system, display, markdown, jinze } = this.state.pref
 
     return (
     <div id='pref' className='layout'>
@@ -113,6 +115,12 @@ export default class Pref extends React.Component {
             simp: 'HTML5（簡易）',
             rtc:  'HTML5（複合式）',
             han:  '漢字標準格式（已渲染）'
+          }} />
+        </li>
+        <li>
+          <Select io={io} name='外連樣式表及腳本' id='han' val={han} item={{
+            yes: '啓用',
+            no:  '關閉'
           }} />
         </li>
         <li>
@@ -127,6 +135,12 @@ export default class Pref extends React.Component {
           <Select io={io} name='選擇發音時的標音系統' id='display' val={display} item={{
             zhuyin: '注音',
             pinyin: '拼音'
+          }} />
+        </li>
+        <li>
+          <Select io={io} name='Markdown' id='markdown' val={markdown} item={{
+            yes: '啓用',
+            no:  '關閉'
           }} />
         </li>
         <li>

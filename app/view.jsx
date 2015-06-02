@@ -167,6 +167,7 @@ let IO = React.createClass({
 
   IO( pickee=this.state.pickee, input=this.state.input, doAvoidMatching=false ) {
     let syntax = Util.LS.get( 'syntax' )
+    let han    = Util.LS.get( 'han' ) !== 'no' ? true : false
     let system = Util.LS.get( 'system' )
     let method = ( syntax === 'simp' && system !== 'both' ) ? 'simple' : 'complex'
     let isntZhuyin = system === 'pinyin' || system === 'wg'
@@ -187,9 +188,11 @@ let IO = React.createClass({
     }
 
     code = syntax === 'han' ? output.__html : code
-    code += `\n${
-      syntax === 'han' ? LIB.css : `${LIB.css}\n${LIB.js}\n${LIB.render}`
-    }\n`
+    if ( han ) {
+      code += `\n${
+        syntax === 'han' ? LIB.css : `${LIB.css}\n${LIB.js}\n${LIB.render}`
+      }\n`
+    }
     code = Util.mergeRuby(
       code
       .replace( /<a\-z[^>]*>/gi, '' )

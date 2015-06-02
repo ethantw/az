@@ -93,11 +93,12 @@ let md     = remark ? remark : { render: ( raw ) => raw }
 
 Object.assign( Util, {
   annotate( input, pickee=[], doesAvoidMatching=false ) {
-    let system = Util.LS.get( 'system' )
-    let jinze  = Util.LS.get( 'jinze' ) !== 'no' ? true : false
-    let az     = []
-    let raw    = md.render( input )
-    let hinst  = Util.hinst( raw, jinze )
+    let system   = Util.LS.get( 'system' )
+    let jinze    = Util.LS.get( 'jinze' ) !== 'no' ? true : false
+    let markdown = Util.LS.get( 'markdown' ) !== 'no' ? true : false
+    let az       = []
+    let raw      = markdown ? md.render( input ) : `<p>${input}</p>`
+    let hinst    = Util.hinst( raw, jinze )
 
     hinst
     .avoid( 'pre, code' )
