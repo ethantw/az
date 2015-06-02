@@ -97,12 +97,12 @@ gulp.task \md:parse ->
 gulp.task \md:cp <[ md:parse ]> ->
   src <[ ./app/template/intro.html ./about.html ./app/template/outro.html ]>
     .pipe concat \about.html
-    .pipe dest WWW
+    .pipe dest \./app
 
 # HTML
 gulp.task \html <[ html:date ]>
 gulp.task \html:cp <[ md ]> ->
-  src \./app/index.html
+  src \./app/*.html
     .pipe dest WWW
 
   src \./CNAME
