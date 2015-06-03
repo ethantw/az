@@ -1,4 +1,6 @@
 
+$k-bg-share = darken( $k-bg, 7% )
+
 main.layout
   #in
     // posi
@@ -7,7 +9,8 @@ main.layout
     // box
     display block
     width 96%
-  textarea
+  textarea,
+  #share
     // box
     display none
     height 10em 
@@ -31,20 +34,24 @@ main.layout
       color #333
     &[readonly]
       color #aaa
+  #share
+    background-color $k-bg-share
   #code,
-  #url
+  #share input
     white-space pre
     word-wrap normal
 
 #in.input #input,
 #in.code #code,
-#in.url #url
+#in.share #share
     display block
 #in.input .input button
-#in.code .code button
-#in.url .url button
+#in.code  .code button
   background-color $k-bg-input
   border-top-color $k-bg-input
+#in.share .share button
+  background-color $k-bg-share
+  border-top-color $k-bg-share
 
 #utility
   // posi
@@ -85,7 +92,7 @@ main.layout
     fh( align-justify )
   .code button
     fh( code )
-  .url button
+  .share button
     fh( share-alt )
 
   .lock button
@@ -105,6 +112,66 @@ main.layout
     border 0
   .locked & .lock button
     fh( lock )
+
+#share
+  #url
+    // posi
+    margin 1em auto
+    // box
+    display block
+    width 80%
+    padding .125em .05em
+    resize none
+    // style
+    border 1px solid darken( $k-bg-share, 40% )
+    border-radius .125em
+    outline none
+  #url:focus
+    box-shadow:
+      -1px 0 1px $k-bg-share,
+       1px 0 1px $k-bg-share,
+      0 -1px 1px $k-bg-share,
+      0  1px 1px $k-bg-share,
+      0 0 5px $k-danger;
+  ul
+    // box
+    padding 1em 0 0
+    // typo
+    list-style none
+    text-align center
+  li
+    // posi
+    margin 0 .5em
+    // box
+    display inline-block
+  button
+    fh-hide-text()
+    // box
+    height 1.3em
+    resize none
+    // typo
+    font-size 1.6em
+    // style
+    background none
+    border 0
+  button:before
+    color #7a5a3f
+  button:hover:before
+    color #000
+  .twitter
+    fh( twitter )
+  .facebook
+    fh( facebook )
+  .google
+    fh( google-plus )
+  .weibo
+    fh( weibo )
+
+#in.share + #out article
+  a-z:before
+    content none !important
+  button.speaker
+    display none !important
 
 article
   // posi

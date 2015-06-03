@@ -1,6 +1,7 @@
 
 import R     from './reg'
 import Pref  from './pref.jsx'
+import Share from './share.jsx'
 
 const WWW = 'https://az.hanzi.co/'
 const LIB = {
@@ -258,14 +259,15 @@ let IO = React.createClass({
     let utility = [
       { c: 'input', n: '輸入' },
       { c: 'code',  n: '拷貝輸出代碼' },
-      { c: 'url',   n: '拷貝網址' },
+      { c: 'share', n: '分享' },
     ]
     return (
     <main id='io' ref='io' className='layout'>
       <div id='in' ref='in' className='input'>
         <textarea id='input' ref='input' defaultValue={this.state.input} onChange={this.handleInput} />
         <textarea id='code' value={this.state.code} />
-        <textarea id='url' value={this.state.url} />
+        <Share url={this.state.url} />
+
         <ul id='utility'>
           {
           utility.map(( it ) => (
@@ -273,7 +275,7 @@ let IO = React.createClass({
               <button onClick={() => {
                 let node     = React.findDOMNode( this.refs['in'] )
                 let isLocked = node.classList.contains( 'locked' )
-                let textarea = document.getElementById( it.c )
+                let textarea = document.getElementById( it.c !== 'share' ? it.c : 'url' )
                 node.className = it.c + ( isLocked ? ' locked' : '' )
                 textarea.focus()
                 textarea.select()
