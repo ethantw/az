@@ -1,4 +1,5 @@
 require! {
+  \./package.json : npm
   \vinyl-transform
   \vinyl-source-stream : source
   browserify
@@ -12,7 +13,6 @@ require! {
   \gulp-livescript
   \gulp-remarkable
   \gulp-react : react
-  #\gulp-sass
   \gulp-stylus
   \gulp-cssmin
   \gulp-gh-pages
@@ -20,6 +20,7 @@ require! {
 
 const WWW     = \./_www/
 const CHARSET = '@charset "UTF-8";\n'
+const HAN-VERSION = npm.dependencies.['han-css'].replace( /^[\^\~]/, '' )
 
 src = gulp.src
 dest = gulp.dest
@@ -32,8 +33,9 @@ gulp.task \server !->
   server = gulp-live-server.static WWW, 7654
   server.start!
 
-gulp.task \app <[ lib html js css ]>
+gulp.task \app <[ html js css lib ]>
 gulp.task \www <[ data app ]>
+gulp.task \default <[ www ]>
 gulp.task \min <[ www ]> -> gulp.start <[ html:date uglify cssmin ]>
 
 gulp.task \dev <[ www server ]> ->
@@ -71,16 +73,16 @@ gulp.task \css ->
     .pipe concat \style.css
     .pipe dest WWW
 
-gulp.task \cssmin ->
-  src "#{WWW}*.css"
-    .pipe gulp-cssmin!
-    .pipe dest WWW
-  src \./app/css/zhuyin.styl
+  src \./app/css/ruby.styl
     .pipe gulp-stylus!
-    .pipe gulp-cssmin!
     .pipe concat.header CHARSET
     .pipe concat \han.ruby.css
-    .pipe dest "#{WWW}201505/"
+    .pipe dest "./app/lib/#{HAN-VERSION}"
+
+gulp.task \cssmin ->
+  src "#{WWW}/**/*.css"
+    .pipe gulp-cssmin!
+    .pipe dest WWW
 
 # Data
 gulp.task \data ->

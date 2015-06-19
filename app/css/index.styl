@@ -1,4 +1,7 @@
 
+$han-hanging-hant = true
+$han-biaodian-hant = Pro
+
 $k-bg       = rgb( 95% 93% 90% )
 $k-bd-input = lighten( rgb( 75% 70% 55% ), 30% )
 $k-bg-input = #f0f0f0
@@ -15,8 +18,8 @@ $sans   = 'Biaodian Pro Sans', 'Helvetica Neue', Arial, $zhuyin, 'Han Heiti', sa
 
 npm( $mod ) {  '../../node_modules/' + $mod  }
 
+@import npm( 'han-css' )
 @import npm( 'font-handsome' )
-@import zhuyin
 
 @import layout
 @import nav

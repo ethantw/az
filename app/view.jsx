@@ -5,8 +5,8 @@ import Share from './share.jsx'
 
 const WWW = 'https://az.hanzi.co/'
 const LIB = {
-  css:    '<link rel="stylesheet" href="//az.hanzi.co/201505/han.ruby.css">',
-  js:     '<script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.1/han.min.js"></script>',
+  css:    '<link rel="stylesheet" href="//az.hanzi.co/3.2.3/han.ruby.css">',
+  js:     '<script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.3/han.min.js"></script>',
   render: '<script>document.addEventListener("DOMContentLoaded",function(){Han().initCond().renderRuby()})</script>',
 }
 
